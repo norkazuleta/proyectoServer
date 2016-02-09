@@ -3,14 +3,26 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+    # FOS Feature Bundle
+    - { resource: fos/fos_rest.yml }
+    - { resource: fos/fos_user.yml }
+
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: es
+    private_key_path: '%kernel.root_dir%/var/jwt/private.pem'
+    public_key_path: '%kernel.root_dir%/var/jwt/public.pem'
+    pass_phrase: ThisTokenIsNotSoSecretChangeItPlease
+    token_ttl: 86400
 
 framework:
+    # Supported favorite IDE. values are 'textmate', 'macvim', 'emacs' and 'sublime'
+    ide: sublime
+
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -27,6 +39,7 @@ framework:
     trusted_proxies: ~
     session:
         # handler_id set to null will use default session handler from php.ini
+        save_path: %kernel.root_dir%/var/sessions
         handler_id:  ~
     fragments:       ~
     http_method_override: true
@@ -35,6 +48,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
+    form_themes:
+        - "bootstrap_3_layout.html.twig"
 
 # Doctrine Configuration
 doctrine:
@@ -65,3 +81,8 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# translation
+bazinga_js_translation:
+    locale_fallback:      es
+    default_domain:       messages

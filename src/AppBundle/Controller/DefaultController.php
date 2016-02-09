@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/demo", name="homepage")
      */
     public function indexAction(Request $request)
     {
@@ -17,5 +17,13 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', array(
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
         ));
+    }
+
+    /**
+     * @Route("/", name="webapp")
+     */
+    public function projAction()
+    {
+        return $this->render('default/app.html.twig');
     }
 }
