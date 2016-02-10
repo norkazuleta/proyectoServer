@@ -29,7 +29,7 @@ define(function() {
 		var nga = NgAdminConfigurationProvider;
 
 		var admin = NgAdminConfigurationProvider
-			.application('TITULO PROYECTO')
+			.application('SISTEMA DE RECORD DE NOTAS')
 			.baseApiUrl(baseApiUrl);
 
 
@@ -58,7 +58,8 @@ define(function() {
 				.addChild(nga.menu(ZonaAdminProvider.$get()))
 			)
 			.addChild(nga.menu().title('Gestión').icon('<span class="fa fa-key"> </span>')
-				.addChild(nga.menu().title('Estudiantes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/show'))
+				.addChild(nga.menu().title('Estudiantes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
+				.addChild(nga.menu().title('Docentes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 			)
 		);
 
