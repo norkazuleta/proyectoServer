@@ -1,3 +1,8 @@
+app_pnf_api:
+    resource: "@AppBundle/Controller/PnfRESTController.php"
+    type:   rest
+    prefix:   /api
+
 app_resetting_api:
     resource: "@AppBundle/Controller/ResettingRESTController.php"
     type:   rest

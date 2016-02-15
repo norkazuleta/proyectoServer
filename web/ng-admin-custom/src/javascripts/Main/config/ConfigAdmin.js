@@ -22,7 +22,8 @@ define(function() {
 		EstadoAdminProvider,
 		MunicipioAdminProvider,
 		ParroquiaAdminProvider,
-		ZonaAdminProvider
+		ZonaAdminProvider,
+		PnfAdminProvider
 		) {
 
 
@@ -40,6 +41,7 @@ define(function() {
 			.addEntity(MunicipioAdminProvider.$get())
 			.addEntity(ParroquiaAdminProvider.$get())
 			.addEntity(ZonaAdminProvider.$get())
+			.addEntity(PnfAdminProvider.$get())
 		;
 
 		admin.menu(nga.menu()
@@ -60,6 +62,7 @@ define(function() {
 			.addChild(nga.menu().title('Gestión').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu().title('Estudiantes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 				.addChild(nga.menu().title('Docentes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
+				.addChild(nga.menu(PnfAdminProvider.$get()))
 			)
 		);
 
@@ -80,14 +83,18 @@ define(function() {
 
 		admin.header(customHeaderTemplate);
 
-		/*admin.dashboard(nga.dashboard()
-	    	.addCollection(nga.collection(UserAdminProvider.$get()).title('Usuarios'))
-	    );*/
-
-		/*admin.dashboard(nga.dashboard()
+		admin.dashboard(nga.dashboard()
+	    	.addCollection(nga.collection(UserAdminProvider.$get())
+	    		.title('Usuarios')
+	    		.fields([
+					nga.field('username').label('profile.show.username'),
+					nga.field('email').label('Correo electrónico'),
+					nga.field('enabled', 'boolean').label('Estado')
+				])
+	    	)
 
 			.template(customDashboardTemplate)
-		);*/
+		);
 
 		NgAdminConfigurationProvider.configure(admin);
 	}
@@ -100,6 +107,7 @@ define(function() {
 		'MunicipioAdminProvider',
 		'ParroquiaAdminProvider',
 		'ZonaAdminProvider',
+		'PnfAdminProvider',
 	];
 
 	return ConfigAdmin;
