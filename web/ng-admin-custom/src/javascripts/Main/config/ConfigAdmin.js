@@ -23,7 +23,10 @@ define(function() {
 		MunicipioAdminProvider,
 		ParroquiaAdminProvider,
 		ZonaAdminProvider,
-		PnfAdminProvider
+
+		PnfAdminProvider,
+		DocenteAdminProvider,
+		EstudianteAdminProvider
 		) {
 
 
@@ -42,6 +45,8 @@ define(function() {
 			.addEntity(ParroquiaAdminProvider.$get())
 			.addEntity(ZonaAdminProvider.$get())
 			.addEntity(PnfAdminProvider.$get())
+			.addEntity(DocenteAdminProvider.$get())
+			.addEntity(EstudianteAdminProvider.$get())
 		;
 
 		admin.menu(nga.menu()
@@ -60,9 +65,9 @@ define(function() {
 				.addChild(nga.menu(ZonaAdminProvider.$get()))
 			)
 			.addChild(nga.menu().title('Gestión').icon('<span class="fa fa-key"> </span>')
-				.addChild(nga.menu().title('Estudiantes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
-				.addChild(nga.menu().title('Docentes').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 				.addChild(nga.menu(PnfAdminProvider.$get()))
+				.addChild(nga.menu(DocenteAdminProvider.$get()))
+				.addChild(nga.menu(EstudianteAdminProvider.$get()))
 			)
 		);
 
@@ -107,7 +112,10 @@ define(function() {
 		'MunicipioAdminProvider',
 		'ParroquiaAdminProvider',
 		'ZonaAdminProvider',
+
 		'PnfAdminProvider',
+		'DocenteAdminProvider',
+		'EstudianteAdminProvider',
 	];
 
 	return ConfigAdmin;

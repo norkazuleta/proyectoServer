@@ -15,5 +15,5 @@
 /web/ng-admin-custom/node_modules/
 /web/ng-admin-custom/src/javascripts/bower_components/
 /web/ng-admin/*
-/web/report/
+/web/reports/
 .fuse_*

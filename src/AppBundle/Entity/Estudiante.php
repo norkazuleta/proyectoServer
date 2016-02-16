@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Estudiante
  *
  * @ORM\Table(name="estudiante", options={"collate"="utf8_general_ci", "charset"="utf8"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EstudianteRepository")
  */
 class Estudiante
 {
@@ -132,7 +132,7 @@ class Estudiante
      * @param \DateTime $fn
      * @return Estudiante
      */
-    public function setFn($fn)
+    public function setFn(\DateTime $fn = null)
     {
         $this->fn = $fn;
 

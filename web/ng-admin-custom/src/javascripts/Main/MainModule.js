@@ -30,7 +30,10 @@ MainModule.config(require('./component/factory/EstadoAdmin'));
 MainModule.config(require('./component/factory/MunicipioAdmin'));
 MainModule.config(require('./component/factory/ParroquiaAdmin'));
 MainModule.config(require('./component/factory/ZonaAdmin'));
+
 MainModule.config(require('./component/factory/PnfAdmin'));
+MainModule.config(require('./component/factory/EstudianteAdmin'));
+MainModule.config(require('./component/factory/DocenteAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));
