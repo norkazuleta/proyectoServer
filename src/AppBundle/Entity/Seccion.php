@@ -73,7 +73,7 @@ class Seccion
      *
      * @ORM\ManyToOne(targetEntity="UnidadCurricular")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="uc_id", referencedColumnName="id_uc")
+     *   @ORM\JoinColumn(name="uc_id", referencedColumnName="uc_id")
      * })
      */
     private $uc;

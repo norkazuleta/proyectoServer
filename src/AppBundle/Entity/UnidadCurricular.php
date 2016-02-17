@@ -7,26 +7,26 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UnidadCurricular
  *
- * @ORM\Table(name="unidad_curricular", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="id_pnf", columns={"pnf_id"})})
- * @ORM\Entity
+ * @ORM\Table(name="unidad_curricular", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UnidadCurricularRepository")
  */
 class UnidadCurricular
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_uc", type="integer", nullable=false)
+     * @ORM\Column(name="uc_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idUc;
+    private $ucId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="desc_uc", type="string", length=100, nullable=false)
+     * @ORM\Column(name="uc_desc", type="string", length=100, nullable=false)
      */
-    private $descUc;
+    private $ucDesc;
 
     /**
      * @var \Pnf
@@ -41,36 +41,36 @@ class UnidadCurricular
 
 
     /**
-     * Get idUc
+     * Get ucId
      *
      * @return integer 
      */
-    public function getIdUc()
+    public function getUcId()
     {
-        return $this->idUc;
+        return $this->ucId;
     }
 
     /**
-     * Set descUc
+     * Set ucDesc
      *
-     * @param string $descUc
+     * @param string $ucDesc
      * @return UnidadCurricular
      */
-    public function setDescUc($descUc)
+    public function setUcDesc($ucDesc)
     {
-        $this->descUc = $descUc;
+        $this->ucDesc = $ucDesc;
 
         return $this;
     }
 
     /**
-     * Get descUc
+     * Get ucDesc
      *
      * @return string 
      */
-    public function getDescUc()
+    public function getUcDesc()
     {
-        return $this->descUc;
+        return $this->ucDesc;
     }
 
     /**

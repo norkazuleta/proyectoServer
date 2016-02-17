@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PnfUc
  *
- * @ORM\Table(name="pnf_uc", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="id_pnf_peri", columns={"pnf_peri_id"}), @ORM\Index(name="id_uc", columns={"ud_id"})})
+ * @ORM\Table(name="pnf_uc", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="id_pnf_peri", columns={"pnf_peri_id"}), @ORM\Index(name="uc_id", columns={"ud_id"})})
  * @ORM\Entity
  */
 class PnfUc
@@ -36,7 +36,7 @@ class PnfUc
      *
      * @ORM\ManyToOne(targetEntity="UnidadCurricular")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ud_id", referencedColumnName="id_uc")
+     *   @ORM\JoinColumn(name="ud_id", referencedColumnName="uc_id")
      * })
      */
     private $ud;

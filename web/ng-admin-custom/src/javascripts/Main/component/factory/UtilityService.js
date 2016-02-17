@@ -152,46 +152,6 @@ define(function() {
 					}];
 				};
 			},
-			choicePais: function() {
-				var util = this;
-				return function(entry, scope) {
-					var pais = [];
-
-					var dPais = $rootScope.$on('choice:pais:get', getPais);
-
-					scope.selPais = selPais;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return pais;
-
-					function getPais(e, $item, $model) {
-						util.apiPais($item, $model).then(function(response) {
-							pais = util.dataPrepare(response.data.originalElement, [{
-								label: 'pais_nomb'
-							}, {
-								value: 'pais_id'
-							}]);
-							scope.$broadcast('choices:update', {
-								choices: pais
-							});
-						});
-					}
-
-					function selPais($item, $model) {
-						$rootScope.$broadcast('choice:estados:get', $item, $model);
-						/*
-						$rootScope.$broadcast('choice:estados:reset');
-						$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dPais();
-					}
-				};
-			},
 
 			choiceNac: function() {
 				return function(entry, scope) {
@@ -275,6 +235,46 @@ define(function() {
 				};
 			},
 
+			choicePais: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pais = [];
+
+					var dPais = $rootScope.$on('choice:pais:get', getPais);
+
+					scope.selPais = selPais;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pais;
+
+					function getPais(e, $item, $model) {
+						util.apiPais($item, $model).then(function(response) {
+							pais = util.dataPrepare(response.data.originalElement, [{
+								label: 'pais_nomb'
+							}, {
+								value: 'pais_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pais
+							});
+						});
+					}
+
+					function selPais($item, $model) {
+						$rootScope.$broadcast('choice:estados:get', $item, $model);
+						/*
+						$rootScope.$broadcast('choice:estados:reset');
+						$rootScope.$broadcast('choice:municipios:reset');
+						$rootScope.$broadcast('choice:parroquias:reset');
+						$rootScope.$broadcast('choice:zonas:reset');*/
+					}
+
+					function destroyEvent() {
+						dPais();
+					}
+				};
+			},
 			choiceEstado: function() {
 				var util = this;
 				return function(entry, scope) {
@@ -453,549 +453,49 @@ define(function() {
 					}
 				};
 			},
-			choiceMarca: function() {
+
+
+			choicePnf: function() {
 				var util = this;
 				return function(entry, scope) {
+					var pnf = [];
 
-					var marcas = [];
+					var dPPnf= $rootScope.$on('choice:pnf:get', getPnf);
 
-					var dMarcas = $rootScope.$on('choice:marcas:get', getMarcas);
-					var dresetMarcas = $rootScope.$on('choice:marcas:reset', resetMarcas);
-
-					scope.selMarca = selMarca;
+					scope.selPnf = selPnf;
 
 					scope.$on('$destroy', destroyEvent);
 
-					return marcas;
+					return pnf;
 
-					function getMarcas(e, $item, $model) {
-						util.apiMarca($item, $model).then(function(response) {
-							marcas = util.dataPrepare(response.data.originalElement, [{
-								label: 'marca_nomb'
+					function getPnf(e, $item, $model) {
+						util.apiPnf($item, $model).then(function(response) {
+							pnf = util.dataPrepare(response.data.originalElement, [{
+								label: 'pnf_desc'
 							}, {
-								value: 'marca_id'
+								value: 'pnf_id'
 							}]);
-
 							scope.$broadcast('choices:update', {
-								choices: marcas
+								choices: pnf
 							});
 						});
 					}
 
-					function resetMarcas() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selMarca($item, $model) {
-						$rootScope.$broadcast('choice:modelos:get', $item, $model);
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
+					function selPnf($item, $model) {
+						$rootScope.$broadcast('choice:uc:get', $item, $model);
+						/*
+						$rootScope.$broadcast('choice:estados:reset');
+						$rootScope.$broadcast('choice:municipios:reset');
 						$rootScope.$broadcast('choice:parroquias:reset');
 						$rootScope.$broadcast('choice:zonas:reset');*/
 					}
 
 					function destroyEvent() {
-						dMarcas();
-						dresetMarcas();
-					}
-				};
-			},
-			choiceModelo: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var modelos = [];
-
-					var dModelos = $rootScope.$on('choice:modelos:get', getModelos);
-					var dresetModelos = $rootScope.$on('choice:modelos:reset', resetModelos);
-
-					scope.selModelo = selModelo;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return modelos;
-
-					function getModelos(e, $item, $model) {
-						util.apiModelo($item, $model).then(function(response) {
-							modelos = util.dataPrepare(response.data.originalElement, [{
-								label: 'modelo_nomb'
-							}, {
-								value: 'modelo_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: modelos
-							});
-						});
-					}
-
-					function resetModelos() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selModelo($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dModelos();
-						dresetModelos();
+						dPnf();
 					}
 				};
 			},
 
-			choiceComercio: function(obj) {
-				var util = this;
-				var dataIndex = angular.isObject(obj) ? obj : null;
-				return function(entry, scope) {
-
-					var comercios = [];
-
-					var dComercios = $rootScope.$on('choice:comercios:get', getComercios);
-					var dresetComercios = $rootScope.$on('choice:comercios:reset', resetComercios);
-
-					scope.selComercio = selComercio;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return comercios;
-
-					function getComercios(e, $item, $model) {
-						util.apiComercio($item, $model).then(function(response) {
-							comercios = util.dataPrepare(response.data.originalElement, [dataIndex || {
-								label: 'com_estb_rif'
-							}, {
-								value: 'com_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: comercios
-							});
-						});
-					}
-
-					function resetComercios() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selComercio($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dComercios();
-						dresetComercios();
-					}
-				};
-			},
-
-
-
-
-			choicetComercio: function(obj) {
-				var util = this;
-				var dataIndex = angular.isObject(obj) ? obj : null;
-				return function(entry, scope) {
-
-					var tcomercios = [];
-
-					var dtComercios = $rootScope.$on('choice:tcomercios:get', gettComercios);
-					var dresettComercios = $rootScope.$on('choice:tcomercios:reset', resettComercios);
-
-					scope.seltComercio = seltComercio;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return tcomercios;
-
-					function gettComercios(e, $item, $model) {
-						util.apitComercio($item, $model).then(function(response) {
-							tcomercios = util.dataPrepare(response.data.originalElement, [dataIndex || {
-								label: 'tcom_nomb'
-							}, {
-								value: 'tcom_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: tcomercios
-							});
-						});
-					}
-
-					function resettComercios() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function seltComercio($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dtComercios();
-						dresettComercios();
-					}
-				};
-			},
-
-
-
-
-			choiceLiteComercio: function(obj) {
-				var util = this;
-				var dataIndex = angular.isObject(obj) ? obj : null;
-				return function(entry, scope) {
-
-					var comercios = [];
-
-					var dComercios = $rootScope.$on('choice:litecomercios:get', getLiteComercios);
-					var dresetComercios = $rootScope.$on('choice:litecomercios:reset', resetLiteComercios);
-
-					scope.selComercio = selComercio;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return comercios;
-
-					function getLiteComercios(e, $item, $model) {
-						util.apiLiteComercio($item, $model).then(function(response) {
-							comercios = util.dataPrepare(response.data.originalElement, [dataIndex || {
-								label: 'com_estb_rif'
-							}, {
-								value: 'com_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: comercios
-							});
-						});
-					}
-
-					function resetLiteComercios() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selComercio($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dComercios();
-						dresetComercios();
-					}
-				};
-			},
-
-
-
-			choiceMagnitud: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var magnitudes = [];
-
-					var dMagnitudes = $rootScope.$on('choice:magnitudes:get', getMagnitudes);
-					var dresetMagnitudes = $rootScope.$on('choice:magnitudes:reset', resetMagnitudes);
-
-
-					scope.$on('$destroy', destroyEvent);
-
-					return magnitudes;
-
-					function getMagnitudes(e, $item, $model) {
-						util.apiMagnitud($item, $model).then(function(response) {
-							magnitudes = util.dataPrepare(response.data.originalElement, [{
-								label: 'mag_nomb'
-							}, {
-								value: 'mag_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: magnitudes
-							});
-						});
-					}
-
-					function resetMagnitudes() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-
-					function destroyEvent() {
-						dMagnitudes();
-						dresetMagnitudes();
-					}
-				};
-			},
-			choiceMedida: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var medidas = [];
-
-					var dMedidas = $rootScope.$on('choice:medidas:get', getMedidas);
-					var dresetMedidas = $rootScope.$on('choice:medidas:reset', resetMedidas);
-
-					scope.selMed = selMed;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return medidas;
-
-					function getMedidas(e, $item, $model) {
-						util.apiMedida($item, $model).then(function(response) {
-							medidas = util.dataPrepare(response.data.originalElement, [{
-								label: 'med_nomb'
-							}, {
-								value: 'med_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: medidas
-							});
-						});
-					}
-
-					function resetMedidas() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selMed($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dMedidas();
-						dresetMedidas();
-					}
-				};
-			},
-			choiceProducto: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var productos = [];
-
-					var dProductos = $rootScope.$on('choice:productos:get', getProductos);
-					var dresetProductos = $rootScope.$on('choice:productos:reset', resetProductos);
-
-					scope.selProducto = selProducto;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return productos;
-
-					function getProductos(e, $item, $model) {
-						util.apiProducto($item, $model).then(function(response) {
-							productos = util.dataPrepare(response.data.originalElement, [{
-								label: 'prod_nomb'
-							}, {
-								value: 'prod_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: productos
-							});
-						});
-					}
-
-					function resetProductos() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selProducto($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dProductos();
-						dresetProductos();
-					}
-				};
-			},
-			choiceCategoria: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var categorias = [];
-
-					var dCategorias = $rootScope.$on('choice:categorias:get', getCategorias);
-					var dresetCategorias = $rootScope.$on('choice:categorias:reset', resetCategorias);
-
-					scope.selCat = selCat;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return categorias;
-
-					function getCategorias(e, $item, $model) {
-						util.apiCategoria($item, $model).then(function(response) {
-							categorias = util.dataPrepare(response.data.originalElement, [{
-								label: 'cat_nomb'
-							}, {
-								value: 'cat_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: categorias
-							});
-						});
-					}
-
-					function resetCategorias() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selCat($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dCategorias();
-						dresetCategorias();
-					}
-				};
-			},
-
-			choiceGrupo: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var grupos = [];
-
-					var dGrupos = $rootScope.$on('choice:grupos:get', getGrupos);
-					var dresetGrupos = $rootScope.$on('choice:grupos:reset', resetGrupos);
-
-					scope.selGrup = selGrup;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return grupos;
-
-					function getGrupos(e, $item, $model) {
-						util.apiGrupo($item, $model).then(function(response) {
-							grupos = util.dataPrepare(response.data.originalElement, [{
-								label: 'grup_nomb'
-							}, {
-								value: 'grup_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: grupos
-							});
-						});
-					}
-
-					function resetGrupos() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selGrup($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dGrupos();
-						dresetGrupos();
-					}
-				};
-			},
-
-			choiceSgrupo: function() {
-				var util = this;
-				return function(entry, scope) {
-
-					var sgrupos = [];
-
-					var dSgrupos = $rootScope.$on('choice:sgrupos:get', getSgrupos);
-					var dresetSgrupos = $rootScope.$on('choice:sgrupos:reset', resetSgrupos);
-
-					scope.selSgrup = selSgrup;
-
-					scope.$on('$destroy', destroyEvent);
-
-					return sgrupos;
-
-					function getSgrupos(e, $item, $model) {
-						util.apiSgrupo($item, $model).then(function(response) {
-							sgrupos = util.dataPrepare(response.data.originalElement, [{
-								label: 'sgrup_nomb'
-							}, {
-								value: 'sgrup_id'
-							}]);
-
-							scope.$broadcast('choices:update', {
-								choices: sgrupos
-							});
-						});
-					}
-
-					function resetSgrupos() {
-						scope.$broadcast('choices:update', {
-							choices: []
-						});
-					}
-
-					function selSgrup($item, $model) {
-
-						/*$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
-					}
-
-					function destroyEvent() {
-						dSgrupos();
-						dresetSgrupos();
-					}
-				};
-			},
-
-			detailComercio: function() {
-
-			},
 
 			apiPais: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pais', '/api/pais?limit=' + ($limit || '1000'));
@@ -1012,48 +512,9 @@ define(function() {
 			apiZona: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'zonas', '/api/zonas?filters[parroq]=' + $model + '&limit=' + ($limit || '5000'));
 			},
-			apiMarca: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'marcas', '/api/marcas?limit=' + ($limit || '5000'));
-			},
-			apiModelo: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'zonas', '/api/modelos?filters[marca]=' + $model + '&limit=' + ($limit || '5000'));
-			},
-			apiComercio: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'comercios', '/api/comercios?limit=' + ($limit || '5000'));
-			},
-			apiLiteComercio: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'comercios', '/api/comercios/list?limit=' + ($limit || '5000'));
-			},
-			apitComercio: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'tcomercios', '/api/tcomercios?limit=' + ($limit || '5000'));
-			},
-			apiMedida: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'medidas', '/api/medidas?limit=' + ($limit || '5000'));
-			},
-			apiMagnitud: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'magnituds', '/api/magnituds?limit=' + ($limit || '5000'));
-			},
-			apiProducto: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'productos', '/api/productos?limit=' + ($limit || '50000'));
-			},
-			apiCategoria: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'categorias', '/api/categorias?limit=' + ($limit || '5000'));
-			},
-			apiGrupo: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'grupos', '/api/grupos?filters[cat]=' + $model + '&limit=' + ($limit || '5000'));
-			},
-			apiSgrupo: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'sgrupos', '/api/sgrupos?filters[grup]=' + $model + '&limit=' + ($limit || '5000'));
-			},
-			apiComercioDetail: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'comerciosdetail', '/api/comercios/' + $model + '/detail');
-			},
 
-			apiPrestacion: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'prodprestacions', '/api/prodprestacions?filters[prod]=' + $model + '&limit=' + ($limit || '5000'));
-			},
-			apiOneComercio: function($item, $model) {
-				return RestWrapper.getOne('comercio', '/api/comercios/' + $model);
+			apiPnf: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'pnfs', '/api/pnfs?limit=' + ($limit || '1000'));
 			}
 		};
 	}

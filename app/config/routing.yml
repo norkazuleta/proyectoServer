@@ -1,3 +1,38 @@
+app_seccion_api:
+    resource: "@AppBundle/Controller/SeccionRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_malla_api:
+    resource: "@AppBundle/Controller/MallaRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_pnf_tipo_api:
+    resource: "@AppBundle/Controller/PnfTipoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_trayecto_api:
+    resource: "@AppBundle/Controller/TrayectoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_periodo_api:
+    resource: "@AppBundle/Controller/PeriodoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_turno_api:
+    resource: "@AppBundle/Controller/TurnoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_unidad_curricular_api:
+    resource: "@AppBundle/Controller/UnidadCurricularRESTController.php"
+    type:   rest
+    prefix:   /api
+
 app_docente_api:
     resource: "@AppBundle/Controller/DocenteRESTController.php"
     type:   rest

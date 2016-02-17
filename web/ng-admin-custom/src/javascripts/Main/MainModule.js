@@ -34,6 +34,7 @@ MainModule.config(require('./component/factory/ZonaAdmin'));
 MainModule.config(require('./component/factory/PnfAdmin'));
 MainModule.config(require('./component/factory/EstudianteAdmin'));
 MainModule.config(require('./component/factory/DocenteAdmin'));
+MainModule.config(require('./component/factory/UcAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));
