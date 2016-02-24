@@ -27,7 +27,12 @@ define(function() {
 		PnfAdminProvider,
 		DocenteAdminProvider,
 		EstudianteAdminProvider,
-		UcAdminProvider
+		UcAdminProvider,
+		TrayectoAdminProvider,
+		PeriodoAdminProvider,
+		PnfTipoAdminProvider,
+		MallaAdminProvider,
+		SeccionAdminProvider
 		) {
 
 
@@ -40,13 +45,18 @@ define(function() {
 
 		admin
 			.addEntity(UserAdminProvider.$get())
-			.addEntity(PaisAdminProvider.$get())
+			/*.addEntity(PaisAdminProvider.$get())*/
 			.addEntity(EstadoAdminProvider.$get())
 			.addEntity(MunicipioAdminProvider.$get())
 			.addEntity(ParroquiaAdminProvider.$get())
-			.addEntity(ZonaAdminProvider.$get())
+			/*.addEntity(ZonaAdminProvider.$get())*/
 			.addEntity(PnfAdminProvider.$get())
+			.addEntity(PnfTipoAdminProvider.$get())
+			.addEntity(MallaAdminProvider.$get())
+			.addEntity(SeccionAdminProvider.$get())
 			.addEntity(UcAdminProvider.$get())
+			.addEntity(TrayectoAdminProvider.$get())
+			.addEntity(PeriodoAdminProvider.$get())
 			.addEntity(DocenteAdminProvider.$get())
 			.addEntity(EstudianteAdminProvider.$get())
 		;
@@ -60,15 +70,20 @@ define(function() {
 			)
 			.addChild(nga.menu().title('Configuración').icon('<span class="fa fa-gears"> </span>')
 				.addChild(nga.menu(UserAdminProvider.$get()).icon('<span class="fa fa-users"> </span>'))
-				.addChild(nga.menu(PaisAdminProvider.$get()))
+				/*.addChild(nga.menu(PaisAdminProvider.$get()))*/
 				.addChild(nga.menu(EstadoAdminProvider.$get()))
 				.addChild(nga.menu(MunicipioAdminProvider.$get()))
 				.addChild(nga.menu(ParroquiaAdminProvider.$get()))
-				.addChild(nga.menu(ZonaAdminProvider.$get()))
+				/*.addChild(nga.menu(ZonaAdminProvider.$get()))*/
 			)
 			.addChild(nga.menu().title('Gestión').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu(PnfAdminProvider.$get()))
+				.addChild(nga.menu(PnfTipoAdminProvider.$get()))
+				.addChild(nga.menu(MallaAdminProvider.$get()))
+				.addChild(nga.menu(SeccionAdminProvider.$get()))
 				.addChild(nga.menu(UcAdminProvider.$get()))
+				.addChild(nga.menu(TrayectoAdminProvider.$get()))
+				.addChild(nga.menu(PeriodoAdminProvider.$get()))
 				.addChild(nga.menu(DocenteAdminProvider.$get()))
 				.addChild(nga.menu(EstudianteAdminProvider.$get()))
 			)
@@ -120,6 +135,11 @@ define(function() {
 		'DocenteAdminProvider',
 		'EstudianteAdminProvider',
 		'UcAdminProvider',
+		'TrayectoAdminProvider',
+		'PeriodoAdminProvider',
+		'PnfTipoAdminProvider',
+		'MallaAdminProvider',
+		'SeccionAdminProvider',
 	];
 
 	return ConfigAdmin;

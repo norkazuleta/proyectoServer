@@ -35,6 +35,11 @@ MainModule.config(require('./component/factory/PnfAdmin'));
 MainModule.config(require('./component/factory/EstudianteAdmin'));
 MainModule.config(require('./component/factory/DocenteAdmin'));
 MainModule.config(require('./component/factory/UcAdmin'));
+MainModule.config(require('./component/factory/TrayectoAdmin'));
+MainModule.config(require('./component/factory/PeriodoAdmin'));
+MainModule.config(require('./component/factory/PnfTipoAdmin'));
+MainModule.config(require('./component/factory/MallaAdmin'));
+MainModule.config(require('./component/factory/SeccionAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));

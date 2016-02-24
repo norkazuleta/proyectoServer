@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PnfTipo
  *
  * @ORM\Table(name="pnf_tipo", options={"collate"="utf8_general_ci", "charset"="utf8"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PnfTipoRepository")
  */
 class PnfTipo
 {

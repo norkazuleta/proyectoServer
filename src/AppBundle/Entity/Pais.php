@@ -17,7 +17,7 @@ class Pais
     /**
      * @var int
      *
-     * @ORM\Column(name="pais_id", type="integer", nullable=false)
+     * @ORM\Column(name="pais_id", type="string", length=10, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */

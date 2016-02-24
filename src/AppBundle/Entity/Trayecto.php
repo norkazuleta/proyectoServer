@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Trayecto
  *
  * @ORM\Table(name="trayecto", options={"collate"="utf8_general_ci", "charset"="utf8"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TrayectoRepository")
  */
 class Trayecto
 {

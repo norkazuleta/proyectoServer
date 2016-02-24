@@ -460,7 +460,7 @@ define(function() {
 				return function(entry, scope) {
 					var pnf = [];
 
-					var dPPnf= $rootScope.$on('choice:pnf:get', getPnf);
+					var dPnf= $rootScope.$on('choice:pnf:get', getPnf);
 
 					scope.selPnf = selPnf;
 
@@ -497,6 +497,183 @@ define(function() {
 			},
 
 
+			choicePnfTipo: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pnftipo = [];
+
+					var dPnfTipo= $rootScope.$on('choice:pnftipo:get', getPnfTipo);
+
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pnftipo;
+
+					function getPnfTipo(e, $item, $model) {
+						util.apiPnfTipo($item, $model).then(function(response) {
+							pnftipo = util.dataPrepare(response.data.originalElement, [{
+								label: 'tipo_desc'
+							}, {
+								value: 'tipo_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftipo
+							});
+						});
+					}
+
+					function destroyEvent() {
+						dPnfTipo();
+					}
+				};
+			},
+
+
+
+			choiceTrayecto: function() {
+				var util = this;
+				return function(entry, scope) {
+					var tray = [];
+
+					var dTrayecto = $rootScope.$on('choice:trayecto:get', getTray);
+
+					scope.selTray = selTray;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return tray;
+
+					function getTray(e, $item, $model) {
+						util.apiTrayecto($item, $model).then(function(response) {
+							tray = util.dataPrepare(response.data.originalElement, [{
+								label: 'tray_desc'
+							}, {
+								value: 'tray_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: tray
+							});
+						});
+					}
+
+					function selTray($item, $model) {
+						$rootScope.$broadcast('choice:periodo:get', $item, $model);
+					}
+
+					function destroyEvent() {
+						dTrayecto();
+					}
+				};
+			},
+
+			choicePeriodo: function() {
+				var util = this;
+				return function(entry, scope) {
+					var peri = [];
+
+					var dPeriodo = $rootScope.$on('choice:trayecto:get', getPeri);
+
+					scope.selPeri = selPeri;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return peri;
+
+					function getPeri(e, $item, $model) {
+						util.apiPeriodo($item, $model).then(function(response) {
+							peri = util.dataPrepare(response.data.originalElement, [{
+								label: 'peri_desc'
+							}, {
+								value: 'peri_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: peri
+							});
+						});
+					}
+
+					function selPeri($item, $model) {
+						$rootScope.$broadcast('choice:pnfuc:get', $item, $model);
+					}
+
+					function destroyEvent() {
+						dPeriodo();
+					}
+				};
+			},
+
+			choiceUc: function() {
+				var util = this;
+				return function(entry, scope) {
+					var uc = [];
+
+					var dUc = $rootScope.$on('choice:uc:get', getUc);
+
+					scope.selUc = selUc;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return uc;
+
+					function getUc($item, $model) {
+						util.apiUc($item, $model).then(function(response) {
+							uc = util.dataPrepare(response.data.originalElement, [{
+								label: 'uc_desc'
+							}, {
+								value: 'uc_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: uc
+							});
+						});
+					}
+
+					function selUc($item, $model) {
+						//$rootScope.$broadcast('choice:uc:get', $item, $model);
+					}
+
+					function destroyEvent() {
+						dUc();
+					}
+				};
+			},
+
+			choiceMalla: function() {
+				var util = this;
+				return function(entry, scope) {
+					var malla = [];
+
+					var dMalla = $rootScope.$on('choice:malla:get', getMalla);
+
+					scope.selMalla = selMalla;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return malla;
+
+					function getMalla(e, $item, $model) {
+						util.apiPeriodo($item, $model).then(function(response) {
+							malla = util.dataPrepare(response.data.originalElement, [{
+								label: 'malla_desc'
+							}, {
+								value: 'malla_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: malla
+							});
+						});
+					}
+
+					function selMalla($item, $model) {
+						$rootScope.$broadcast('choice:malla:get', $item, $model);
+					}
+
+					function destroyEvent() {
+						dMalla();
+					}
+				};
+			},
+
 			apiPais: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pais', '/api/pais?limit=' + ($limit || '1000'));
 			},
@@ -515,6 +692,25 @@ define(function() {
 
 			apiPnf: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnfs', '/api/pnfs?limit=' + ($limit || '1000'));
+			},
+			apiPnfTipo: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'pnftipos', '/api/pnftipos?limit=' + ($limit || '1000'));
+			},
+
+			apiTrayecto: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'trayectos', '/api/trayectos?limit=' + ($limit || '1000'));
+			},
+
+			apiPeriodo: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'periodos', '/api/periodos?limit=' + ($limit || '1000'));
+			},
+
+			apiUc: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'unidadcurriculars', '/api/unidadcurriculars?filters[pnf]='+$model+'&limit=' + ($limit || '1000'));
+			},
+
+			apiMalla: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'mallas', '/api/mallas?limit=' + ($limit || '1000'));
 			}
 		};
 	}

@@ -11,8 +11,7 @@ var customSources = [
     '../ng-admin/src/javascripts/ng-admin.js',
     './src/javascripts/custom.js',
 
-    /*'../ng-admin/src/sass/ng-admin.scss',
-    './src/sass/custom.scss',*/
+    /*'../ng-admin/src/sass/ng-admin.scss',*/
 ];
 
 var vendorSources = [
@@ -22,6 +21,7 @@ var vendorSources = [
     //'./node_modules/roboto-fontface/css/roboto-fontface.css',
     /*'../ng-admin/node_modules/font-awesome/scss/font-awesome.scss',
     '../ng-admin/node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
+    './src/sass/custom.scss',
 
     '../ng-admin/node_modules/nprogress/nprogress.css',
     '../ng-admin/node_modules/humane-js/themes/flatty.css',
@@ -33,11 +33,10 @@ var vendorSources = [
 
 module.exports = {
     entry: {
-        'ng-admin-custom': getEntrySources(customSources.concat(vendorSources)),
-        'ng-admin-custom-only': getEntrySources(customSources)
+        'ng-admin-custom': getEntrySources(customSources.concat(vendorSources))
     },
     output: {
-        publicPath: "http://sicap.local:9016/",
+        publicPath: "http://proyecto.local:9000/",
         filename: "build/[name].min.js"
     },
     resolveLoader: {

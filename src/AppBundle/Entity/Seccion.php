@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Seccion
  *
  * @ORM\Table(name="seccion", options={"collate"="utf8_general_ci", "charset"="utf8"}, uniqueConstraints={@ORM\UniqueConstraint(name="secc_codi", columns={"secc_codi"})}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="tray_id", columns={"tray_id"}), @ORM\Index(name="peri_id", columns={"peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"}), @ORM\Index(name="malla_id", columns={"malla_id"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SeccionRepository")
  */
 class Seccion
 {

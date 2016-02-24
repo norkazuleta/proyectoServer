@@ -46,22 +46,40 @@ class SeccionRESTController extends VoryxController
      *
      * @return Response
      *
+     * @QueryParam(name="q", nullable=true, description="Search text.")
      * @QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing notes.")
      * @QueryParam(name="limit", requirements="\d+", default="20", description="How many notes to return.")
      * @QueryParam(name="order_by", nullable=true, array=true, description="Order by fields. Must be an array ie. &order_by[name]=ASC&order_by[description]=DESC")
      * @QueryParam(name="filters", nullable=true, array=true, description="Filter by fields. Must be an array ie. &filters[id]=3")
+     * @QueryParam(name="filters_operator", default="LIKE %...%", description="Option filter operator.")
      */
-    public function cgetAction(ParamFetcherInterface $paramFetcher)
+    public function cgetAction(ParamFetcherInterface $paramFetcher, Request $request)
     {
         try {
+            $q = $paramFetcher->get('q');
             $offset = $paramFetcher->get('offset');
             $limit = $paramFetcher->get('limit');
             $order_by = $paramFetcher->get('order_by');
             $filters = !is_null($paramFetcher->get('filters')) ? $paramFetcher->get('filters') : array();
+            $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entities = $em->getRepository('AppBundle:Seccion')->findBy($filters, $order_by, $limit, $offset);
+            $entity = $em->getRepository('AppBundle:Seccion');
+
+            if (!empty($q)) {
+                $filters_ = array('seccCodi' => '');
+
+                $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
+                $nbResults = $adapter->getNbResults();
+                $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
+            } else {
+                $nbResults = $entity->getNbResults();
+                $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+            }
+
             if ($entities) {
+                $request->attributes->set('_x_total_count', $nbResults);
+
                 return $entities;
             }
 

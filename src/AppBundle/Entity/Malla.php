@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Malla
  *
  * @ORM\Table(name="malla", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="pnf_tipo_id", columns={"pnf_tipo_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MallaRepository")
  */
 class Malla
 {
@@ -24,7 +24,7 @@ class Malla
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="malla_anio", type="date", nullable=false)
+     * @ORM\Column(name="malla_anio", columnDefinition="YEAR", nullable=false)
      */
     private $mallaAnio;
 

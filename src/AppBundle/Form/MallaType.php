@@ -19,8 +19,8 @@ class MallaType extends AbstractType
             ->add('mallaCodi')
             ->add('status')
             ->add('pnfTipo', 'entity', array(
-                'class' => 'AppBundle:Pnf',
-                'property' => 'pnfTipoId',
+                'class' => 'AppBundle:PnfTipo',
+                'property' => 'tipoId',
             ))
         ;
     }

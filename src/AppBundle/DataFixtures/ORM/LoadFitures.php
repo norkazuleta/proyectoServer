@@ -13,6 +13,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\DataFixtures\ORM\LoadFitures;
 
 /*
  * DataFixtures for app
@@ -103,6 +104,10 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array('22','VENEZUELA'),
         );
 
+        $pais = array(
+            array('22','VENEZUELA'),
+        );
+
         foreach ($pais as $data) {
             $entityPais = new Pais();
             $entityPais->setPaisId($data[0]);
@@ -140,6 +145,9 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array('22', '22', 'YARACUY'),
             array('23', '22', 'ZULIA'),
             array('24', '22', 'VARGAS')
+        );
+        $estado = array(
+            array('23', '22', 'ZULIA'),
         );
 
         $em = $this->container->get('doctrine')->getEntityManager('default');
@@ -493,9 +501,12 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array('2319', '23', 'SIMÓN BOLÍVAR'),
             array('2320', '23', 'SUCRE'),
             array('2321', '23', 'VALMORE RODRÍGUEZ'),
-            array('2401', '24', 'VARGAS')
+            /*array('2401', '24', 'VARGAS')*/
         );
 
+        $municipios = array(
+            array('2315', '23', 'GUAJIRA'),
+        );
         $em = $this->container->get('doctrine')->getEntityManager('default');
 
         foreach ($municipios as $data) {
@@ -1651,6 +1662,13 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array('240109', '2401', 'NAIGUATÁ'),
             array('240110', '2401', 'RAÚL LEONI'),
             array('240111', '2401', 'CARLOS SOUBLETTE')
+        );
+
+        $parroquias = array(
+            array('231501', '2315', 'SINAMAICA'),
+            /*array('231502', '2315', 'ALTA GUAJIRA'),
+            array('231503', '2315', 'ELÍAS SÁNCHEZ RUBIO'),
+            array('231504', '2315', 'GUAJIRA'),*/
         );
 
         $em = $this->container->get('doctrine')->getEntityManager('default');
@@ -5442,6 +5460,116 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array(3770, '212006', 'URBANIZACIÓN TANTUN')
         );
 
+        $zonas = array(
+            /*array(null, '231502', 'CAPITAL DE PARROQUIA COJORO'),
+            array(null, '231502', 'CENTRO COJORO'),
+            array(null, '231502', 'SECTOR AIPIAPA'),
+            array(null, '231502', 'SECTOR CALINATAY'),
+            array(null, '231502', 'SECTOR CASTILLETES'),
+            array(null, '231502', 'SECTOR CASUSAIN'),
+            array(null, '231502', 'SECTOR COJUA'),
+            array(null, '231502', 'SECTOR CUSIA'),
+            array(null, '231502', 'SECTOR GUALANTALAO'),
+            array(null, '231502', 'SECTOR GUARURTAIN'),
+            array(null, '231502', 'SECTOR GUAYAMULISIRA'),
+            array(null, '231502', 'SECTOR GA1/4 INCUA'),
+            array(null, '231502', 'SECTOR IRALMACIRA'),
+            array(null, '231502', 'SECTOR JASAY'),
+            array(null, '231502', 'SECTOR JUMOP'),
+            array(null, '231502', 'SECTOR JUTAIPANAO'),
+            array(null, '231502', 'SECTOR MORCHIPA'),
+            array(null, '231502', 'SECTOR NEIMA'),
+            array(null, '231502', 'SECTOR PALACHUO'),
+            array(null, '231502', 'SECTOR SICHIPES'),
+            array(null, '231502', 'SECTOR TAPURI'),
+            array(null, '231502', 'SECTOR URUIMANA'),
+            array(null, '231503', 'CAPITAL DE PARROQUIA EL MOLINETE'),
+            array(null, '231503', 'CENTRO EL MOLINETE'),
+            array(null, '231503', 'SECTOR ARIJUNA'),
+            array(null, '231503', 'SECTOR CAMAMA'),
+            array(null, '231503', 'SECTOR CANTAN LOS GALLOS'),
+            array(null, '231503', 'SECTOR EL CAIRO'),
+            array(null, '231503', 'SECTOR EL CALABOZO'),
+            array(null, '231503', 'SECTOR EL CAMPAMENTO'),
+            array(null, '231503', 'SECTOR EL CARDONAL'),
+            array(null, '231503', 'SECTOR EL CARNAVAL'),
+            array(null, '231503', 'SECTOR EL CUJI'),
+            array(null, '231503', 'SECTOR EL ESCONDIDO'),
+            array(null, '231503', 'SECTOR EL TRANCADOR'),
+            array(null, '231503', 'SECTOR EL TRIBUNAL'),
+            array(null, '231503', 'SECTOR ESCUELA GRANJA DON BOSCO'),
+            array(null, '231503', 'SECTOR GUAYACANAL'),
+            array(null, '231503', 'SECTOR JUAN EL NEGRO'),
+            array(null, '231503', 'SECTOR GUASDUITAS'),
+            array(null, '231503', 'SECTOR LAS HUERTAS'),
+            array(null, '231503', 'SECTOR LAS PIEDRAS'),
+            array(null, '231503', 'SECTOR LOS ACEITUNOS'),
+            array(null, '231503', 'SECTOR LOS MANANTIALES'),
+            array(null, '231503', 'SECTOR LOS PARAUJANOS'),
+            array(null, '231503', 'SECTOR MATUARE'),
+            array(null, '231503', 'SECTOR PUERTO ROSAS'),
+            array(null, '231503', 'SECTOR URUAMANA'),
+            array(null, '231503', 'SECTOR VARILLA BLANCA'),
+            array(null, '231504', 'CAPITAL DE PARROQUIA PARAGUAIPOA'),
+            array(null, '231504', 'SECTOR ALTAIN'),
+            array(null, '231504', 'SECTOR ALPANATE'),
+            array(null, '231504', 'SECTOR AMUNOR'),
+            array(null, '231504', 'SECTOR AMURUIPA'),
+            array(null, '231504', 'SECTOR ARAMACHON'),
+            array(null, '231504', 'SECTOR AREPETA'),
+            array(null, '231504', 'SECTOR CANDELARIA'),
+            array(null, '231504', 'SECTOR CANO SECO'),
+            array(null, '231504', 'SECTOR CARRETAL'),
+            array(null, '231504', 'SECTOR CHAMALU'),
+            array(null, '231504', 'SECTOR CHEMERAIN'),
+            array(null, '231504', 'SECTOR COJUA'),
+            array(null, '231504', 'SECTOR COLOPONTACHON'),
+            array(null, '231504', 'SECTOR COLOPONTAY'),
+            array(null, '231504', 'SECTOR EL CABEZON'),
+            array(null, '231504', 'SECTOR EL CAMPAMENTO'),
+            array(null, '231504', 'SECTOR EL CARRETAL'),
+            array(null, '231504', 'SECTOR EL CUERVO'),
+            array(null, '231504', 'SECTOR EL GUAYABITO'),
+            array(null, '231504', 'SECTOR EL JAPON'),
+            array(null, '231504', 'SECTOR EL PAVITO'),
+            array(null, '231504', 'SECTOR EL PRIETO'),
+            array(null, '231504', 'SECTOR EL ARROYO'),
+            array(null, '231504', 'SECTOR GUAIMPESI'),
+            array(null, '231504', 'SECTOR GUANA'),
+            array(null, '231504', 'SECTOR GUARERO'),
+            array(null, '231504', 'SECTOR GUARERO II'),
+            array(null, '231504', 'SECTOR GA1/4ICHEPE'),
+            array(null, '231504', 'SECTOR HATO NUEVO'),
+            array(null, '231504', 'SECTOR HUERTO HACHA'),
+            array(null, '231504', 'SECTOR JEPIPA'),
+            array(null, '231504', 'SECTOR JOTOMANA'),
+            array(null, '231504', 'SECTOR JURUBA'),
+            array(null, '231504', 'SECTOR LA BOCA DE LOS CACAOS'),
+            array(null, '231504', 'SECTOR LA ESPERANZA'),
+            array(null, '231504', 'SECTOR LA GLORIA'),
+            array(null, '231504', 'SECTOR LA LOMA'),
+            array(null, '231504', 'SECTOR LA PUNTA'),
+            array(null, '231504', 'SECTOR LAS GAVETAS'),
+            array(null, '231504', 'SECTOR LAS GUARDIAS'),
+            array(null, '231504', 'SECTOR LAS JABILLITAS'),
+            array(null, '231504', 'SECTOR LAS PITIAS'),
+            array(null, '231504', 'SECTOR LAS TROJAS'),
+            array(null, '231504', 'SECTOR LOS ACEITUNOS'),
+            array(null, '231504', 'SECTOR LOS MOCHOS'),
+            array(null, '231504', 'SECTOR LOS MOSTRENCOS'),
+            array(null, '231504', 'SECTOR MOINA'),
+            array(null, '231504', 'SECTOR MURICHIPA'),
+            array(null, '231504', 'SECTOR PARAGUACHON'),
+            array(null, '231504', 'SECTOR PARAGUAIPOA'),
+            array(null, '231504', 'SECTOR PARARU'),
+            array(null, '231504', 'SECTOR SAGUA'),
+            array(null, '231504', 'SECTOR SANTA MARIA DE GUANA'),
+            array(null, '231504', 'SECTOR YAGUASIRU'),
+            array(null, '231504', 'SECTOR YALAUNA'),
+            array(null, '231504', 'SECTOR YAURUNA'),
+            array(null, '231504', 'SECTOR YOSIPA'),*/
+        );
+
         $em = $this->container->get('doctrine')->getEntityManager('default');
 
         foreach ($zonas as $data) {
@@ -5454,5 +5582,51 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         }
 
         $manager->flush();
+    }
+
+    public function loadEstudiante(ObjectManager $manager)
+    {
+        /*$estudiante = array(
+            array('1', 'ARGENTINA'),
+        );
+
+        foreach ($estudiante as $data) {
+            $entityEstudiante = new Estudiante();
+            $entityEstudiante->setPaisId($data[0]);
+            $entityEstudiante->setPaisNomb($data[1]);
+            $manager->persist($entityEstudiante);
+        }
+
+        $manager->flush();*/
+    }
+
+    public function loadDocente(ObjectManager $manager)
+    {
+        # code...
+    }
+
+    public function loadPnf(ObjectManager $manager)
+    {
+        # code...
+    }
+
+    public function loadUc(ObjectManager $manager)
+    {
+        # code...
+    }
+
+    public function loadTrayecto(ObjectManager $manager)
+    {
+        # code...
+    }
+
+    public function loadPeriodo(ObjectManager $manager)
+    {
+        # code...
+    }
+
+    public function loadPnfTipo(ObjectManager $manager)
+    {
+        # code...
     }
 }

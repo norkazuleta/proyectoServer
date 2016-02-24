@@ -65,7 +65,7 @@ class UnidadCurricularRESTController extends VoryxController
 
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppBundle:UnidadCurricular');
-            
+
             if (!empty($q)) {
                 $filters = array(
                     'ucDesc' => '',
