@@ -2,13 +2,16 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Util\Utility;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Aldea
  *
  * @ORM\Table(name="aldea", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="parroq_codi", columns={"parroq_codi"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AldeaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Aldea
 {
@@ -36,9 +39,58 @@ class Aldea
      *   @ORM\JoinColumn(name="parroq_codi", referencedColumnName="parroq_codi")
      * })
      */
-    private $parroqCodi;
+    private $parroq;
 
 
+    /**
+     * @var \AldeaTurno
+     *
+     * @ORM\OneToMany(targetEntity="AldeaTurno", mappedBy="aldea", cascade={"persist", "remove"})
+     */
+    private $aldeaTurno;
+
+    /**
+     * Hook on pre-persist operations.
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->aldeaNomb = Utility::upperCase($this->aldeaNomb);
+    }
+
+    /**
+     * Hook on pre-update operations.
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->aldeaNomb = Utility::upperCase($this->aldeaNomb);
+    }
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+
+        $this->aldeaTurno = new ArrayCollection();
+    }
+
+    /**
+     * Set aldeaCodi.
+     *
+     * @param string $aldeaCodi
+     *
+     * @return Parroquia
+     */
+    public function setAldeaCodi($aldeaCodi)
+    {
+        $this->aldeaCodi = $aldeaCodi;
+
+        return $this;
+    }
 
     /**
      * Get aldeaCodi
@@ -74,25 +126,59 @@ class Aldea
     }
 
     /**
-     * Set parroqCodi
+     * Set parroq
      *
-     * @param \AppBundle\Entity\Parroquia $parroqCodi
+     * @param \AppBundle\Entity\Parroquia $parroq
      * @return Aldea
      */
-    public function setParroqCodi(\AppBundle\Entity\Parroquia $parroqCodi = null)
+    public function setParroq(\AppBundle\Entity\Parroquia $parroq = null)
     {
-        $this->parroqCodi = $parroqCodi;
+        $this->parroq = $parroq;
 
         return $this;
     }
 
     /**
-     * Get parroqCodi
+     * Get parroq
      *
      * @return \AppBundle\Entity\Parroquia 
      */
-    public function getParroqCodi()
+    public function getParroq()
     {
-        return $this->parroqCodi;
+        return $this->parroq;
+    }
+
+    /**
+     * Add aldeaTurno
+     *
+     * @param \AppBundle\Entity\AldeaTurno $aldeaTurno
+     * @return Aldea
+     */
+    public function addAldeaTurno(\AppBundle\Entity\AldeaTurno $aldeaTurno)
+    {
+        $this->aldeaTurno[] = $aldeaTurno;
+        $aldeaTurno->setAldea($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove aldeaTurno
+     *
+     * @param \AppBundle\Entity\AldeaTurno $aldeaTurno
+     */
+    public function removeAldeaTurno(\AppBundle\Entity\AldeaTurno $aldeaTurno)
+    {
+        $this->aldeaTurno->removeElement($aldeaTurno);
+    }
+
+    /**
+     * Get aldeaTurno
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAldeaTurno()
+    {
+        return $this->aldeaTurno;
     }
 }

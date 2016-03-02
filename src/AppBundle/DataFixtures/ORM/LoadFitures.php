@@ -2,18 +2,26 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\DataFixtures\ORM\LoadFitures;
+use AppBundle\Entity\Aldea;
+use AppBundle\Entity\Docente;
 use AppBundle\Entity\Estado;
+use AppBundle\Entity\Estudiante;
 use AppBundle\Entity\Municipio;
 use AppBundle\Entity\Pais;
 use AppBundle\Entity\Parroquia;
+use AppBundle\Entity\Periodo;
+use AppBundle\Entity\Pnf;
+use AppBundle\Entity\PnfTipo;
+use AppBundle\Entity\Trayecto;
+use AppBundle\Entity\Turno;
+use AppBundle\Entity\UnidadCurricular;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Zona;
-
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use AppBundle\DataFixtures\ORM\LoadFitures;
 
 /*
  * DataFixtures for app
@@ -48,6 +56,15 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $this->loadMunicipio($manager);
         $this->loadParroquia($manager);
         $this->loadZona($manager);
+        $this->loadAldea($manager);
+        $this->loadEstudiante($manager);
+        $this->loadDocente($manager);
+        $this->loadPnf($manager);
+        $this->loadUc($manager);
+        $this->loadTrayecto($manager);
+        $this->loadPeriodo($manager);
+        $this->loadPnfTipo($manager);
+        $this->loadTurno($manager);
     }
 
     private function loadUsers(ObjectManager $manager)
@@ -5584,49 +5601,276 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
+    public function loadAldea(ObjectManager $manager)
+    {
+        $aldeas = array(
+            /*array('aldea_codi', 'parroq_codi', 'aldea_nomb'),*/
+            array('23150102', '231501', 'CARMEN FERRER ORTIZ'),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($aldeas as $data) {
+            $entityAldea = new Aldea();
+            $entityAldea->setAldeaCodi($data[0]);
+            $entityParroquia = $em->getRepository('AppBundle:Parroquia')->find($data[1]);
+            $entityAldea->setAldeaNomb($data[2]);
+            $entityAldea->setParroq($entityParroquia);
+            $manager->persist($entityAldea);
+        }
+
+        $manager->flush();
+    }
+
     public function loadEstudiante(ObjectManager $manager)
     {
-        /*$estudiante = array(
-            array('1', 'ARGENTINA'),
+        $estudiante = array(
+            //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
+            array('8355972', 'EFRAIN', 'BONILLA', '1990-05-31', 'efrainbonilla.dev@gmail.com', '04122999862'),
         );
 
         foreach ($estudiante as $data) {
             $entityEstudiante = new Estudiante();
-            $entityEstudiante->setPaisId($data[0]);
-            $entityEstudiante->setPaisNomb($data[1]);
+            $entityEstudiante->setCedu($data[0]);
+            $entityEstudiante->setNomb($data[1]);
+            $entityEstudiante->setApell($data[2]);
+            $entityEstudiante->setFn(new \Datetime($data[3]));
+            $entityEstudiante->setCorreo($data[4]);
+            $entityEstudiante->setTlf($data[5]);
             $manager->persist($entityEstudiante);
         }
 
-        $manager->flush();*/
+        $manager->flush();
     }
 
     public function loadDocente(ObjectManager $manager)
     {
-        # code...
+        $estudiante = array(
+            //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
+            array('18200574', 'JOSE AUGUSTO', 'AÑEZ', '1984-11-07', 'ja18200574@yahoo.es', '04161660642'),
+        );
+
+        foreach ($estudiante as $data) {
+            $entityDocente = new Docente();
+            $entityDocente->setCedu($data[0]);
+            $entityDocente->setNomb($data[1]);
+            $entityDocente->setApell($data[2]);
+            $entityDocente->setFn(new \Datetime($data[3]));
+            $entityDocente->setCorreo($data[4]);
+            $entityDocente->setTlf($data[5]);
+            $manager->persist($entityDocente);
+        }
+
+        $manager->flush();
     }
 
     public function loadPnf(ObjectManager $manager)
     {
-        # code...
+        $pnf = array(
+            //array('pnf_id', 'pnf_desc'),
+            array(1, 'INFORMÁTICA'),
+            array(2, 'ADMINISTRACIÓN'),
+            array(3, 'TURISMO'),
+            array(4, 'CONSTRUCCIÓN CIVIL'),
+        );
+
+        foreach ($pnf as $data) {
+            $entityPnf = new Pnf();
+            $entityPnf->setPnfDesc($data[1]);
+            $manager->persist($entityPnf);
+        }
+
+        $manager->flush();
     }
 
     public function loadUc(ObjectManager $manager)
     {
-        # code...
+        $uc = array(
+            //array('uc_id', 'pnf_id', 'uc_desc'),
+            array(null, '1', 'ACTIVIDADES ACREDITABLES'),
+            array(null, '1', 'ALGORITMICA Y PROGRAMACION I'),
+            array(null, '1', 'ARQUITECTURA DEL COMPUTADOR'),
+            array(null, '1', 'BASE DE DATOS'),
+            array(null, '1', 'ELECTIVA'),
+            array(null, '1', 'ELECTIVA II'),
+            array(null, '1', 'FORMACION CRITICA I'),
+            array(null, '1', 'FORMACION CRITICA II'),
+            array(null, '1', 'IDIOMAS'),
+            array(null, '1', 'INGIENERIA DEL SOFTWARE I'),
+            array(null, '1', 'MATEMATICA I'),
+            array(null, '1', 'MATEMATICA II'),
+            array(null, '1', 'PROGRAMACION II'),
+            array(null, '1', 'PROYECTO SOCIOTECNOLOGICO I'),
+            array(null, '1', 'PROYECTO SOCIOTECNOLOGICO II'),
+            array(null, '1', 'REDES DE COMPUTADORA'),
+
+            array(null, '2', 'ADMINISTRACION DE COSTO'),
+            array(null, '2', 'ADMINISTRACION DE EMPRESAS DE TURISMO (ELECTIVA II)'),
+            array(null, '2', 'ADMINISTRACION HOTELERA (ELECTIVA II)'),
+            array(null, '2', 'BANCA, SEGURO Y SERVICIO (ELECTIVA II)'),
+            array(null, '2', 'CALIDAD Y GESTION AMBIENTAL ORGANIZACIONAL (ELECTIVA I)'),
+            array(null, '2', 'CONTABILIDAD I'),
+            array(null, '2', 'CONTABILIDAD II'),
+            array(null, '2', 'DEBERES FORMALES DEL CONTRIBUYENTE'),
+            array(null, '2', 'DEBERES FORMALES DEL CONTRIBUYENTE ISLR'),
+            array(null, '2', 'DEPORTE,ARTE Y RECREACION I'),
+            array(null, '2', 'FORMACION SOCIOCRITICA I'),
+            array(null, '2', 'FORMACION SOCIOCRITICA II'),
+            array(null, '2', 'FUNDAMENTO DE LA ADMINISTRACION'),
+            array(null, '2', 'GESTION DE EMPRESAS AGROPECUARIA Y PESQUERA (ELECTIVA II)'),
+            array(null, '2', 'GESTION DE EMPRESAS PETROLERAS (ELECTIVA II)'),
+            array(null, '2', 'IDIOMAS I'),
+            array(null, '2', 'MARCO LEGAL DE LAS ORGANIZACIONES'),
+            array(null, '2', 'OPERACIONES FINANCIERAS'),
+            array(null, '2', 'ORGANIZACION Y SISTEMA'),
+            array(null, '2', 'PROYECTO I'),
+            array(null, '2', 'PROYECTO II'),
+            array(null, '2', 'SEMINARIO DE HABILIDADES DIRECTIVAS I'),
+            array(null, '2', 'TALENTO HUMANO'),
+            array(null, '2', 'TALLER CONTABILIDAD GUBERNAMENTAL'),
+            array(null, '2', 'TALLER DE ESTADISTICA'),
+            array(null, '2', 'TECNICAS DE EXPRESION ORAL Y ESCRITA'),
+            array(null, '2', 'TECNOLOGIAS DE LA INFORMACION Y COMUNICACION'),
+            array(null, '2', 'TEORIA Y PRACTICA DEL MERCADEO'),
+
+            array(null, '3', 'ANIMACION Y RECREACION'),
+            array(null, '3', 'DESARROLLO DE SERVICIOS TURISTICOS'),
+            array(null, '3', 'DESARROLLO PERSONAL'),
+            array(null, '3', 'DESARROLLO SUSTENTABLEDE LA ACTIVIDAD TURISTICA'),
+            array(null, '3', 'FORMACION SOCIO POLITICA'),
+            array(null, '3', 'GEOGRAFIA TURISTICA'),
+            array(null, '3', 'IDIOMAS'),
+            array(null, '3', 'INFORMATICA'),
+            array(null, '3', 'INGLES I'),
+            array(null, '3', 'INGLES II'),
+            array(null, '3', 'INTRODUCCION A LA ADMINISTRACION'),
+            array(null, '3', 'INTRODUCCION A LA PLANIFICACION'),
+            array(null, '3', 'LEGISLACION TURISTICA'),
+            array(null, '3', 'MERCADEO'),
+            array(null, '3', 'PATRIMONIO NACIONAL'),
+            array(null, '3', 'PRESUPUESTO'),
+            array(null, '3', 'PRIMEROS AUXILIOS'),
+            array(null, '3', 'PROYECTO I'),
+            array(null, '3', 'PROYECTO II'),
+            array(null, '3', 'SISTEMA TURISTICO'),
+            array(null, '3', 'SISTEMAS COMPUTARIZADOS DE ADMINISTRACION TURISTICA'),
+
+            array(null, '4', 'ADMINISTRACION DE OBRAS'),
+            array(null, '4', 'DEPORTE, ARTE Y RECREACION I'),
+            array(null, '4', 'DIBUJO LIBRE'),
+            array(null, '4', 'DISTRIBUCION ESPACIAL'),
+            array(null, '4', 'ELEMENTOS DE DISEÑO'),
+            array(null, '4', 'ESTABILIZACION DE TERRENOS'),
+            array(null, '4', 'ESTADISTICA'),
+            array(null, '4', 'EXPRESION TRIDIMENSIONAL'),
+            array(null, '4', 'FISICA Y ESTATICA'),
+            array(null, '4', 'FORMACION SOCIO POLITICA'),
+            array(null, '4', 'FORMACION SOCIOPOLITICA'),
+            array(null, '4', 'GESTION DE PROYECTOS'),
+            array(null, '4', 'INFORMATICA INSTRUMENTAL'),
+            array(null, '4', 'INGLES'),
+            array(null, '4', 'INSTALACIONES EN EDIFICACIONES'),
+            array(null, '4', 'INSTALACIONES EN URBANIZACIONES'),
+            array(null, '4', 'MATEMATICA II'),
+            array(null, '4', 'MATERIALES Y TECNICAS DE CONSTRUCCION'),
+            array(null, '4', 'PLANEAMIENTO URBANO'),
+            array(null, '4', 'PROTECCION INTEGRAL'),
+            array(null, '4', 'PROYECTO SOCIOTECNOLOGICO I'),
+            array(null, '4', 'PROYECTO SOCIOTECNOLOGICO II'),
+            array(null, '4', 'PROYECTO SOCIOTECNOLOGICO III (ADMINISTRACION, GESTION Y SUPERVISION DE PROYECTOS)'),
+            array(null, '4', 'PROYECTOS CONSTRUCTIVOS'),
+            array(null, '4', 'SISTEMAS CONSTRUCTIVOS'),
+            array(null, '4', 'SISTEMAS ESTRUCTURALES I'),
+            array(null, '4', 'SUPERVISION DE PROYECTO'),
+            array(null, '4', 'TOPOGRAFIA Y VIALIDAD'),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($uc as $data) {
+            $entityUc = new UnidadCurricular();
+            $entityPnf = $em->getRepository('AppBundle:Pnf')->find($data[1]);
+            $entityUc->setPnf($entityPnf);
+            $entityUc->setUcDesc($data[2]);
+            $manager->persist($entityUc);
+        }
+
+        $manager->flush();
     }
 
     public function loadTrayecto(ObjectManager $manager)
     {
-        # code...
+        $uc = array(
+            //array('tray_id', 'tray_desc'),
+            array(1, 'I'),
+            array(2, 'II'),
+            array(3, 'III'),
+        );
+
+        foreach ($uc as $data) {
+            $entityUc = new Trayecto();
+            //$entityUc->setTrayId($data[0]);
+            $entityUc->setTrayDesc($data[1]);
+            $manager->persist($entityUc);
+        }
+
+        $manager->flush();
     }
 
     public function loadPeriodo(ObjectManager $manager)
     {
-        # code...
+        $uc = array(
+            //array('peri_id', 'peri_desc'),
+            array(1, '1'),
+            array(2, '2'),
+            array(3, '3'),
+
+        );
+
+        foreach ($uc as $data) {
+            $entityPeriodo = new Periodo();
+            //$entityPeriodo->setPeriId($data[0]);
+            $entityPeriodo->setPeriDesc($data[1]);
+            $manager->persist($entityPeriodo);
+        }
+
+        $manager->flush();
     }
 
     public function loadPnfTipo(ObjectManager $manager)
     {
-        # code...
+        $uc = array(
+            //array('tipo_id', 'tipo_desc'),
+            array(1, 'CTA'),
+            array(2, 'UBV'),
+            array(2, 'TI'),
+        );
+
+        foreach ($uc as $data) {
+            $entityUc = new PnfTipo();
+            //$entityUc->setTipoId($data[0]);
+            $entityUc->setTipoDesc($data[1]);
+            $manager->persist($entityUc);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadTurno(ObjectManager $manager)
+    {
+        $uc = array(
+            //array('turn_id', 'turn_desc'),
+            array(1, 'FINES DE SEMANA'),
+            array(2, 'VIERNES Y SÁBADO'),
+        );
+
+        foreach ($uc as $data) {
+            $entityTurno = new Turno();
+            //$entityTurno->setTurnId($data[0]);
+            $entityTurno->setTurnDesc($data[1]);
+            $manager->persist($entityTurno);
+        }
+
+        $manager->flush();
     }
 }

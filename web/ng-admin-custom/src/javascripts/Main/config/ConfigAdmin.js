@@ -23,6 +23,7 @@ define(function() {
 		MunicipioAdminProvider,
 		ParroquiaAdminProvider,
 		ZonaAdminProvider,
+		AldeaAdminProvider,
 
 		PnfAdminProvider,
 		DocenteAdminProvider,
@@ -31,8 +32,11 @@ define(function() {
 		TrayectoAdminProvider,
 		PeriodoAdminProvider,
 		PnfTipoAdminProvider,
-		MallaAdminProvider,
-		SeccionAdminProvider
+		PeriodoAcademicoAdminProvider,
+		SeccionAdminProvider,
+		TurnoAdminProvider,
+		PnfTrayectoPeriodoAdminProvider,
+		PnfTrayectoPeriodoUcAdminProvider
 		) {
 
 
@@ -45,20 +49,24 @@ define(function() {
 
 		admin
 			.addEntity(UserAdminProvider.$get())
-			/*.addEntity(PaisAdminProvider.$get())*/
+			.addEntity(PaisAdminProvider.$get())
 			.addEntity(EstadoAdminProvider.$get())
 			.addEntity(MunicipioAdminProvider.$get())
 			.addEntity(ParroquiaAdminProvider.$get())
-			/*.addEntity(ZonaAdminProvider.$get())*/
+			.addEntity(ZonaAdminProvider.$get())
+			.addEntity(AldeaAdminProvider.$get())
 			.addEntity(PnfAdminProvider.$get())
 			.addEntity(PnfTipoAdminProvider.$get())
-			.addEntity(MallaAdminProvider.$get())
+			.addEntity(PeriodoAcademicoAdminProvider.$get())
 			.addEntity(SeccionAdminProvider.$get())
+			.addEntity(TurnoAdminProvider.$get())
 			.addEntity(UcAdminProvider.$get())
 			.addEntity(TrayectoAdminProvider.$get())
 			.addEntity(PeriodoAdminProvider.$get())
 			.addEntity(DocenteAdminProvider.$get())
 			.addEntity(EstudianteAdminProvider.$get())
+			.addEntity(PnfTrayectoPeriodoAdminProvider.$get())
+			.addEntity(PnfTrayectoPeriodoUcAdminProvider.$get())
 		;
 
 		admin.menu(nga.menu()
@@ -75,17 +83,29 @@ define(function() {
 				.addChild(nga.menu(MunicipioAdminProvider.$get()))
 				.addChild(nga.menu(ParroquiaAdminProvider.$get()))
 				/*.addChild(nga.menu(ZonaAdminProvider.$get()))*/
+				.addChild(nga.menu(AldeaAdminProvider.$get()))
+				.addChild(nga.menu(TurnoAdminProvider.$get()))
+				.addChild(nga.menu(PnfTrayectoPeriodoAdminProvider.$get()))
+				.addChild(nga.menu(PnfTrayectoPeriodoUcAdminProvider.$get()))
 			)
-			.addChild(nga.menu().title('Gestión').icon('<span class="fa fa-key"> </span>')
-				.addChild(nga.menu(PnfAdminProvider.$get()))
+			.addChild(nga.menu().title('Seguimiento Académico').icon('<span class="fa fa-key"> </span>')
+				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/profile/show'))
+				.addChild(nga.menu().title('Nueva Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/create'))
+				.addChild(nga.menu().title('Administrar Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/list'))
+				.addChild(nga.menu().title('Asignar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/create'))
+				.addChild(nga.menu().title('Administrar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/list'))
+				.addChild(nga.menu().title('Asignar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/create'))
+				.addChild(nga.menu().title('Administrar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
+			)
+			.addChild(nga.menu().title('Periodo Académico').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu(PnfTipoAdminProvider.$get()))
-				.addChild(nga.menu(MallaAdminProvider.$get()))
-				.addChild(nga.menu(SeccionAdminProvider.$get()))
-				.addChild(nga.menu(UcAdminProvider.$get()))
+				.addChild(nga.menu(PeriodoAcademicoAdminProvider.$get()))
+			)
+			.addChild(nga.menu().title('Malla Curricular').icon('<span class="fa fa-key"> </span>')
+				.addChild(nga.menu(PnfAdminProvider.$get()))
 				.addChild(nga.menu(TrayectoAdminProvider.$get()))
 				.addChild(nga.menu(PeriodoAdminProvider.$get()))
-				.addChild(nga.menu(DocenteAdminProvider.$get()))
-				.addChild(nga.menu(EstudianteAdminProvider.$get()))
+				.addChild(nga.menu(UcAdminProvider.$get()))
 			)
 		);
 
@@ -130,6 +150,7 @@ define(function() {
 		'MunicipioAdminProvider',
 		'ParroquiaAdminProvider',
 		'ZonaAdminProvider',
+		'AldeaAdminProvider',
 
 		'PnfAdminProvider',
 		'DocenteAdminProvider',
@@ -138,8 +159,11 @@ define(function() {
 		'TrayectoAdminProvider',
 		'PeriodoAdminProvider',
 		'PnfTipoAdminProvider',
-		'MallaAdminProvider',
+		'PeriodoAcademicoAdminProvider',
 		'SeccionAdminProvider',
+		'TurnoAdminProvider',
+		'PnfTrayectoPeriodoAdminProvider',
+		'PnfTrayectoPeriodoUcAdminProvider',
 	];
 
 	return ConfigAdmin;

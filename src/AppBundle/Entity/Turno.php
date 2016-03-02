@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Turno
  *
  * @ORM\Table(name="turno", options={"collate"="utf8_general_ci", "charset"="utf8"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TurnoRepository")
  */
 class Turno
 {
@@ -24,7 +24,7 @@ class Turno
     /**
      * @var string
      *
-     * @ORM\Column(name="turn_desc", type="string", length=50, nullable=false)
+     * @ORM\Column(name="turn_desc", type="string", length=100, nullable=false)
      */
     private $turnDesc;
 

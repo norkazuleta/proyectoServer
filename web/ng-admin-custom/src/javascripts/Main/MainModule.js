@@ -21,6 +21,7 @@ MainModule.controller('ResettingController', require('./component/controller/Res
 MainModule.controller('ResettingResetController', require('./component/controller/ResettingResetController'));
 
 MainModule.controller('HandlePrintController', require('./component/controller/HandlePrintController'));
+MainModule.controller('HandleReportController', require('./component/controller/HandleReportController'));
 
 MainModule.config(require('./config/routing'));
 
@@ -30,6 +31,8 @@ MainModule.config(require('./component/factory/EstadoAdmin'));
 MainModule.config(require('./component/factory/MunicipioAdmin'));
 MainModule.config(require('./component/factory/ParroquiaAdmin'));
 MainModule.config(require('./component/factory/ZonaAdmin'));
+MainModule.config(require('./component/factory/TurnoAdmin'));
+MainModule.config(require('./component/factory/AldeaAdmin'));
 
 MainModule.config(require('./component/factory/PnfAdmin'));
 MainModule.config(require('./component/factory/EstudianteAdmin'));
@@ -38,8 +41,10 @@ MainModule.config(require('./component/factory/UcAdmin'));
 MainModule.config(require('./component/factory/TrayectoAdmin'));
 MainModule.config(require('./component/factory/PeriodoAdmin'));
 MainModule.config(require('./component/factory/PnfTipoAdmin'));
-MainModule.config(require('./component/factory/MallaAdmin'));
+MainModule.config(require('./component/factory/PeriodoAcademicoAdmin'));
 MainModule.config(require('./component/factory/SeccionAdmin'));
+MainModule.config(require('./component/factory/PnfTrayectoPeriodoAdmin'));
+MainModule.config(require('./component/factory/PnfTrayectoPeriodoUcAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));

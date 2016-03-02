@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MallaType extends AbstractType
+class EstuPnfType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,13 +15,8 @@ class MallaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mallaAnio')
-            ->add('mallaCodi')
-            ->add('status')
-            ->add('pnfTipo', 'entity', array(
-                'class' => 'AppBundle:PnfTipo',
-                'property' => 'tipoId',
-            ))
+            ->add('estu')
+            ->add('pnf')
         ;
     }
     
@@ -31,8 +26,7 @@ class MallaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Malla',
-            'csrf_protection' => false,
+            'data_class' => 'AppBundle\Entity\EstuPnf'
         ));
     }
 
@@ -41,6 +35,6 @@ class MallaType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_malla';
+        return 'appbundle_estupnf';
     }
 }

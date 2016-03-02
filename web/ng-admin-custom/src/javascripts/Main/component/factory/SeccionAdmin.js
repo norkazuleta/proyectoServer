@@ -22,7 +22,7 @@ define(function(require) {
 					nga.field('tray.tray_desc').label('Trayecto'),
 					nga.field('peri.peri_desc').label('Periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
-					nga.field('malla.malla_peri').label('Malla'),
+					nga.field('pa.pa_peri').label('Periodo Académico'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -119,19 +119,19 @@ define(function(require) {
 							//$rootScope.$broadcast('choice:uc:get', [$item]);
 						}
 					}),
-					nga.field('malla', 'choice')
-					.label('Malla')
+					nga.field('pa', 'choice')
+					.label('Periodo Académico')
 					.choices(function(entry, scope) {
 
-						scope.selMalla = selMalla;
+						scope.selPa = selPa;
 
-						util.choiceMalla()(entry, scope);
+						util.choicePa()(entry, scope);
 
-						$rootScope.$broadcast('choice:malla:get');
+						$rootScope.$broadcast('choice:pa:get');
 
 						return [];
 
-						function selMalla ($item, $model) {
+						function selPa ($item, $model) {
 							//$rootScope.$broadcast('choice:uc:get', [$item]);
 						}
 					})
@@ -150,8 +150,8 @@ define(function(require) {
 					nga.field('pnf.pnf_desc').label('PNF'),
 					nga.field('tray.tray_desc').label('trayecto'),
 					nga.field('peri.peri_desc').label('periodo'),
-					nga.field('uc.uc_desc').label('unidad curricular'),
-					nga.field('malla.malla_desc').label('malla'),
+					nga.field('uc.uc_desc').label('Unidad Curricular'),
+					nga.field('pa.pa_desc').label('Periodo Académico'),
 				]);
 
 

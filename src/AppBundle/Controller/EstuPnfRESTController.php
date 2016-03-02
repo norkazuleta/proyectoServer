@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Turno;
-use AppBundle\Form\TurnoType;
+use AppBundle\Entity\EstuPnf;
+use AppBundle\Form\EstuPnfType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -20,25 +20,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Turno controller.
- * @RouteResource("Turno")
+ * EstuPnf controller.
+ * @RouteResource("EstuPnf")
  */
-class TurnoRESTController extends VoryxController
+class EstuPnfRESTController extends VoryxController
 {
     /**
-     * Get a Turno entity
+     * Get a EstuPnf entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Turno $entity)
+    public function getAction(EstuPnf $entity)
     {
         return $entity;
     }
     /**
-     * Get all Turno entities.
+     * Get all EstuPnf entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -46,41 +46,22 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      *
-     * @QueryParam(name="q", nullable=true, description="Search text.")
      * @QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing notes.")
      * @QueryParam(name="limit", requirements="\d+", default="20", description="How many notes to return.")
      * @QueryParam(name="order_by", nullable=true, array=true, description="Order by fields. Must be an array ie. &order_by[name]=ASC&order_by[description]=DESC")
      * @QueryParam(name="filters", nullable=true, array=true, description="Filter by fields. Must be an array ie. &filters[id]=3")
-     * @QueryParam(name="filters_operator", default="LIKE %...%", description="Option filter operator.")
      */
-    public function cgetAction(ParamFetcherInterface $paramFetcher, Request $request)
+    public function cgetAction(ParamFetcherInterface $paramFetcher)
     {
         try {
-            $q = $paramFetcher->get('q');
             $offset = $paramFetcher->get('offset');
             $limit = $paramFetcher->get('limit');
             $order_by = $paramFetcher->get('order_by');
             $filters = !is_null($paramFetcher->get('filters')) ? $paramFetcher->get('filters') : array();
-            $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Turno');
-            if (!empty($q)) {
-                $filters = array(
-                    'turnNomb' => '',
-                );
-
-                $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
-                $nbResults = $adapter->getNbResults();
-                $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
-            } else {
-                $nbResults = $entity->getNbResults();
-                $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
-            }
-
+            $entities = $em->getRepository('AppBundle:EstuPnf')->findBy($filters, $order_by, $limit, $offset);
             if ($entities) {
-                $request->attributes->set('_x_total_count', $nbResults);
-
                 return $entities;
             }
 
@@ -90,7 +71,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Create a Turno entity.
+     * Create a EstuPnf entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +82,8 @@ class TurnoRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Turno();
-        $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+        $entity = new EstuPnf();
+        $form = $this->createForm(new EstuPnfType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +98,7 @@ class TurnoRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Turno entity.
+     * Update a EstuPnf entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +107,12 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Turno $entity)
+    public function putAction(Request $request, EstuPnf $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new EstuPnfType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +127,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Turno entity.
+     * Partial Update to a EstuPnf entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +136,12 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Turno $entity)
+    public function patchAction(Request $request, EstuPnf $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a Turno entity.
+     * Delete a EstuPnf entity.
      *
      * @View(statusCode=204)
      *
@@ -169,7 +150,7 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Turno $entity)
+    public function deleteAction(Request $request, EstuPnf $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

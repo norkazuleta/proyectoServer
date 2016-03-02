@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Malla;
-use AppBundle\Form\MallaType;
+use AppBundle\Entity\PnfTrayectoPeriodo;
+use AppBundle\Form\PnfTrayectoPeriodoType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -20,25 +20,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Malla controller.
- * @RouteResource("Malla")
+ * PnfTrayectoPeriodo controller.
+ * @RouteResource("PnfTrayectoPeriodo")
  */
-class MallaRESTController extends VoryxController
+class PnfTrayectoPeriodoRESTController extends VoryxController
 {
     /**
-     * Get a Malla entity
+     * Get a PnfTrayectoPeriodo entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Malla $entity)
+    public function getAction(PnfTrayectoPeriodo $entity)
     {
         return $entity;
     }
     /**
-     * Get all Malla entities.
+     * Get all PnfTrayectoPeriodo entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -64,11 +64,9 @@ class MallaRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Malla');
+            $entity = $em->getRepository('AppBundle:PnfTrayectoPeriodo');
             if (!empty($q)) {
-                $filters = array(
-                    'mallaId' => '',
-                );
+                $filters = array();
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -90,7 +88,7 @@ class MallaRESTController extends VoryxController
         }
     }
     /**
-     * Create a Malla entity.
+     * Create a PnfTrayectoPeriodo entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +99,8 @@ class MallaRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Malla();
-        $form = $this->createForm(new MallaType(), $entity, array("method" => $request->getMethod()));
+        $entity = new PnfTrayectoPeriodo();
+        $form = $this->createForm(new PnfTrayectoPeriodoType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +115,7 @@ class MallaRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Malla entity.
+     * Update a PnfTrayectoPeriodo entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +124,12 @@ class MallaRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Malla $entity)
+    public function putAction(Request $request, PnfTrayectoPeriodo $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new MallaType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new PnfTrayectoPeriodoType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +144,7 @@ class MallaRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Malla entity.
+     * Partial Update to a PnfTrayectoPeriodo entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +153,12 @@ class MallaRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Malla $entity)
+    public function patchAction(Request $request, PnfTrayectoPeriodo $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a Malla entity.
+     * Delete a PnfTrayectoPeriodo entity.
      *
      * @View(statusCode=204)
      *
@@ -169,7 +167,7 @@ class MallaRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Malla $entity)
+    public function deleteAction(Request $request, PnfTrayectoPeriodo $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

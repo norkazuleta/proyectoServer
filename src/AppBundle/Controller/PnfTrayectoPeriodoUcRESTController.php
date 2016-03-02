@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Turno;
-use AppBundle\Form\TurnoType;
+use AppBundle\Entity\PnfTrayectoPeriodoUc;
+use AppBundle\Form\PnfTrayectoPeriodoUcType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -20,25 +20,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Turno controller.
- * @RouteResource("Turno")
+ * PnfTrayectoPeriodoUc controller.
+ * @RouteResource("PnfTrayectoPeriodoUc")
  */
-class TurnoRESTController extends VoryxController
+class PnfTrayectoPeriodoUcRESTController extends VoryxController
 {
     /**
-     * Get a Turno entity
+     * Get a PnfTrayectoPeriodoUc entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Turno $entity)
+    public function getAction(PnfTrayectoPeriodoUc $entity)
     {
         return $entity;
     }
     /**
-     * Get all Turno entities.
+     * Get all PnfTrayectoPeriodoUc entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -64,11 +64,11 @@ class TurnoRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Turno');
+            $entity = $em->getRepository('AppBundle:PnfTrayectoPeriodoUc');
+
             if (!empty($q)) {
-                $filters = array(
-                    'turnNomb' => '',
-                );
+                $_filters = array();
+                $filters = array_merge($_filters, $filters);
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -90,7 +90,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Create a Turno entity.
+     * Create a PnfTrayectoPeriodoUc entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +101,8 @@ class TurnoRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Turno();
-        $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+        $entity = new PnfTrayectoPeriodoUc();
+        $form = $this->createForm(new PnfTrayectoPeriodoUcType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +117,7 @@ class TurnoRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Turno entity.
+     * Update a PnfTrayectoPeriodoUc entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +126,12 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Turno $entity)
+    public function putAction(Request $request, PnfTrayectoPeriodoUc $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new PnfTrayectoPeriodoUcType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +146,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Turno entity.
+     * Partial Update to a PnfTrayectoPeriodoUc entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +155,12 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Turno $entity)
+    public function patchAction(Request $request, PnfTrayectoPeriodoUc $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a Turno entity.
+     * Delete a PnfTrayectoPeriodoUc entity.
      *
      * @View(statusCode=204)
      *
@@ -169,7 +169,7 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Turno $entity)
+    public function deleteAction(Request $request, PnfTrayectoPeriodoUc $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

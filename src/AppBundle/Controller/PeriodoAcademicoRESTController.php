@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Turno;
-use AppBundle\Form\TurnoType;
+use AppBundle\Entity\PeriodoAcademico;
+use AppBundle\Form\PeriodoAcademicoType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -20,25 +20,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Turno controller.
- * @RouteResource("Turno")
+ * PeriodoAcademico controller.
+ * @RouteResource("PeriodoAcademico")
  */
-class TurnoRESTController extends VoryxController
+class PeriodoAcademicoRESTController extends VoryxController
 {
     /**
-     * Get a Turno entity
+     * Get a PeriodoAcademico entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Turno $entity)
+    public function getAction(PeriodoAcademico $entity)
     {
         return $entity;
     }
     /**
-     * Get all Turno entities.
+     * Get all PeriodoAcademico entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -64,10 +64,12 @@ class TurnoRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Turno');
+            $entity = $em->getRepository('AppBundle:PeriodoAcademico');
             if (!empty($q)) {
                 $filters = array(
-                    'turnNomb' => '',
+                    'paAnio' => '',
+                    'paIni' => '',
+                    'paFin' => '',
                 );
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
@@ -90,7 +92,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Create a Turno entity.
+     * Create a PeriodoAcademico entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +103,13 @@ class TurnoRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Turno();
-        $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+        $ini = new \DateTime($request->request->get('paIni'));
+        $fin = new \DateTime($request->request->get('paFin'));
+
+        $entity = new PeriodoAcademico();
+        $entity->setPaIni($ini);
+        $entity->setPaFin($fin);
+        $form = $this->createForm(new PeriodoAcademicoType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +124,7 @@ class TurnoRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Turno entity.
+     * Update a PeriodoAcademico entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +133,18 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Turno $entity)
+    public function putAction(Request $request, PeriodoAcademico $entity)
     {
         try {
+            $ini = new \DateTime($request->request->get('paIni'));
+            $fin = new \DateTime($request->request->get('paFin'));
+
+            $entity->setPaIni($ini);
+            $entity->setPaFin($fin);
+
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new PeriodoAcademicoType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +159,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Turno entity.
+     * Partial Update to a PeriodoAcademico entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +168,12 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Turno $entity)
+    public function patchAction(Request $request, PeriodoAcademico $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a Turno entity.
+     * Delete a PeriodoAcademico entity.
      *
      * @View(statusCode=204)
      *
@@ -169,7 +182,7 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Turno $entity)
+    public function deleteAction(Request $request, PeriodoAcademico $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

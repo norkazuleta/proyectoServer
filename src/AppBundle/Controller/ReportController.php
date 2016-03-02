@@ -26,7 +26,7 @@ class ReportController extends Controller
      * Filename output
      * @var string
      */
-    public $outputFilename = '_sicap';
+    public $outputFilename = '_';
 
     /**
      * jrxml Project Store Directory
@@ -38,7 +38,7 @@ class ReportController extends Controller
      * Parameters
      * @var array
      */
-    public $parameters = array('IS_IGNORE_PAGINATION' => true);
+    public $parameters = array('IS_IGNORE_PAGINATION' => 'false');
 
     /**
      * Format print
@@ -64,12 +64,12 @@ class ReportController extends Controller
         $rootDir = $this->getParameter('kernel.root_dir');
 
         $this->reportDir =  $rootDir . '/../web/reports';
-        $this->jrxmlDir =  $rootDir . '/../../sicapReport';
+        $this->jrxmlDir =  $rootDir . '/../../proyectoReport';
 
-        $this->outputFilename = time() . '_sicap';
+        $this->outputFilename = time() . '_';
 
         $this->dbConnection = array(
-            'driver' => str_replace('pdo_', '', $this->container->getParameter('database_driver')),
+            'driver' => 'mysql',
             'host' => $this->container->getParameter('database_host'),
             'database' => $this->container->getParameter('database_name'),
             'username' => $this->container->getParameter('database_user'),
@@ -81,6 +81,8 @@ class ReportController extends Controller
 
     public function jasperProccess($inputFile)
     {
+        /*print_r($this->parameters);
+        exit();*/
         return $this->jasper->process(
             $this->jrxmlDir . '/' . $inputFile,
             $this->reportDir . '/' . $this->outputFilename,

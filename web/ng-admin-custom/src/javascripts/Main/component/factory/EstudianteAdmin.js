@@ -40,23 +40,59 @@ define(function() {
 			estudiante.creationView()
 				.title('Crear nuevo estudiante')
 				.fields([
-					nga.field('cedu').label('cedu'),
-					nga.field('nomb').label('nomb'),
-					nga.field('apell').label('apell'),
-					nga.field('fn','date').label('fn'),
-					nga.field('correo').label('correo'),
-					nga.field('tlf').label('tlf'),
+					nga.field('cedu').label('cedu')
+					.validation({
+						required: true
+					}),
+					nga.field('nomb').label('nomb')
+					.validation({
+						required: true
+					}),
+					nga.field('apell').label('apell')
+					.validation({
+						required: true
+					}),
+					nga.field('fn','date').label('fn')
+					.validation({
+						required: true
+					}),
+					nga.field('correo').label('correo')
+					.validation({
+						required: true
+					}),
+					nga.field('tlf').label('tlf')
+					.validation({
+						required: true
+					}),
 				]);
 
 			estudiante.editionView()
 				.title('Actualizar estudiante #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('cedu').label('cedu'),
-					nga.field('nomb').label('nomb'),
-					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
-					nga.field('correo').label('correo'),
-					nga.field('tlf').label('tlf'),
+					nga.field('cedu').label('cedu')
+					.validation({
+						required: true
+					}),
+					nga.field('nomb').label('nomb')
+					.validation({
+						required: true
+					}),
+					nga.field('apell').label('apell')
+					.validation({
+						required: true
+					}),
+					nga.field('fn', 'date').label('fn')
+					.validation({
+						required: true
+					}),
+					nga.field('correo').label('correo')
+					.validation({
+						required: true
+					}),
+					nga.field('tlf').label('tlf')
+					.validation({
+						required: true
+					}),
 				]);
 
 			estudiante.showView()
@@ -68,6 +104,9 @@ define(function() {
 					nga.field('fn', 'date').label('fn'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
+
+					nga.field('Mostrar').label('')
+          			.template('<a class="btn btn-default" ng-click="open($event)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
 				]);
 
 			return estudiante;

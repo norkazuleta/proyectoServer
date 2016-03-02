@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Seccion
  *
- * @ORM\Table(name="seccion", options={"collate"="utf8_general_ci", "charset"="utf8"}, uniqueConstraints={@ORM\UniqueConstraint(name="secc_codi", columns={"secc_codi"})}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="tray_id", columns={"tray_id"}), @ORM\Index(name="peri_id", columns={"peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"}), @ORM\Index(name="malla_id", columns={"malla_id"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
+ * @ORM\Table(name="seccion", options={"collate"="utf8_general_ci", "charset"="utf8"}, uniqueConstraints={@ORM\UniqueConstraint(name="secc_codi", columns={"secc_codi"})}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="tray_id", columns={"tray_id"}), @ORM\Index(name="peri_id", columns={"peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"}), @ORM\Index(name="pa_id", columns={"pa_id"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SeccionRepository")
  */
 class Seccion
@@ -79,16 +79,14 @@ class Seccion
     private $uc;
 
     /**
-     * @var \Malla
+     * @var \PeriodoAcademico
      *
-     * @ORM\ManyToOne(targetEntity="Malla")
+     * @ORM\ManyToOne(targetEntity="PeriodoAcademico")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="malla_id", referencedColumnName="malla_id")
+     *   @ORM\JoinColumn(name="pa_id", referencedColumnName="pa_id")
      * })
      */
-    private $malla;
-
-
+    private $pa;
 
     /**
      * Get seccId
@@ -239,25 +237,25 @@ class Seccion
     }
 
     /**
-     * Set malla
+     * Set pa
      *
-     * @param \AppBundle\Entity\Malla $malla
+     * @param \AppBundle\Entity\PeriodoAcademico $pa
      * @return Seccion
      */
-    public function setMalla(\AppBundle\Entity\Malla $malla = null)
+    public function setPa(\AppBundle\Entity\PeriodoAcademico $pa = null)
     {
-        $this->malla = $malla;
+        $this->pa = $pa;
 
         return $this;
     }
 
     /**
-     * Get malla
+     * Get pa
      *
-     * @return \AppBundle\Entity\Malla 
+     * @return \AppBundle\Entity\PeriodoAcademico 
      */
-    public function getMalla()
+    public function getPa()
     {
-        return $this->malla;
+        return $this->pa;
     }
 }

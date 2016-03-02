@@ -528,6 +528,47 @@ define(function() {
 				};
 			},
 
+			choicePnfTrayPeri: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pnftrayperi = [];
+
+					var dPnfTrayPeri= $rootScope.$on('choice:pnftrayperi:get', getPnfTrayPeri);
+
+					scope.selPnfTrayPeri = selPnfTrayPeri;
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pnftrayperi;
+
+					function getPnfTrayPeri(e, $item, $model) {
+						util.apiPnfTrayPeri($item, $model).then(function(response) {
+							pnftrayperi = util.dataPrepare(response.data.originalElement, [{
+								label: 'pnf_tray_peri'
+							}, {
+								value: 'id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftrayperi
+							});
+						});
+					}
+
+					function selPnfTrayPeri($item, $model) {
+						//$rootScope.$broadcast('choice:uc:get', $item, $model);
+						/*
+						$rootScope.$broadcast('choice:estados:reset');
+						$rootScope.$broadcast('choice:municipios:reset');
+						$rootScope.$broadcast('choice:parroquias:reset');
+						$rootScope.$broadcast('choice:zonas:reset');*/
+					}
+
+					function destroyEvent() {
+						dPnfTrayPeri();
+					}
+				};
+			},
+
 
 
 			choiceTrayecto: function() {
@@ -571,7 +612,7 @@ define(function() {
 				return function(entry, scope) {
 					var peri = [];
 
-					var dPeriodo = $rootScope.$on('choice:trayecto:get', getPeri);
+					var dPeriodo = $rootScope.$on('choice:periodo:get', getPeri);
 
 					scope.selPeri = selPeri;
 
@@ -638,38 +679,38 @@ define(function() {
 				};
 			},
 
-			choiceMalla: function() {
+			choicePa: function() {
 				var util = this;
 				return function(entry, scope) {
-					var malla = [];
+					var pa = [];
 
-					var dMalla = $rootScope.$on('choice:malla:get', getMalla);
+					var dPa = $rootScope.$on('choice:pa:get', getPa);
 
-					scope.selMalla = selMalla;
+					scope.selPa = selPa;
 
 					scope.$on('$destroy', destroyEvent);
 
-					return malla;
+					return pa;
 
-					function getMalla(e, $item, $model) {
+					function getPa(e, $item, $model) {
 						util.apiPeriodo($item, $model).then(function(response) {
-							malla = util.dataPrepare(response.data.originalElement, [{
-								label: 'malla_desc'
+							pa = util.dataPrepare(response.data.originalElement, [{
+								label: 'pa_desc'
 							}, {
-								value: 'malla_id'
+								value: 'pa_id'
 							}]);
 							scope.$broadcast('choices:update', {
-								choices: malla
+								choices: pa
 							});
 						});
 					}
 
-					function selMalla($item, $model) {
-						$rootScope.$broadcast('choice:malla:get', $item, $model);
+					function selPa($item, $model) {
+						//$rootScope.$broadcast('choice::get', $item, $model);
 					}
 
 					function destroyEvent() {
-						dMalla();
+						dPa();
 					}
 				};
 			},
@@ -710,7 +751,11 @@ define(function() {
 			},
 
 			apiMalla: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'mallas', '/api/mallas?limit=' + ($limit || '1000'));
+				return RestWrapper.getList({}, 'periodoacademicos', '/api/periodoacademicos?limit=' + ($limit || '1000'));
+			},
+
+			apiPnfTrayPeri: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?limit=' + ($limit || '1000'));
 			}
 		};
 	}

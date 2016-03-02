@@ -2,12 +2,12 @@
 
 namespace AppBundle\Repository;
 
-class MallaRepository extends CustomEntityRepository
+class TurnoRepository extends CustomEntityRepository
 {
     public function getNbResults()
     {
         return $this->createQueryBuilder('p')
-                    ->select('count(p.mallaId)')
+                    ->select('count(p.turnId)')
                     ->getQuery()
                     ->getSingleScalarResult();
     }

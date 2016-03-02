@@ -1,0 +1,19 @@
+<div class="modal-header align-center">
+    <h3 class="modal-title">Record de Notas</h3>
+</div>
+<div class="modal-body">
+	<div class="table-responsive" ng-repeat="item in items">
+		<div ng-if="item.loading">
+			<h4 class="text-center">Cargando... Por favor espere.</h4>
+		</div>
+		<div ng-if="!item.loading">
+			<iframe id="show-view-reports" ng-src="{{ reportURL }}" frameborder="0" allowfullscreen width="100%" height="800px"></iframe>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<!-- <a ng-if="!items[0].loading" class="btn btn-default" ng-click="open($event, 'show-view-detail', 'REPORTE GENERAL')" ng-controller="HandlePrintController">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span>&nbsp;<span class="hidden-xs ng-binding">Imprimir</span>
+    </a> -->
+    <button class="btn btn-default" ng-click="cancel()">Cerrar</button>
+</div>

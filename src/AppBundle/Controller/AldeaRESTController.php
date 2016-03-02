@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Turno;
-use AppBundle\Form\TurnoType;
-
+use AppBundle\Entity\Aldea;
+use AppBundle\Entity\AldeaTurno;
+use AppBundle\Form\AldeaType;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -16,29 +16,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Turno controller.
- * @RouteResource("Turno")
+ * Aldea controller.
+ * @RouteResource("Aldea")
  */
-class TurnoRESTController extends VoryxController
+class AldeaRESTController extends VoryxController
 {
     /**
-     * Get a Turno entity
+     * Get a Aldea entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Turno $entity)
+    public function getAction(Aldea $entity)
     {
         return $entity;
     }
     /**
-     * Get all Turno entities.
+     * Get all Aldea entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -64,10 +63,11 @@ class TurnoRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Turno');
+            $entity = $em->getRepository('AppBundle:Aldea');
             if (!empty($q)) {
                 $filters = array(
-                    'turnNomb' => '',
+                    'aldeaCodi' => '',
+                    'aldeaNomb' => '',
                 );
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
@@ -90,7 +90,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Create a Turno entity.
+     * Create a Aldea entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,10 +101,12 @@ class TurnoRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Turno();
-        $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+        $entity = new Aldea();
+        $form = $this->createForm(new AldeaType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
+
+        $this->aldeaTurnoEntity($request, $entity);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -117,7 +119,7 @@ class TurnoRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Turno entity.
+     * Update a Aldea entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +128,13 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Turno $entity)
+    public function putAction(Request $request, Aldea $entity)
     {
+        $this->aldeaTurnoEntity($request, $entity);
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new TurnoType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new AldeaType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +149,7 @@ class TurnoRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Turno entity.
+     * Partial Update to a Aldea entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +158,56 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Turno $entity)
+    public function patchAction(Request $request, Aldea $entity)
     {
         return $this->putAction($request, $entity);
     }
+
+
+    public function aldeaTurnoEntity(Request $request, Aldea $entity)
+    {
+        if (is_array($request->request->get('aldeaTurno'))) {
+            $turn = $request->request->get('aldeaTurno');
+            $em = $this->getDoctrine()->getManager();
+            $entityAldeaTurno = $em->getRepository('AppBundle:AldeaTurno')->findBy(
+                array('aldea' => $entity->getAldeaCodi())
+            );
+
+            $aldeaTurnoIds = array();
+            foreach ($entityAldeaTurno as $key => $enti) {
+                $turnId = $enti->getTurno()->getTurnId();
+                if (in_array($turnId, $turn)) {
+                    if (($key = array_search($turnId, $turn)) !== false) {
+                        unset($turn[$key]);
+                    }
+                } else {
+                    $aldeaTurnoIds[] = $enti;
+                }
+            }
+
+            //delete entity
+            foreach ($aldeaTurnoIds as $key => $value) {
+                $em->remove($value);
+            }
+
+            if ($aldeaTurnoIds) {
+                $em->flush();
+            }
+
+            //add entity
+            foreach ($turn as $key => $value) {
+                $entityTurno = $em->getRepository('AppBundle:Turno')->find($value);
+                if ($entityTurno) {
+                    $entityAldeaTurno = new AldeaTurno();
+                    $entityAldeaTurno->setTurno($entityTurno);
+                    $entity->addAldeaTurno($entityAldeaTurno);
+                }
+            }
+        }
+    }
+
     /**
-     * Delete a Turno entity.
+     * Delete a Aldea entity.
      *
      * @View(statusCode=204)
      *
@@ -169,7 +216,7 @@ class TurnoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Turno $entity)
+    public function deleteAction(Request $request, Aldea $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

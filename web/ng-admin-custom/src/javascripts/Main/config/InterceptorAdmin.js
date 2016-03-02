@@ -4,7 +4,6 @@ define(function () {
 
 	function InterceptorAdmin (RestangularProvider) {
 		RestangularProvider.addFullRequestInterceptor(function (element, operation, what, url, headers, params) {
-			console.log('RequestInterceptor: ', element, operation, what, url, headers);
 			if (operation == "getList") {
 				if (params._page) {
 					params._start = (params._page - 1) * params._perPage;
@@ -45,7 +44,6 @@ define(function () {
 					delete params._filters;
 				}
 			}
-			console.log("request params", params);
 			return {
 				params: params
 			};
@@ -55,9 +53,20 @@ define(function () {
 
 	        if (operation === 'getList' && data && data._embedded) {
 
-	        	console.log(data, operation, what, response);
 	        	return data._embedded.items;
 	        }
+
+	        //extra reference_many
+			if (operation === 'get' && what === 'aldeas' && angular.isArray(data.aldea_turno)) {
+
+				response.data._aldea_turno = response.data.aldea_turno;
+				var aldea_turno = [];
+				angular.forEach(response.data.aldea_turno, function(item) {
+					aldea_turno.push(item.turno.turn_id);
+				});
+				response.data.aldea_turno = aldea_turno;
+			}
+
 
 
 	        return data;

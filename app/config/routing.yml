@@ -1,10 +1,34 @@
-app_seccion_api:
-    resource: "@AppBundle/Controller/SeccionRESTController.php"
+app_report:
+    type:     annotation
+    resource: "@AppBundle/Controller/ConsultasREPORTController.php"
+
+app_pnf_trayecto_periodo_uc_api:
+    resource: "@AppBundle/Controller/PnfTrayectoPeriodoUcRESTController.php"
     type:   rest
     prefix:   /api
 
-app_malla_api:
-    resource: "@AppBundle/Controller/MallaRESTController.php"
+app_pnf_trayecto_periodo_api:
+    resource: "@AppBundle/Controller/PnfTrayectoPeriodoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_aldea_api:
+    resource: "@AppBundle/Controller/AldeaRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_periodo_academico_api:
+    resource: "@AppBundle/Controller/PeriodoAcademicoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_estu_pnf_api:
+    resource: "@AppBundle/Controller/EstuPnfRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_seccion_api:
+    resource: "@AppBundle/Controller/SeccionRESTController.php"
     type:   rest
     prefix:   /api
 

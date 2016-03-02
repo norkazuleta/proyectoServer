@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PnfUc
  *
- * @ORM\Table(name="pnf_uc", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="id_pnf_peri", columns={"pnf_peri_id"}), @ORM\Index(name="uc_id", columns={"ud_id"})})
+ * @ORM\Table(name="pnf_uc", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="id_pnf_peri", columns={"pnf_peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"})})
  * @ORM\Entity
  */
 class PnfUc
@@ -36,12 +36,10 @@ class PnfUc
      *
      * @ORM\ManyToOne(targetEntity="UnidadCurricular")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ud_id", referencedColumnName="uc_id")
+     *   @ORM\JoinColumn(name="uc_id", referencedColumnName="uc_id")
      * })
      */
-    private $ud;
-
-
+    private $uc;
 
     /**
      * Get idPnfUc
@@ -77,25 +75,25 @@ class PnfUc
     }
 
     /**
-     * Set ud
+     * Set uc
      *
-     * @param \AppBundle\Entity\UnidadCurricular $ud
+     * @param \AppBundle\Entity\UnidadCurricular $uc
      * @return PnfUc
      */
-    public function setUd(\AppBundle\Entity\UnidadCurricular $ud = null)
+    public function setUc(\AppBundle\Entity\UnidadCurricular $uc = null)
     {
-        $this->ud = $ud;
+        $this->uc = $uc;
 
         return $this;
     }
 
     /**
-     * Get ud
+     * Get uc
      *
      * @return \AppBundle\Entity\UnidadCurricular 
      */
-    public function getUd()
+    public function getUc()
     {
-        return $this->ud;
+        return $this->uc;
     }
 }

@@ -67,9 +67,10 @@ class UnidadCurricularRESTController extends VoryxController
             $entity = $em->getRepository('AppBundle:UnidadCurricular');
 
             if (!empty($q)) {
-                $filters = array(
+                $_filters = array(
                     'ucDesc' => '',
                 );
+                $filters = array_merge($_filters, $filters);
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();

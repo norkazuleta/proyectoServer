@@ -2,28 +2,19 @@ var path = require("path");
 var ExtractTextPlugin = require('../ng-admin/node_modules/extract-text-webpack-plugin');
 var webpack = require('../ng-admin/node_modules/webpack');
 
-function getEntrySources(sources) {
-    return sources;
-}
-
-var customSources = [
+var sources = [
     './src/javascripts/index.js',
     '../ng-admin/src/javascripts/ng-admin.js',
     './src/javascripts/custom.js',
-
-    /*'../ng-admin/src/sass/ng-admin.scss',*/
-];
-
-var vendorSources = [
     '../ng-admin/src/javascripts/vendors.js',
     './src/javascripts/vendors.js',
 
     //'./node_modules/roboto-fontface/css/roboto-fontface.css',
     /*'../ng-admin/node_modules/font-awesome/scss/font-awesome.scss',
     '../ng-admin/node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss',
+    '../ng-admin/node_modules/nprogress/nprogress.css',
     './src/sass/custom.scss',
 
-    '../ng-admin/node_modules/nprogress/nprogress.css',
     '../ng-admin/node_modules/humane-js/themes/flatty.css',
     '../ng-admin/node_modules/textangular/src/textAngular.css',
     '../ng-admin/node_modules/codemirror/lib/codemirror.css',
@@ -33,7 +24,7 @@ var vendorSources = [
 
 module.exports = {
     entry: {
-        'ng-admin-custom': getEntrySources(customSources.concat(vendorSources))
+        'ng-admin-custom': sources
     },
     output: {
         publicPath: "http://proyecto.local:9000/",

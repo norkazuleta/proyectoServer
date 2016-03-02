@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Estudiante;
 use AppBundle\Form\EstudianteType;
-
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
@@ -194,5 +193,33 @@ class EstudianteRESTController extends VoryxController
         } catch (\Exception $e) {
             return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+        /**
+     * Get report s.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @Route("/reports/s", name="reports_s")
+     *
+     * @QueryParam(name="uriReport", nullable=true, description="")
+     *
+     * @return Response
+     */
+    public function rptAction(ParamFetcherInterface $paramFetcher)
+    {
+        $username = $this->getUser()->getUserName();
+
+        $param = array(
+            'action'  => 'record',
+            'report'  => 'record',
+            'format' => 'pdf',
+            'param' => array()
+        );
+
+        return array(
+            'url' => $this->generateUrl('reports_q', $param),
+            'parameters' => $param
+        );
     }
 }
