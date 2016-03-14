@@ -13,6 +13,7 @@ define(function() {
 
 			pnftipo.listView()
 				.infinitePagination(false)
+				.title('Lista de tipos de PNF')
 				.fields([
 					nga.field('tipo_id').label('tipo_id'),
 					nga.field('tipo_desc').label('tipo_desc'),
@@ -34,19 +35,19 @@ define(function() {
 				.listActions(['edit', 'delete', 'show']);
 
 			pnftipo.creationView()
-				.title('Crear nuevo pnftipo')
+				.title('Crear nuevo tipo PNF')
 				.fields([
 					nga.field('tipo_desc').label('tipo_desc'),
 				]);
 
 			pnftipo.editionView()
-				.title('Actualizar pnftipo #{{ ::entry.identifierValue }}')
+				.title('Actualizar tipo PNF #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('tipo_desc').label('tipo_desc'),
 				]);
 
 			pnftipo.showView()
-				.title('Detalle pnftipo #{{ ::entry.identifierValue }}')
+				.title('Detalle tipo PNF #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('tipo_id').label('tipo_id'),
 					nga.field('tipo_desc').label('tipo_desc'),

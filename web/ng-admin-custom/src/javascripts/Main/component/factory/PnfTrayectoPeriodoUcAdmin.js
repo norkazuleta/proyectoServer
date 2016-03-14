@@ -14,11 +14,13 @@ define(function(require) {
 
 			pnftrayperi.listView()
 				.infinitePagination(false)
+				.title('Adminstrar UCs')
 				.fields([
 					nga.field('id').label('ID'),
 					nga.field('pnf_tray_peri.pnf.pnf_desc').label('pnf_desc'),
 					nga.field('pnf_tray_peri.tray.tray_desc').label('tray_desc'),
 					nga.field('pnf_tray_peri.peri.peri_desc').label('peri_desc'),
+					nga.field('uc.uc_desc').label('uc_desc'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -36,72 +38,15 @@ define(function(require) {
 				])
 				.listActions(['edit', 'delete', 'show']);
 
-			pnftrayperi.creationView()
-				.fields([
-					nga.field('pnf_tray_peri', 'choice')
-					.label('pnf_tray_peri')
-					.choices(function(entry, scope) {
-
-						util.choicePnfTrayPeri()(entry, scope);
-
-						$rootScope.$broadcast('choice:pnftrayperi:get');
-
-						return [];
-					}),
-
-					nga.field('uc', 'reference_many')
-					.label('Unidad Curricular')
-                    .targetEntity(uc)
-                    .targetField(nga.field('uc_desc'))
-                    .filters(function(search) {
-                        return search ? { q: search } : null;
-                    })
-                    .remoteComplete(false, {
-                    	refreshDelay: 300,
-                    	searchQuery: search =>({
-                    		q:search
-                    	})
-                    })
-                    .permanentFilters({'filters[pnf]': '1'})
-                    .attributes({ placeholder: 'Seleccione Unidad Curricular ...' }),
-				]);
-
-			pnftrayperi.editionView()
-				.fields([
-					/*nga.field('pnf', 'choice')
-					.label('pnf_desc')
-					.choices(function(entry, scope) {
-
-						entry.values['pnf'] = entry.values['pnf.pnf_id'];
-
-						util.choicePnf()(entry, scope);
-
-						$rootScope.$broadcast('choice:pnf:get');
-
-						return [];
-					}),*/
-
-
-					/**nga.field('uc', 'reference_many')
-					.label('Unidad Curricular')
-                    .targetEntity(uc)
-                    .targetField(nga.field('uc_desc'))
-                    .filters(function(search) {
-                        return search ? { q: search } : null;
-                    })
-                    .remoteComplete(false, {
-                    	refreshDelay: 300,
-                    	searchQuery: search =>({
-                    		q:search
-                    	})
-                    })
-                    .permanentFilters({'filters[pnf]': '1'})
-                    .attributes({ placeholder: 'Seleccione Unidad Curricular ...' }),**/
-				]);
 
 			pnftrayperi.showView()
+				.title('Detalle UC #{{ ::entry.identifierValue }}')
 				.fields([
-
+					nga.field('id').label('ID'),
+					nga.field('pnf_tray_peri.pnf.pnf_desc').label('pnf_desc'),
+					nga.field('pnf_tray_peri.tray.tray_desc').label('tray_desc'),
+					nga.field('pnf_tray_peri.peri.peri_desc').label('peri_desc'),
+					nga.field('uc.uc_desc').label('uc_desc'),
 				]);
 
 			return pnftrayperi;

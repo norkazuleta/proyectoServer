@@ -13,6 +13,7 @@ define(function(require) {
 
 			uc.listView()
 				.infinitePagination(false)
+				.title('Lista de Unidad Curricular')
 				.fields([
 					nga.field('uc_id').label('uc_id'),
 					nga.field('uc_desc').label('uc_desc'),
@@ -35,6 +36,7 @@ define(function(require) {
 				.listActions(['edit', 'delete', 'show']);
 
 			uc.creationView()
+				.title('Crear nueva Unidad Curricular')
 				.fields([
 					nga.field('pnf', 'choice')
 					.label('pnf_desc')
@@ -51,6 +53,7 @@ define(function(require) {
 				]);
 
 			uc.editionView()
+				.title('Actualizar Unidad Curricular #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('pnf', 'choice')
 					.label('pnf_desc')
@@ -69,6 +72,7 @@ define(function(require) {
 				]);
 
 			uc.showView()
+				.title('Detalle Unidad Curricular #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('pnf.pnf_id', 'reference')
 					.label('pnf_desc')

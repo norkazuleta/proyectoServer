@@ -71,7 +71,7 @@ class PnfTrayectoPeriodo
      * @Type("string")
      * @Accessor(getter="getPnfTrayPeri")
      */
-    private $estbRif;
+    private $pnfTrayPeriodo;
 
     /**
      * Constructor.
@@ -196,7 +196,7 @@ class PnfTrayectoPeriodo
     }
 
     /**
-     * Get comNombEstb comRif.
+     * Get Pnf Tray Peri.
      *
      * @return string
      */

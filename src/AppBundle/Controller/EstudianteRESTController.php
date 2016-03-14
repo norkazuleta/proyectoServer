@@ -203,18 +203,22 @@ class EstudianteRESTController extends VoryxController
      * @Route("/reports/s", name="reports_s")
      *
      * @QueryParam(name="uriReport", nullable=true, description="")
+     * @QueryParam(name="id", nullable=true, description="")
      *
      * @return Response
      */
     public function rptAction(ParamFetcherInterface $paramFetcher)
     {
+        $cedu = $paramFetcher->get('id');
         $username = $this->getUser()->getUserName();
 
         $param = array(
             'action'  => 'record',
             'report'  => 'record',
             'format' => 'pdf',
-            'param' => array()
+            'param' => array(
+                'cedu' => $cedu
+            )
         );
 
         return array(

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use JasperPHP\JasperPHP;
 
 class ConsultasREPORTController extends ReportController
 {
@@ -41,10 +42,20 @@ class ConsultasREPORTController extends ReportController
         $format = $paramFetcher->get('format');
         $param = $paramFetcher->get('param');
 
+
         $this->initialize();
 
         if (count($param)) {
-            $this->setParameters($param);
+            $this->setParameters(
+                array_merge(
+                    array(
+                        'URI_WORKSPACE' => "\"" . dirname(realpath($this->jrxmlDir .'/' . $report . '.jrxml')) . "\"" ,
+                        'URI_LOGO_LEFT' => "\"" . realpath($this->jrxmlDir .'/logo-left.png') . "\"" ,
+                        'URI_LOGO_RIGHT' => "\"" . realpath($this->jrxmlDir .'/logo-right.png') . "\""
+                    ),
+                    $param
+                )
+            );
         }
 
         $this->setFormat(array($format));

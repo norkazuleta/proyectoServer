@@ -13,6 +13,7 @@ define(function() {
 
 			pnf.listView()
 				.infinitePagination(false)
+				.title('Lista de PNF')
 				.fields([
 					nga.field('pnf_id').label('pnf_id'),
 					nga.field('pnf_desc').label('pnf_desc'),
@@ -34,19 +35,19 @@ define(function() {
 				.listActions(['edit', 'delete', 'show']);
 
 			pnf.creationView()
-				.title('Crear nuevo pnf')
+				.title('Crear nuevo PNF')
 				.fields([
 					nga.field('pnf_desc').label('pnf_desc'),
 				]);
 
 			pnf.editionView()
-				.title('Actualizar pnf #{{ ::entry.identifierValue }}')
+				.title('Actualizar PNF #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('pnf_desc').label('pnf_desc'),
 				]);
 
 			pnf.showView()
-				.title('Detalle pnf #{{ ::entry.identifierValue }}')
+				.title('Detalle PNF #{{ ::entry.identifierValue }}')
 				.fields([
 					nga.field('pnf_id').label('pnf_id'),
 					nga.field('pnf_desc').label('pnf_desc'),

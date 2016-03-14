@@ -89,7 +89,7 @@ define(function() {
 				.addChild(nga.menu(PnfTrayectoPeriodoUcAdminProvider.$get()))
 			)
 			.addChild(nga.menu().title('Seguimiento Académico').icon('<span class="fa fa-key"> </span>')
-				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/profile/show'))
+				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/notas/create'))
 				.addChild(nga.menu().title('Nueva Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/create'))
 				.addChild(nga.menu().title('Administrar Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/list'))
 				.addChild(nga.menu().title('Asignar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/create'))

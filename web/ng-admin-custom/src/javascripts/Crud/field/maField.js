@@ -14,6 +14,7 @@ define(function (require) {
                 scope.entity = scope.entity();
                 scope.form = scope.form();
                 scope.datastore = scope.datastore();
+
                 scope.getCssClasses = function(entry) {
                     return 'ng-admin-field-' + field.name().replace('.', '_') + ' ng-admin-type-' + type + ' ' + (field.getCssClasses(entry) || 'col-sm-10 col-md-8 col-lg-7');
                 };
@@ -73,7 +74,6 @@ define(function (require) {
             </label>
             ${fieldTemplate}
         </div>`;
-
                     element.append(template);
                     $compile(element.contents())(scope);
 

@@ -243,6 +243,99 @@
                 <target>Estatus</target>
             </trans-unit>
 
+            <trans-unit id="tipo_id">
+                <source>tipo_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="tipo_desc">
+                <source>tipo_desc</source>
+                <target>Tipo</target>
+            </trans-unit>
+            <trans-unit id="pnf_id">
+                <source>pnf_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="pnf_desc">
+                <source>pnf_desc</source>
+                <target>PNF</target>
+            </trans-unit>
+            <trans-unit id="tray_id">
+                <source>tray_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="tray_desc">
+                <source>tray_desc</source>
+                <target>Trayecto</target>
+            </trans-unit>
+
+            <trans-unit id="peri_id">
+                <source>peri_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="peri_desc">
+                <source>peri_desc</source>
+                <target>Periodo</target>
+            </trans-unit>
+
+            <trans-unit id="uc_id">
+                <source>uc_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="uc_desc">
+                <source>uc_desc</source>
+                <target>Unidad Curricular</target>
+            </trans-unit>
+
+
+            <trans-unit id="edo_codi">
+                <source>edo_codi</source>
+                <target>Código</target>
+            </trans-unit>
+            <trans-unit id="edo_nomb">
+                <source>edo_nomb</source>
+                <target>Estado</target>
+            </trans-unit>
+            <trans-unit id="pais_nomb">
+                <source>pais_nomb</source>
+                <target>Pais</target>
+            </trans-unit>
+
+            <trans-unit id="muni_codi">
+                <source>muni_codi</source>
+                <target>Código</target>
+            </trans-unit>
+            <trans-unit id="muni_nomb">
+                <source>muni_nomb</source>
+                <target>Municipio</target>
+            </trans-unit>
+
+            <trans-unit id="parroq_codi">
+                <source>parroq_codi</source>
+                <target>Código</target>
+            </trans-unit>
+            <trans-unit id="parroq_nomb">
+                <source>parroq_nomb</source>
+                <target>Parroquia</target>
+            </trans-unit>
+
+            <trans-unit id="aldea_codi">
+                <source>aldea_codi</source>
+                <target>Código</target>
+            </trans-unit>
+            <trans-unit id="aldea_nomb">
+                <source>aldea_nomb</source>
+                <target>Aldea</target>
+            </trans-unit>
+
+            <trans-unit id="turn_id">
+                <source>turn_id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="turn_desc">
+                <source>turn_desc</source>
+                <target>Turno</target>
+            </trans-unit>
+
 
             <!-- action header -->
             <trans-unit id="action.creation_view">

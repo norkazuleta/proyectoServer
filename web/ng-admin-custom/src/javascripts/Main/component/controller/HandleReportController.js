@@ -4,81 +4,81 @@ define(function() {
 	'use strict';
     var template = require('../../view/layoutModalReport.html');
 
-	var HandleReportController = function($scope, $rootScope, $modal, $document, $stateParams, $log) {
+	var HandleReportController = function($scope, $modal) {
 
-		var title = 'Reporte';
-
-		$scope.items = [{loading: true}];
-
-
-
-		$scope.open = function($event) {
+		$scope.open = function($event, identifier) {
 			$event.preventDefault();
 			$event.stopPropagation();
 
-			var modalInstance = $modal.open({
+			$scope.identifier = identifier;
+
+			$modal.open({
                 animation: true,
                 template: template,
-                controller: ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$document', '$sce', 'UtilityService', 'items', function($scope, $modalInstance, progression, RestWrapper, $document, $sce, UtilityService, items) {
-
+                controller: ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$sce', 'UtilityService', 'identifier', function($scope, $modalInstance, progression, RestWrapper, $sce, UtilityService, identifier) {
                 	this.$scope = $scope;
-                	$scope.items = items;
-					this.reportView = angular.element($document[0].querySelector('#show-view-reports'));
 					this.rest = RestWrapper;
                 	this.util = UtilityService;
                 	this.progression = progression;
 					this.$sce = $sce;
+					this.$scope.item = {loading:true, loadingIFrame: false};
+					this.identifier = identifier;
 
                 	this.requestReport = function() {
 
-						var queryString = this.util.toQueryString({});
+						var queryString = this.util.toQueryString({id: this.identifier});
 
 						this.progression.start();
-
-						//this.$scope.results = {};
 
 						this.rest
 							.getOne('reports', '/api/reports/s?' + queryString)
 							.then((data) => {
-								this.progression.done();
-								console.log(data.originalElement);
 								var url = data.originalElement.url + '&v=' + (new Date()).getTime() + Math.floor(Math.random() * 1000000);
 								this.$scope.reportURL = this.$sce.trustAsResourceUrl(url);
-								this.reportView.css('height', '1000px');
-								this.$scope.items = [{loading:false}];
-							}, (response) => {
+								this.$scope.item = {loading:false, loadingIFrame: true};
 								this.progression.done();
-								console.log(response.originalElement, "failed");
+							}, () => {
+								this.progression.done();
 							});
                 	};
 
-
+                	this.resetLoading = function (elem) {
+						elem.style.display = 'block';
+                		if (elem.nextSibling.nextElementSibling) {
+                			elem.nextSibling.nextElementSibling.style.display = 'none';
+                		}
+                	};
+                	var load = false, selfa = this;
+                	window.iframeload = function (iframe) {
+						iframe.height = '800px';
+						if (navigator.userAgent.indexOf("Chrome") > 0){
+							if (!load) {
+								load = true;
+							} else{
+								selfa.resetLoading(iframe);
+							}
+						} else {
+							selfa.resetLoading(iframe);
+						}
+					};
 
                 	$scope.cancel = function () {
 						$modalInstance.close();
 					};
 
                 	this.requestReport();
-
                 }],
                 size: 'lg',
                 resolve: {
-                    items: function () {
-                        return $scope.items;
+                    identifier: function () {
+                        return $scope.identifier;
                     }
                 }
             });
-
-            /*modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });*/
-
 		};
 	};
 
-	HandleReportController.$inject = ['$scope', '$rootScope', '$modal', '$document', '$stateParams', '$log'];
+	HandleReportController.$inject = ['$scope', '$modal'];
 
 	return HandleReportController;
 });

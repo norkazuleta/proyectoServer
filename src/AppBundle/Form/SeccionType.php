@@ -36,9 +36,9 @@ class SeccionType extends AbstractType
                 'class' => 'AppBundle:UnidadCurricular',
                 'property' => 'ucId',
             ))
-            ->add('malla', 'entity', array(
-                'class' => 'AppBundle:Malla',
-                'property' => 'mallaId',
+            ->add('pa', 'entity', array(
+                'class' => 'AppBundle:PeriodoAcademico',
+                'property' => 'paId',
             ))
         ;
     }

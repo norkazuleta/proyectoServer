@@ -58,13 +58,22 @@ define(function () {
 
 	        //extra reference_many
 			if (operation === 'get' && what === 'aldeas' && angular.isArray(data.aldea_turno)) {
-
 				response.data._aldea_turno = response.data.aldea_turno;
 				var aldea_turno = [];
 				angular.forEach(response.data.aldea_turno, function(item) {
 					aldea_turno.push(item.turno.turn_id);
 				});
 				response.data.aldea_turno = aldea_turno;
+			}
+
+			if (operation === 'get' && what === 'pnftrayectoperiodos' && angular.isArray(data.uc)) {
+
+				response.data._uc = response.data.uc;
+				var uc = [];
+				angular.forEach(response.data.uc, function(item) {
+					uc.push(item.uc.uc_id);
+				});
+				response.data.uc = uc;
 			}
 
 

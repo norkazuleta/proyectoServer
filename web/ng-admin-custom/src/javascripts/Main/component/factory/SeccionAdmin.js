@@ -22,7 +22,7 @@ define(function(require) {
 					nga.field('tray.tray_desc').label('Trayecto'),
 					nga.field('peri.peri_desc').label('Periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
-					nga.field('pa.pa_peri').label('Periodo Académico'),
+					nga.field('pa.pa').label('Periodo Académico'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -53,93 +53,228 @@ define(function(require) {
 					})
 					.choices(function(entry, scope) {
 
-						scope.selPnf = selPnf;
-
 						util.choicePnf()(entry, scope);
 
 						$rootScope.$broadcast('choice:pnf:get');
 
+						scope.selPnf = selPnf;
+
 						return [];
 
-						function selPnf ($item, $model) {
-							$rootScope.$broadcast('choice:uc:get', $item, $model);
+						function selPnf($item, $model) {
+							entry.values['tray'] = '';
+							entry.values['peri'] = '';
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayecto:reset');
+							$rootScope.$broadcast('choice:pnftrayecto:get', $item, $model);
 						}
 					}),
 					nga.field('tray', 'choice')
 					.label('Trayecto')
+					.validation({
+						required: true
+					})
 					.attributes({
-						'on-select': 'selTray($item, $model)',
+						'on-select': 'selPnfTrayecto($item, $model)',
 					})
 					.choices(function(entry, scope) {
 
-						scope.selTray = selTray;
+						util.choicePnfTrayecto()(entry, scope);
 
-						util.choiceTrayecto()(entry, scope);
-
-						$rootScope.$broadcast('choice:trayecto:get');
+						scope.selPnfTrayecto = selPnfTrayecto;
 
 						return [];
 
-						function selTray ($item, $model) {
-							$rootScope.$broadcast('choice:periodo:get', [$item]);
+						function selPnfTrayecto ($item, $model) {
+							entry.values['peri'] = '';
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:get', $item, $model);
 						}
 					}),
 					nga.field('peri', 'choice')
 					.label('Periodo')
+					.validation({
+						required: true
+					})
 					.attributes({
-						'on-select': 'selPeri($item, $model)',
+						'on-select': 'selPnfTrayPeriodo($item, $model)',
 					})
 					.choices(function(entry, scope) {
 
-						scope.selPeri = selPeri;
+						util.choicePnfTrayectoPeriodo()(entry, scope);
 
-						util.choicePeriodo()(entry, scope);
-
-						$rootScope.$broadcast('choice:periodo:get');
+						scope.selPnfTrayPeriodo = selPnfTrayPeriodo;
 
 						return [];
 
-						function selPeri ($item, $model) {
-							$rootScope.$broadcast('choice:uc:get', [$item]);
+						function selPnfTrayPeriodo ($item, $model) {
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:get', $item, $item.id);
 						}
 					}),
 					nga.field('uc', 'choice')
 					.label('Unidad Curricular')
+					.validation({
+						required: true
+					})
 					.choices(function(entry, scope) {
 
-						scope.selUc = selUc;
-
-						util.choicePeriodo()(entry, scope);
-
-						$rootScope.$broadcast('choice:uc:get');
+						util.choicePnfTrayectoPeriodoUc()(entry, scope);
 
 						return [];
-
-						function selUc ($item, $model) {
-							//$rootScope.$broadcast('choice:uc:get', [$item]);
-						}
+					}),
+					nga.field('secc_codi')
+					.label('Código sección')
+					.validation({
+						required: true
 					}),
 					nga.field('pa', 'choice')
 					.label('Periodo Académico')
+					.validation({
+						required: true
+					})
 					.choices(function(entry, scope) {
-
-						scope.selPa = selPa;
 
 						util.choicePa()(entry, scope);
 
 						$rootScope.$broadcast('choice:pa:get');
 
 						return [];
-
-						function selPa ($item, $model) {
-							//$rootScope.$broadcast('choice:uc:get', [$item]);
-						}
 					})
 				]);
 
 			seccion.editionView()
 				.title('Actualizar Sección #{{ ::entry.identifierValue }}')
 				.fields([
+					nga.field('pnf', 'choice')
+					.label('PNF')
+					.validation({
+						required: true
+					})
+					.attributes({
+						'on-select': 'selPnf($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						entry.values['pnf'] = entry.values['pnf.pnf_id'];
+
+						util.choicePnf()(entry, scope);
+
+						$rootScope.$broadcast('choice:pnf:get');
+
+						scope.selPnf = selPnf;
+
+						return [];
+
+						function selPnf($item, $model) {
+							entry.values['tray'] = '';
+							entry.values['peri'] = '';
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayecto:reset');
+							$rootScope.$broadcast('choice:pnftrayecto:get', $item, $model);
+						}
+					}),
+					nga.field('tray', 'choice')
+					.label('Trayecto')
+					.validation({
+						required: true
+					})
+					.attributes({
+						'on-select': 'selPnfTrayecto($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						var pnfId, trayId;
+						pnfId = entry.values['pnf.pnf_id'];
+						trayId = entry.values['tray.tray_id'];
+						entry.values['tray'] = trayId;
+
+						util.choicePnfTrayecto()(entry, scope);
+
+						scope.selPnfTrayecto = selPnfTrayecto;
+
+						$rootScope.$broadcast('choice:pnftrayecto:get', {value: trayId, id: pnfId}, trayId);
+
+						return [];
+
+						function selPnfTrayecto ($item, $model) {
+							entry.values['peri'] = '';
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodo:get', $item, $model);
+						}
+					}),
+					nga.field('peri', 'choice')
+					.label('Periodo')
+					.validation({
+						required: true
+					})
+					.attributes({
+						'on-select': 'selPnfTrayPeriodo($item, $model)',
+					})
+					.choices(function(entry, scope) {
+						var pnfId, periId;
+						pnfId = entry.values['pnf.pnf_id'];
+						periId = entry.values['peri.peri_id'];
+						entry.values['peri'] = periId;
+
+						util.choicePnfTrayectoPeriodo()(entry, scope);
+
+						scope.selPnfTrayPeriodo = selPnfTrayPeriodo;
+
+						$rootScope.$broadcast('choice:pnftrayectoperiodo:get', {value: periId, id: pnfId}, periId);
+
+						return [];
+
+						function selPnfTrayPeriodo ($item, $model) {
+							entry.values['uc'] = '';
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:reset');
+							$rootScope.$broadcast('choice:pnftrayectoperiodouc:get', $item, $item.id);
+						}
+					}),
+					nga.field('uc', 'choice')
+					.label('Unidad Curricular')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+						var id;
+						id = entry.values['peri.peri_id'];
+						entry.values['uc'] = entry.values['uc.uc_id'];
+
+						util.choicePnfTrayectoPeriodoUc()(entry, scope);
+
+						$rootScope.$broadcast('choice:pnftrayectoperiodouc:get', {value: id}, id);
+
+						return [];
+					}),
+					nga.field('secc_codi')
+					.label('Código sección')
+					.validation({
+						required: true
+					}),
+					nga.field('pa', 'choice')
+					.label('Periodo Académico')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+
+						util.choicePa()(entry, scope);
+						entry.values['pa'] = entry.values['pa.pa_id'];
+
+						$rootScope.$broadcast('choice:pa:get');
+
+						return [];
+					})
 				]);
 
 			seccion.showView()
@@ -151,9 +286,8 @@ define(function(require) {
 					nga.field('tray.tray_desc').label('trayecto'),
 					nga.field('peri.peri_desc').label('periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
-					nga.field('pa.pa_desc').label('Periodo Académico'),
+					nga.field('pa.pa').label('Periodo Académico'),
 				]);
-
 
 			return seccion;
 		}]);

@@ -3,6 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * PeriodoAcademico
@@ -66,6 +69,16 @@ class PeriodoAcademico
      */
     private $pnfTipo;
 
+
+
+    /**
+     * @var string
+     *
+     * @SerializedName("pa")
+     * @Type("string")
+     * @Accessor(getter="getPa")
+     */
+    private $pa;
 
     /**
      * Get paId
@@ -213,5 +226,15 @@ class PeriodoAcademico
     public function getPnfTipo()
     {
         return $this->pnfTipo;
+    }
+
+    /**
+     * Get PaAnio PaCodi PaPnfTipo.
+     *
+     * @return string
+     */
+    public function getPa()
+    {
+        return sprintf(' %s - %s %s ', $this->getPaAnio(), $this->getPaCodi(), $this->getPnfTipo()->getTipoDesc());
     }
 }

@@ -81,8 +81,6 @@ class ReportController extends Controller
 
     public function jasperProccess($inputFile)
     {
-        /*print_r($this->parameters);
-        exit();*/
         return $this->jasper->process(
             $this->jrxmlDir . '/' . $inputFile,
             $this->reportDir . '/' . $this->outputFilename,

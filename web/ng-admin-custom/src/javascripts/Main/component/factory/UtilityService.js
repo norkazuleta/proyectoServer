@@ -535,6 +535,8 @@ define(function() {
 
 					var dPnfTrayPeri= $rootScope.$on('choice:pnftrayperi:get', getPnfTrayPeri);
 
+					var dresetTrayPeri = $rootScope.$on('choice:pnftrayperi:reset', resetPnfTrayPeri);
+
 					scope.selPnfTrayPeri = selPnfTrayPeri;
 
 					scope.$on('$destroy', destroyEvent);
@@ -546,7 +548,7 @@ define(function() {
 							pnftrayperi = util.dataPrepare(response.data.originalElement, [{
 								label: 'pnf_tray_peri'
 							}, {
-								value: 'id'
+								value: 'pnf.pnf_id'
 							}]);
 							scope.$broadcast('choices:update', {
 								choices: pnftrayperi
@@ -556,20 +558,142 @@ define(function() {
 
 					function selPnfTrayPeri($item, $model) {
 						//$rootScope.$broadcast('choice:uc:get', $item, $model);
-						/*
-						$rootScope.$broadcast('choice:estados:reset');
-						$rootScope.$broadcast('choice:municipios:reset');
-						$rootScope.$broadcast('choice:parroquias:reset');
-						$rootScope.$broadcast('choice:zonas:reset');*/
+					}
+
+					function resetPnfTrayPeri() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
 					}
 
 					function destroyEvent() {
 						dPnfTrayPeri();
+						dresetTrayPeri();
 					}
 				};
 			},
 
 
+			choicePnfTrayecto: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pnftray = [];
+
+					var dPnfTrayecto = $rootScope.$on('choice:pnftrayecto:get', getPnfTrayecto);
+
+					var dresetPnfTrayecto = $rootScope.$on('choice:pnftrayecto:reset', resetPnfTrayecto);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pnftray;
+
+					function getPnfTrayecto(e, $item, $model) {
+						util.apiPnfTrayecto($item, $model).then(function(response) {
+							pnftray = util.dataPrepare(response.data.originalElement, [{
+								label: 'tray.tray_desc'
+							}, {
+								value: 'tray.tray_id'
+							}, {
+								id: 'pnf.pnf_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftray
+							});
+						});
+					}
+
+					function resetPnfTrayecto() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPnfTrayecto();
+						dresetPnfTrayecto();
+					}
+				};
+			},
+
+			choicePnfTrayectoPeriodo: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pnftrayperiodo = [];
+
+					var dPnfTrayectoPeriodo = $rootScope.$on('choice:pnftrayectoperiodo:get', getPnfTrayectoPeriodo);
+
+					var dresetPnfTrayectoPeriodo = $rootScope.$on('choice:pnftrayectoperiodo:reset', resetPnfTrayectoPeriodo);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pnftrayperiodo;
+
+					function getPnfTrayectoPeriodo(e, $item, $model) {
+						util.apiPnfTrayectoPeriodo($item, $model).then(function(response) {
+							pnftrayperiodo = util.dataPrepare(response.data.originalElement, [{
+								label: 'peri.peri_desc'
+							}, {
+								value: 'peri.peri_id'
+							}, {
+								id: 'id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftrayperiodo
+							});
+						});
+					}
+
+					function resetPnfTrayectoPeriodo() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPnfTrayectoPeriodo();
+						dresetPnfTrayectoPeriodo();
+					}
+				};
+			},
+
+			choicePnfTrayectoPeriodoUc: function() {
+				var util = this;
+				return function(entry, scope) {
+					var pnftrayperiodouc = [];
+
+					var dPnfTrayectoPeriodoUc = $rootScope.$on('choice:pnftrayectoperiodouc:get', getPnfTrayPeriodoUc);
+
+					var dresetPnfTrayectoPeriodoUc = $rootScope.$on('choice:pnftrayectoperiodouc:reset', resetPnfTrayectoPeriodoUc);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return pnftrayperiodouc;
+
+					function getPnfTrayPeriodoUc(e, $item, $model) {
+						util.apiPnfTrayectoPeriodoUc($item, $model).then(function(response) {
+							pnftrayperiodouc = util.dataPrepare(response.data.originalElement, [{
+								label: 'uc.uc_desc'
+							}, {
+								value: 'uc.uc_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftrayperiodouc
+							});
+						});
+					}
+
+					function resetPnfTrayectoPeriodoUc() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPnfTrayectoPeriodoUc();
+						dresetPnfTrayectoPeriodoUc();
+					}
+				};
+			},
 
 			choiceTrayecto: function() {
 				var util = this;
@@ -656,7 +780,7 @@ define(function() {
 
 					return uc;
 
-					function getUc($item, $model) {
+					function getUc(e, $item, $model) {
 						util.apiUc($item, $model).then(function(response) {
 							uc = util.dataPrepare(response.data.originalElement, [{
 								label: 'uc_desc'
@@ -693,9 +817,9 @@ define(function() {
 					return pa;
 
 					function getPa(e, $item, $model) {
-						util.apiPeriodo($item, $model).then(function(response) {
+						util.apiPeriodoAcademico($item, $model).then(function(response) {
 							pa = util.dataPrepare(response.data.originalElement, [{
-								label: 'pa_desc'
+								label: 'pa'
 							}, {
 								value: 'pa_id'
 							}]);
@@ -734,8 +858,24 @@ define(function() {
 			apiPnf: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnfs', '/api/pnfs?limit=' + ($limit || '1000'));
 			},
+
 			apiPnfTipo: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnftipos', '/api/pnftipos?limit=' + ($limit || '1000'));
+			},
+
+			apiPnfTrayecto: function($item, $model, $limit) {
+				console.log($item, $model, 'pnftrayectos');
+				return RestWrapper.getList({}, 'pnftrayectos', '/api/pnftrayectoperiodos?filters[pnf]='+$model+'&limit=' + ($limit || '1000'));
+			},
+
+			apiPnfTrayectoPeriodo: function($item, $model, $limit) {
+				console.log($item, $model, 'pnftrayectoperiodos');
+				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?filters[pnf]='+$item.id+'&filters[tray]='+$model+'&limit=' + ($limit || '1000'));
+			},
+
+			apiPnfTrayectoPeriodoUc: function($item, $model, $limit) {
+				console.log($item, $model, 'pnftrayectoperiodoucs');
+				return RestWrapper.getList({}, 'pnftrayectoperiodoucs', '/api/pnftrayectoperiodoucs?filters[pnfTrayPeri]='+$model+'&limit=' + ($limit || '1000'));
 			},
 
 			apiTrayecto: function($item, $model, $limit) {
@@ -750,7 +890,7 @@ define(function() {
 				return RestWrapper.getList({}, 'unidadcurriculars', '/api/unidadcurriculars?filters[pnf]='+$model+'&limit=' + ($limit || '1000'));
 			},
 
-			apiMalla: function($item, $model, $limit) {
+			apiPeriodoAcademico: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'periodoacademicos', '/api/periodoacademicos?limit=' + ($limit || '1000'));
 			},
 

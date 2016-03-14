@@ -106,7 +106,7 @@ define(function() {
 					nga.field('tlf').label('tlf'),
 
 					nga.field('Mostrar').label('')
-          			.template('<a class="btn btn-default" ng-click="open($event)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
+          			.template('<a class="btn btn-default" ng-click="open($event, entry.values.cedu)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
 				]);
 
 			return estudiante;

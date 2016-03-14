@@ -11,8 +11,11 @@ use AppBundle\Entity\Municipio;
 use AppBundle\Entity\Pais;
 use AppBundle\Entity\Parroquia;
 use AppBundle\Entity\Periodo;
+use AppBundle\Entity\PeriodoAcademico;
 use AppBundle\Entity\Pnf;
 use AppBundle\Entity\PnfTipo;
+use AppBundle\Entity\PnfTrayectoPeriodo;
+use AppBundle\Entity\PnfTrayectoPeriodoUc;
 use AppBundle\Entity\Trayecto;
 use AppBundle\Entity\Turno;
 use AppBundle\Entity\UnidadCurricular;
@@ -63,7 +66,10 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $this->loadUc($manager);
         $this->loadTrayecto($manager);
         $this->loadPeriodo($manager);
+        $this->loadPnfTrayectoPeriodo($manager);
+        $this->loadPnfTrayectoPeriodoUc($manager);
         $this->loadPnfTipo($manager);
+        $this->loadPeriodoAcademico($manager);
         $this->loadTurno($manager);
     }
 
@@ -5733,27 +5739,44 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array(null, '2', 'TECNOLOGIAS DE LA INFORMACION Y COMUNICACION'),
             array(null, '2', 'TEORIA Y PRACTICA DEL MERCADEO'),
 
+            array(null, '3', 'ADMINISTRACION DE EMPRESAS TURISTICAS'),
+            array(null, '3', 'ANALISIS DE PROBLEMAS Y TOMA DE DESICIONES'),
             array(null, '3', 'ANIMACION Y RECREACION'),
+            array(null, '3', 'CALIDAD TURISTICA'),
+            array(null, '3', 'CONTABILIDAD'),
             array(null, '3', 'DESARROLLO DE SERVICIOS TURISTICOS'),
             array(null, '3', 'DESARROLLO PERSONAL'),
             array(null, '3', 'DESARROLLO SUSTENTABLEDE LA ACTIVIDAD TURISTICA'),
+            array(null, '3', 'DISEÑO DE RUTAS Y CIRCUITOS TURISTICOS'),
+            array(null, '3', 'ESTADISTICA'),
             array(null, '3', 'FORMACION SOCIO POLITICA'),
             array(null, '3', 'GEOGRAFIA TURISTICA'),
+            array(null, '3', 'GESTION DE ALIMENTOS Y BEBIDAS'),
+            array(null, '3', 'GESTION DE PRODUCTOS TURISTICOS'),
             array(null, '3', 'IDIOMAS'),
             array(null, '3', 'INFORMATICA'),
             array(null, '3', 'INGLES I'),
             array(null, '3', 'INGLES II'),
+            array(null, '3', 'INGLES III'),
+            array(null, '3', 'INSPECCION Y FISCALIZACION DE LA ACTIVIDAD TURISTICA'),
             array(null, '3', 'INTRODUCCION A LA ADMINISTRACION'),
             array(null, '3', 'INTRODUCCION A LA PLANIFICACION'),
             array(null, '3', 'LEGISLACION TURISTICA'),
             array(null, '3', 'MERCADEO'),
+            array(null, '3', 'ORGANIZACION DE EVENTOS Y PROTOCOLO'),
             array(null, '3', 'PATRIMONIO NACIONAL'),
             array(null, '3', 'PRESUPUESTO'),
             array(null, '3', 'PRIMEROS AUXILIOS'),
             array(null, '3', 'PROYECTO I'),
             array(null, '3', 'PROYECTO II'),
+            array(null, '3', 'PROYECTO III'),
+            array(null, '3', 'REGISTRO Y CONTROL DE SERVICIOS TURISTICOS'),
+            array(null, '3', 'SERVICIOS OPERATIVOS EN EMPRESAS DE ALOJAMIENTO'),
             array(null, '3', 'SISTEMA TURISTICO'),
             array(null, '3', 'SISTEMAS COMPUTARIZADOS DE ADMINISTRACION TURISTICA'),
+            array(null, '3', 'SISTEMAS TECNOLOGICOS PARA LA PLANIFICACION TURISTICA'),
+            array(null, '3', 'TRANSPORTE TURISTICO'),
+            array(null, '3', 'TURISMO PARA TODOS'),
 
             array(null, '4', 'ADMINISTRACION DE OBRAS'),
             array(null, '4', 'DEPORTE, ARTE Y RECREACION I'),
@@ -5800,14 +5823,14 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
 
     public function loadTrayecto(ObjectManager $manager)
     {
-        $uc = array(
+        $trayecto = array(
             //array('tray_id', 'tray_desc'),
             array(1, 'I'),
             array(2, 'II'),
             array(3, 'III'),
         );
 
-        foreach ($uc as $data) {
+        foreach ($trayecto as $data) {
             $entityUc = new Trayecto();
             //$entityUc->setTrayId($data[0]);
             $entityUc->setTrayDesc($data[1]);
@@ -5819,15 +5842,14 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
 
     public function loadPeriodo(ObjectManager $manager)
     {
-        $uc = array(
+        $periodo = array(
             //array('peri_id', 'peri_desc'),
             array(1, '1'),
             array(2, '2'),
             array(3, '3'),
-
         );
 
-        foreach ($uc as $data) {
+        foreach ($periodo as $data) {
             $entityPeriodo = new Periodo();
             //$entityPeriodo->setPeriId($data[0]);
             $entityPeriodo->setPeriDesc($data[1]);
@@ -5837,16 +5859,361 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
+    public function loadPnfTrayectoPeriodo(ObjectManager $manager)
+    {
+        $pnfTrayectoPeriodo = array(
+            //array('id', 'pnf_id', 'tray_id', 'peri_id')
+            array(1, 1, 1, 1),
+            array(2, 1, 1, 2),
+            array(3, 1, 1, 3),
+            array(4, 1, 2, 1),
+            array(5, 1, 2, 2),
+            array(6, 1, 2, 3),
+            array(7, 2, 1, 1),
+            array(8, 2, 1, 2),
+            array(9, 2, 1, 3),
+            array(10, 2, 2, 1),
+            array(11, 2, 2, 2),
+            array(12, 2, 2, 3),
+            array(13, 3, 1, 1),
+            array(14, 3, 1, 2),
+            array(15, 3, 1, 3),
+            array(16, 3, 2, 1),
+            array(17, 3, 2, 2),
+            array(18, 3, 2, 3),
+            array(19, 3, 3, 1),
+            array(20, 3, 3, 2),
+            array(21, 3, 3, 3),
+            array(22, 4, 1, 1),
+            array(23, 4, 1, 2),
+            array(24, 4, 1, 3),
+            array(25, 4, 2, 1),
+            array(26, 4, 2, 2),
+            array(27, 4, 2, 3),
+            array(28, 4, 3, 1),
+            array(29, 4, 3, 2),
+            array(30, 4, 3, 3),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($pnfTrayectoPeriodo as $data) {
+            $entityPnfTrayectoPeriodo = new PnfTrayectoPeriodo();
+            //$entityPnfTrayectoPeriodo->setTrayId($data[0]);
+            $entityPnf = $em->getRepository('AppBundle:Pnf')->find($data[1]);
+            $entityPnfTrayectoPeriodo->setPnf($entityPnf);
+
+            $entityTrayecto = $em->getRepository('AppBundle:Trayecto')->find($data[2]);
+            $entityPnfTrayectoPeriodo->setTray($entityTrayecto);
+
+            $entityPeriodo = $em->getRepository('AppBundle:Periodo')->find($data[3]);
+            $entityPnfTrayectoPeriodo->setPeri($entityPeriodo);
+            $manager->persist($entityPnfTrayectoPeriodo);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadPnfTrayectoPeriodoUc(ObjectManager $manager)
+    {
+        $pnfTrayectoPeriodoUc = array(
+            //array('id', 'ptp_id', 'uc_id')
+            array(1, 1, 11),
+            array(2, 1, 3),
+            array(3, 1, 7),
+            array(4, 1, 2),
+            array(5, 1, 14),
+            array(6, 1, 9),
+            array(7, 1, 1),
+            array(8, 2, 11),
+            array(9, 2, 3),
+            array(10, 2, 7),
+            array(11, 2, 2),
+            array(12, 2, 14),
+            array(13, 2, 5),
+            array(14, 2, 9),
+            array(15, 2, 1),
+            array(16, 3, 11),
+            array(17, 3, 3),
+            array(18, 3, 7),
+            array(19, 3, 2),
+            array(20, 3, 14),
+            array(21, 3, 9),
+            array(22, 3, 1),
+            array(23, 4, 12),
+            array(24, 4, 16),
+            array(25, 4, 8),
+            array(26, 4, 13),
+            array(27, 4, 15),
+            array(28, 4, 10),
+            array(29, 4, 1),
+            array(30, 5, 12),
+            array(31, 5, 16),
+            array(32, 5, 8),
+            array(33, 5, 13),
+            array(34, 5, 15),
+            array(35, 5, 4),
+            array(36, 5, 1),
+            array(37, 6, 8),
+            array(38, 6, 13),
+            array(39, 6, 15),
+            array(40, 6, 6),
+            array(41, 6, 1),
+            array(42, 7, 29),
+            array(43, 7, 43),
+            array(44, 7, 22),
+            array(45, 7, 27),
+            array(46, 7, 36),
+            array(47, 7, 34),
+            array(48, 7, 42),
+            array(49, 7, 32),
+            array(50, 8, 29),
+            array(51, 8, 22),
+            array(52, 8, 27),
+            array(53, 8, 36),
+            array(54, 8, 44),
+            array(55, 8, 32),
+            array(56, 8, 41),
+            array(57, 9, 29),
+            array(58, 9, 22),
+            array(59, 9, 27),
+            array(60, 9, 36),
+            array(61, 9, 32),
+            array(62, 9, 24),
+            array(63, 9, 26),
+            array(64, 10, 35),
+            array(65, 10, 39),
+            array(66, 10, 22),
+            array(67, 10, 28),
+            array(68, 10, 37),
+            array(69, 10, 25),
+            array(70, 11, 35),
+            array(71, 11, 23),
+            array(72, 11, 28),
+            array(73, 11, 37),
+            array(74, 11, 21),
+            array(75, 11, 38),
+            array(76, 11, 40),
+            array(77, 12, 43),
+            array(78, 12, 23),
+            array(79, 12, 28),
+            array(80, 12, 37),
+            array(81, 12, 20),
+            array(82, 12, 18),
+            array(83, 12, 19),
+            array(84, 12, 30),
+            array(85, 12, 17),
+            array(86, 12, 33),
+            array(87, 12, 31),
+            array(88, 13, 50),
+            array(89, 13, 55),
+            array(90, 13, 65),
+            array(91, 13, 73),
+            array(92, 13, 78),
+            array(93, 13, 61),
+            array(94, 13, 59),
+            array(95, 13, 60),
+            array(96, 13, 51),
+            array(97, 13, 72),
+            array(98, 14, 55),
+            array(99, 14, 73),
+            array(100, 14, 61),
+            array(101, 14, 59),
+            array(102, 14, 60),
+            array(103, 14, 51),
+            array(104, 14, 72),
+            array(105, 14, 56),
+            array(106, 14, 66),
+            array(107, 14, 68),
+            array(108, 15, 55),
+            array(109, 15, 61),
+            array(110, 15, 59),
+            array(111, 15, 60),
+            array(112, 15, 51),
+            array(113, 15, 72),
+            array(114, 15, 70),
+            array(115, 15, 73),
+            array(116, 15, 52),
+            array(117, 15, 47),
+            array(118, 16, 55),
+            array(119, 16, 59),
+            array(120, 16, 60),
+            array(121, 16, 51),
+            array(122, 16, 72),
+            array(123, 16, 74),
+            array(124, 16, 67),
+            array(125, 16, 71),
+            array(126, 16, 79),
+            array(127, 16, 62),
+            array(128, 17, 55),
+            array(129, 17, 59),
+            array(130, 17, 60),
+            array(131, 17, 51),
+            array(132, 17, 72),
+            array(133, 17, 74),
+            array(134, 17, 54),
+            array(135, 17, 77),
+            array(136, 17, 64),
+            array(137, 17, 62),
+            array(138, 18, 55),
+            array(139, 18, 59),
+            array(140, 18, 60),
+            array(141, 18, 51),
+            array(142, 18, 72),
+            array(143, 18, 74),
+            array(144, 18, 49),
+            array(145, 18, 76),
+            array(146, 18, 80),
+            array(147, 18, 62),
+            array(148, 19, 55),
+            array(149, 19, 59),
+            array(150, 19, 60),
+            array(151, 19, 51),
+            array(152, 19, 81),
+            array(153, 19, 46),
+            array(154, 19, 48),
+            array(155, 19, 75),
+            array(156, 19, 63),
+            array(157, 20, 55),
+            array(158, 20, 59),
+            array(159, 20, 60),
+            array(160, 20, 51),
+            array(161, 20, 72),
+            array(162, 20, 75),
+            array(163, 20, 53),
+            array(164, 20, 45),
+            array(165, 20, 57),
+            array(166, 20, 63),
+            array(167, 21, 55),
+            array(168, 21, 59),
+            array(169, 21, 60),
+            array(170, 21, 51),
+            array(171, 21, 72),
+            array(172, 21, 75),
+            array(173, 21, 82),
+            array(174, 21, 69),
+            array(175, 21, 58),
+            array(176, 21, 63),
+            array(177, 22, 85),
+            array(178, 22, 91),
+            array(179, 22, 92),
+            array(180, 22, 99),
+            array(181, 22, 103),
+            array(182, 22, 102),
+            array(183, 22, 84),
+            array(184, 22, 95),
+            array(185, 22, 96),
+            array(186, 22, 89),
+            array(187, 23, 85),
+            array(188, 23, 91),
+            array(189, 23, 92),
+            array(190, 23, 99),
+            array(191, 23, 103),
+            array(192, 23, 102),
+            array(193, 23, 84),
+            array(194, 23, 95),
+            array(195, 23, 96),
+            array(196, 23, 89),
+            array(197, 23, 100),
+            array(198, 24, 85),
+            array(199, 24, 103),
+            array(200, 24, 102),
+            array(201, 24, 84),
+            array(202, 24, 95),
+            array(203, 24, 96),
+            array(204, 24, 89),
+            array(205, 24, 92),
+            array(206, 24, 100),
+            array(207, 24, 101),
+            array(208, 25, 102),
+            array(209, 25, 84),
+            array(210, 25, 95),
+            array(211, 25, 96),
+            array(212, 25, 89),
+            array(213, 25, 92),
+            array(214, 25, 108),
+            array(215, 25, 90),
+            array(216, 25, 104),
+            array(217, 25, 110),
+            array(218, 26, 93),
+            array(219, 26, 102),
+            array(220, 26, 84),
+            array(221, 26, 95),
+            array(222, 26, 96),
+            array(223, 26, 89),
+            array(224, 26, 104),
+            array(225, 26, 110),
+            array(226, 26, 86),
+            array(227, 26, 87),
+            array(228, 27, 93),
+            array(229, 27, 102),
+            array(230, 27, 84),
+            array(231, 27, 95),
+            array(232, 27, 96),
+            array(233, 27, 89),
+            array(234, 27, 104),
+            array(235, 27, 110),
+            array(236, 27, 87),
+            array(237, 27, 107),
+            array(238, 28, 93),
+            array(239, 28, 102),
+            array(240, 28, 84),
+            array(241, 28, 95),
+            array(242, 28, 96),
+            array(243, 28, 89),
+            array(244, 28, 83),
+            array(245, 28, 97),
+            array(246, 28, 88),
+            array(247, 28, 105),
+            array(248, 29, 93),
+            array(249, 29, 102),
+            array(250, 29, 84),
+            array(251, 29, 95),
+            array(252, 29, 96),
+            array(253, 29, 89),
+            array(254, 29, 88),
+            array(255, 29, 105),
+            array(256, 29, 94),
+            array(257, 29, 98),
+            array(258, 30, 93),
+            array(259, 30, 102),
+            array(260, 30, 84),
+            array(261, 30, 95),
+            array(262, 30, 96),
+            array(263, 30, 89),
+            array(264, 30, 88),
+            array(265, 30, 105),
+            array(266, 30, 109),
+            array(267, 30, 106),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($pnfTrayectoPeriodoUc as $data) {
+            $entityPnfTrayectoPeriodoUc = new PnfTrayectoPeriodoUc();
+            //$entityPnfTrayectoPeriodoUc->setTrayId($data[0]);
+            $entityPnfTrayectoPeriodo = $em->getRepository('AppBundle:PnfTrayectoPeriodo')->find($data[1]);
+            $entityPnfTrayectoPeriodoUc->setPnfTrayPeri($entityPnfTrayectoPeriodo);
+
+            $entityUnidadCurricular = $em->getRepository('AppBundle:UnidadCurricular')->find($data[2]);
+            $entityPnfTrayectoPeriodoUc->setUc($entityUnidadCurricular);
+
+            $manager->persist($entityPnfTrayectoPeriodoUc);
+        }
+
+        $manager->flush();
+    }
+
     public function loadPnfTipo(ObjectManager $manager)
     {
-        $uc = array(
+        $pnf = array(
             //array('tipo_id', 'tipo_desc'),
             array(1, 'CTA'),
             array(2, 'UBV'),
             array(2, 'TI'),
         );
 
-        foreach ($uc as $data) {
+        foreach ($pnf as $data) {
             $entityUc = new PnfTipo();
             //$entityUc->setTipoId($data[0]);
             $entityUc->setTipoDesc($data[1]);
@@ -5856,15 +6223,41 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
+    public function loadPeriodoAcademico(ObjectManager $manager)
+    {
+        $periodoAcademico = array(
+            //array('pa_id', 'pnf_tipo_id', 'pa_anio', 'pa_codi', 'pa_ini', 'pa_fin', 'status')
+            array(1, 1, 2016, '1', '2016-02-20', '2016-02-29', 1)
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($periodoAcademico as $data) {
+            $entityPeriodoAcademico = new PeriodoAcademico();
+            //$entityPeriodoAcademico->setTipoId($data[0]);
+            $entityPnfTipo = $em->getRepository('AppBundle:PnfTipo')->find($data[1]);
+            $entityPeriodoAcademico->setPnfTipo($entityPnfTipo);
+            $entityPeriodoAcademico->setPaAnio($data[2]);
+            $entityPeriodoAcademico->setPaCodi($data[3]);
+            $entityPeriodoAcademico->setPaIni(new \Datetime($data[4]));
+            $entityPeriodoAcademico->setPaFin(new \Datetime($data[5]));
+            $entityPeriodoAcademico->setPaStatus($data[6]);
+
+            $manager->persist($entityPeriodoAcademico);
+        }
+
+        $manager->flush();
+    }
+
     public function loadTurno(ObjectManager $manager)
     {
-        $uc = array(
+        $turno = array(
             //array('turn_id', 'turn_desc'),
             array(1, 'FINES DE SEMANA'),
             array(2, 'VIERNES Y SÁBADO'),
         );
 
-        foreach ($uc as $data) {
+        foreach ($turno as $data) {
             $entityTurno = new Turno();
             //$entityTurno->setTurnId($data[0]);
             $entityTurno->setTurnDesc($data[1]);
