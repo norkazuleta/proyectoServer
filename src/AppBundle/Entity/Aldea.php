@@ -32,6 +32,13 @@ class Aldea
     private $aldeaNomb;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="aldea_actual", type="boolean")
+     */
+    private $aldeaActual;
+
+    /**
      * @var \Parroquia
      *
      * @ORM\ManyToOne(targetEntity="Parroquia")
@@ -95,7 +102,7 @@ class Aldea
     /**
      * Get aldeaCodi
      *
-     * @return string 
+     * @return string
      */
     public function getAldeaCodi()
     {
@@ -118,11 +125,34 @@ class Aldea
     /**
      * Get aldeaNomb
      *
-     * @return string 
+     * @return string
      */
     public function getAldeaNomb()
     {
         return $this->aldeaNomb;
+    }
+
+    /**
+     * Set aldeaActual
+     *
+     * @param string $aldeaActual
+     * @return Aldea
+     */
+    public function setAldeaActual($aldeaActual)
+    {
+        $this->aldeaActual = $aldeaActual;
+
+        return $this;
+    }
+
+    /**
+     * Get aldeaActual
+     *
+     * @return string
+     */
+    public function getAldeaActual()
+    {
+        return $this->aldeaActual;
     }
 
     /**
@@ -141,7 +171,7 @@ class Aldea
     /**
      * Get parroq
      *
-     * @return \AppBundle\Entity\Parroquia 
+     * @return \AppBundle\Entity\Parroquia
      */
     public function getParroq()
     {
@@ -175,7 +205,7 @@ class Aldea
     /**
      * Get aldeaTurno
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAldeaTurno()
     {

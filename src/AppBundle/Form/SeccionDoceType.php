@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AldeaType extends AbstractType
+class SeccionDoceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,15 +15,13 @@ class AldeaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('aldeaCodi')
-            ->add('aldeaNomb')
-            ->add('aldeaActual', 'checkbox', array(
-                'required' => false,
-                'compound' => false,
+            ->add('secc', 'entity', array(
+                'class' => 'AppBundle:Seccion',
+                'property' => 'seccId',
             ))
-            ->add('parroq', 'entity', array(
-                'class' => 'AppBundle:Parroquia',
-                'property' => 'parroqCodi',
+            ->add('cedu', 'entity', array(
+                'class' => 'AppBundle:Docente',
+                'property' => 'cedu',
             ))
         ;
     }
@@ -34,7 +32,7 @@ class AldeaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Aldea',
+            'data_class' => 'AppBundle\Entity\SeccionDoce',
             'csrf_protection' => false,
         ));
     }
@@ -44,6 +42,6 @@ class AldeaType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_aldea';
+        return 'appbundle_secciondoce';
     }
 }

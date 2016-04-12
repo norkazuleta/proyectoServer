@@ -4,6 +4,7 @@ CrudModule.config(require('./list/maListActions'));
 CrudModule.config(require('./list/maDatagridPagination'));
 CrudModule.config(require('./list/maDatagrid'));
 CrudModule.config(require('./field/maChoiceField'));
+CrudModule.config(require('./field/maChoicesField'));
 
 CrudModule.directive('maFieldCustom', require('./field/maFieldCustom'));
 

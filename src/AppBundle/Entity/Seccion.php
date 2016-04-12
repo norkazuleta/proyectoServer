@@ -3,11 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Seccion
  *
- * @ORM\Table(name="seccion", options={"collate"="utf8_general_ci", "charset"="utf8"}, uniqueConstraints={@ORM\UniqueConstraint(name="secc_codi", columns={"secc_codi"})}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="tray_id", columns={"tray_id"}), @ORM\Index(name="peri_id", columns={"peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"}), @ORM\Index(name="pa_id", columns={"pa_id"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
+ * @ORM\Table(name="seccion", options={"collate"="utf8_general_ci", "charset"="utf8"}, uniqueConstraints={@ORM\UniqueConstraint(name="secc_codi", columns={"secc_codi"})}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="tray_id", columns={"tray_id"}), @ORM\Index(name="peri_id", columns={"peri_id"}), @ORM\Index(name="uc_id", columns={"uc_id"}), @ORM\Index(name="pa_id", columns={"pa_id"}), @ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SeccionRepository")
  */
 class Seccion
@@ -27,6 +30,16 @@ class Seccion
      * @ORM\Column(name="secc_codi", type="string", length=50, nullable=false)
      */
     private $seccCodi;
+
+    /**
+     * @var \Aldea
+     *
+     * @ORM\ManyToOne(targetEntity="Aldea")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="aldea_codi", referencedColumnName="aldea_codi")
+     * })
+     */
+    private $aldea;
 
     /**
      * @var \Turno
@@ -87,6 +100,22 @@ class Seccion
      * })
      */
     private $pa;
+
+    /**
+     * @var \SeccionDoce
+     *
+     * @ORM\OneToOne(targetEntity="SeccionDoce", mappedBy="secc", cascade={"persist", "remove"})
+     */
+    private $doce;
+
+    /**
+     * @var string
+     *
+     * @SerializedName("aldea_turno")
+     * @Type("string")
+     * @Accessor(getter="getAldeaTurno")
+     */
+    private $estbRif;
 
     /**
      * Get seccId
@@ -257,5 +286,64 @@ class Seccion
     public function getPa()
     {
         return $this->pa;
+    }
+
+    /**
+     * Set aldea
+     *
+     * @param \AppBundle\Entity\Aldea $aldea
+     * @return Seccion
+     */
+    public function setAldea(\AppBundle\Entity\Aldea $aldea = null)
+    {
+        $this->aldea = $aldea;
+
+        return $this;
+    }
+
+    /**
+     * Get aldea
+     *
+     * @return \AppBundle\Entity\Aldea 
+     */
+    public function getAldea()
+    {
+        return $this->aldea;
+    }
+
+
+    /**
+     * Set doce.
+     *
+     * @param \AppBundle\Entity\SeccionDoce $doce
+     *
+     * @return Seccion
+     */
+    public function setDoce(\AppBundle\Entity\SeccionDoce $doce = null)
+    {
+        $this->doce = $doce;
+        $this->doce->setSecc($this);
+
+        return $this;
+    }
+
+    /**
+     * Get doce.
+     *
+     * @return \AppBundle\Entity\SeccionDoce
+     */
+    public function getDoce()
+    {
+        return $this->doce;
+    }
+
+    /**
+     * Get comNombEstb comRif.
+     *
+     * @return string
+     */
+    public function getAldeaTurno()
+    {
+        return sprintf('%s - %s', $this->getAldea()->getAldeaNomb(), ($this->getTurn())? $this->getTurn()->getTurnDesc() : ':-)');
     }
 }

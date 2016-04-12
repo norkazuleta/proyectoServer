@@ -1,7 +1,7 @@
 define(function() {
 	'use strict';
 
-	function UtilityService($rootScope, RestWrapper, moment) {
+	function UtilityService($rootScope, RestWrapper, moment, appConfig) {
 		return {
 			toQueryString: function (obj, prefix) {
 				var qs = function(obj, prefix){
@@ -414,6 +414,85 @@ define(function() {
 					}
 				};
 			},
+
+			choiceAldea: function() {
+				var util = this;
+				return function(entry, scope) {
+					var aldeas = [];
+
+					var dgetAldea= $rootScope.$on('choice:aldea:get', getAldeas);
+
+					var dresetAldea = $rootScope.$on('choice:aldea:reset', resetAldeas);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return aldeas;
+
+					function getAldeas(e, $item, $model) {
+						util.apiAldea($item, $model).then(function(response) {
+							aldeas = util.dataPrepare(response.data.originalElement, [{
+								label: 'aldea_nomb'
+							}, {
+								value: 'aldea_codi'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: aldeas
+							});
+						});
+					}
+
+					function resetAldeas() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dgetAldea();
+						dresetAldea();
+					}
+				};
+			},
+
+			choiceAldeaTurno: function() {
+				var util = this;
+				return function(entry, scope) {
+					var aldea = [];
+
+					var dgetAldeaTurno = $rootScope.$on('choice:aldeaturno:get', getAldeaTurno);
+
+					var dresetAldeaTurno = $rootScope.$on('choice:aldeaturno:reset', resetAldeaTurno);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return aldea;
+
+					function getAldeaTurno(e, $item, $model) {
+						util.apiAldeaTurno($item, $model).then(function(response) {
+							aldea = util.dataPrepare(response.data.originalElement, [{
+								label: 'turno.turn_desc'
+							}, {
+								value: 'turno.turn_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: aldea
+							});
+						});
+					}
+
+					function resetAldeaTurno() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dgetAldeaTurno();
+						dresetAldeaTurno();
+					}
+				};
+			},
+
 			choiceZona: function() {
 				var util = this;
 				return function(entry, scope) {
@@ -855,6 +934,19 @@ define(function() {
 				return RestWrapper.getList({}, 'zonas', '/api/zonas?filters[parroq]=' + $model + '&limit=' + ($limit || '5000'));
 			},
 
+			apiAldea: function($item, $model, $limit) {
+				if (!$model) {
+					$model = appConfig.aldea_codi;
+				}
+				return RestWrapper.getList({}, 'aldea', '/api/aldeas?filters[aldeaCodi]=' + $model + '&limit=' + ($limit || '4000'));
+			},
+			apiAldeaTurno: function($item, $model, $limit) {
+				if (!$model) {
+					$model = appConfig.aldea_codi;
+				}
+				return RestWrapper.getList({}, 'aldeaturnos', '/api/aldeaturnos?filters[aldea]=' + $model + '&limit=' + ($limit || '4000'));
+			},
+
 			apiPnf: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnfs', '/api/pnfs?limit=' + ($limit || '1000'));
 			},
@@ -896,11 +988,19 @@ define(function() {
 
 			apiPnfTrayPeri: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?limit=' + ($limit || '1000'));
-			}
+			},
+
+			apiDocente: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'docentes', '/api/docentes?limit=' + ($limit || '10000'));
+			},
+
+			apiEstudiante: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'estudiantes', '/api/estudiantes?limit=' + ($limit || '10000'));
+			},
 		};
 	}
 
-	UtilityService.$inject = ['$rootScope', 'RestWrapper', 'moment'];
+	UtilityService.$inject = ['$rootScope', 'RestWrapper', 'moment', 'appConfig'];
 
 	return UtilityService;
 });

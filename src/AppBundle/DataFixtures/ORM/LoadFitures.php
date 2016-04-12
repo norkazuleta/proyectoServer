@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\DataFixtures\ORM\LoadFitures;
+use AppBundle\Entity\Ajuste;
 use AppBundle\Entity\Aldea;
 use AppBundle\Entity\Docente;
 use AppBundle\Entity\Estado;
@@ -54,6 +55,7 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $this->loadUsers($manager);
+        $this->loadAjuste($manager);
         $this->loadPais($manager);
         $this->loadEstado($manager);
         $this->loadMunicipio($manager);
@@ -5602,6 +5604,28 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             $entityZona->setZonaNomb($data[2]);
             $entityZona->setParroq($entityParroquia);
             $manager->persist($entityZona);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadAjuste(ObjectManager $manager)
+    {
+        $ajustes = array(
+            /*array('id', 'clave', 'valor'),*/
+            array(null, 'webapp_aldea', 'CARMEN FERRER ORTIZ'),
+            array(null, 'webapp_title', 'SISTEMA DE RECORD DE NOTAS'),
+            array(null, 'webapp_description', 'EL SISTEMA DE INFORMACIÓN PARA EL RÉCORD DE NOTAS DE LOS ESTUDIANTES ALDEA UNIVERSITARIA'),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($ajustes as $data) {
+            $entityAjuste = new Ajuste();
+            /*$entityAjuste->setId($data[0]);*/
+            $entityAjuste->setKey($data[1]);
+            $entityAjuste->setValue($data[2]);
+            $manager->persist($entityAjuste);
         }
 
         $manager->flush();

@@ -17,7 +17,9 @@ define(function() {
 	var customDashboardTemplate = require('../view/dashboard.html');
 
 	function ConfigAdmin(NgAdminConfigurationProvider,
+		appConfig,
 		UserAdminProvider,
+		AjusteAdminProvider,
 		PaisAdminProvider,
 		EstadoAdminProvider,
 		MunicipioAdminProvider,
@@ -41,14 +43,16 @@ define(function() {
 
 
 		var nga = NgAdminConfigurationProvider;
+		var config = appConfig;
 
 		var admin = NgAdminConfigurationProvider
-			.application('SISTEMA DE RECORD DE NOTAS')
+			.application(config.webapp_title)
 			.baseApiUrl(baseApiUrl);
 
 
 		admin
 			.addEntity(UserAdminProvider.$get())
+			.addEntity(AjusteAdminProvider.$get())
 			.addEntity(PaisAdminProvider.$get())
 			.addEntity(EstadoAdminProvider.$get())
 			.addEntity(MunicipioAdminProvider.$get())
@@ -77,6 +81,7 @@ define(function() {
 				.addChild(nga.menu().title('Contraseña').icon('<span class="fa fa-lock"> </span>').link('/profile/change-password'))
 			)
 			.addChild(nga.menu().title('Configuración').icon('<span class="fa fa-gears"> </span>')
+				.addChild(nga.menu(AjusteAdminProvider.$get()).icon('<span class="fa fa-gears"> </span>'))
 				.addChild(nga.menu(UserAdminProvider.$get()).icon('<span class="fa fa-users"> </span>'))
 				/*.addChild(nga.menu(PaisAdminProvider.$get()))*/
 				.addChild(nga.menu(EstadoAdminProvider.$get()))
@@ -89,13 +94,11 @@ define(function() {
 				.addChild(nga.menu(PnfTrayectoPeriodoUcAdminProvider.$get()))
 			)
 			.addChild(nga.menu().title('Seguimiento Académico').icon('<span class="fa fa-key"> </span>')
-				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/notas/create'))
 				.addChild(nga.menu().title('Nueva Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/create'))
+				/*.addChild(nga.menu().title('Asignar Docente').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=a'))
+				.addChild(nga.menu().title('Asignar Estudiante').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=b'))*/
+				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=c'))
 				.addChild(nga.menu().title('Administrar Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/list'))
-				.addChild(nga.menu().title('Asignar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/create'))
-				.addChild(nga.menu().title('Administrar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/list'))
-				.addChild(nga.menu().title('Asignar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/create'))
-				.addChild(nga.menu().title('Administrar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 			)
 			.addChild(nga.menu().title('Periodo Académico').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu(PnfTipoAdminProvider.$get()))
@@ -107,6 +110,8 @@ define(function() {
 				.addChild(nga.menu(PeriodoAdminProvider.$get()))
 				.addChild(nga.menu(UcAdminProvider.$get()))
 			)
+			.addChild(nga.menu().title('Administrar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/list'))
+			.addChild(nga.menu().title('Administrar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 		);
 
 		var customTemplate = {
@@ -144,7 +149,9 @@ define(function() {
 
 	ConfigAdmin.$inject = [
 		'NgAdminConfigurationProvider',
+		'appConfig',
 		'UserAdminProvider',
+		'AjusteAdminProvider',
 		'PaisAdminProvider',
 		'EstadoAdminProvider',
 		'MunicipioAdminProvider',

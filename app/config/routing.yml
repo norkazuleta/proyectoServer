@@ -1,3 +1,18 @@
+app_seccion_doce_api:
+    resource: "@AppBundle/Controller/SeccionDoceRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_aldea_turno_api:
+    resource: "@AppBundle/Controller/AldeaTurnoRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_ajuste_api:
+    resource: "@AppBundle/Controller/AjusteRESTController.php"
+    type:   rest
+    prefix:   /api
+
 app_report:
     type:     annotation
     resource: "@AppBundle/Controller/ConsultasREPORTController.php"

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * AldeaTurno
  *
  * @ORM\Table(name="aldea_turno", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AldeaTurnoRepository")
  */
 class AldeaTurno
 {

@@ -1,6 +1,6 @@
 
 var MainModule = angular.module('mainMod', ['ng-admin', 'ui.router', 'boxuk.translation', 'angularMoment']);
-
+MainModule.constant('appConfig', window.config || {});
 MainModule.controller('AppCtrl', require('./component/controller/AppController'));
 MainModule.controller('ModalLoginCtrl', require('./component/controller/ModalLoginController'));
 MainModule.controller('ModalLogoutCtrl', require('./component/controller/ModalLogoutController'));
@@ -22,9 +22,12 @@ MainModule.controller('ResettingResetController', require('./component/controlle
 
 MainModule.controller('HandlePrintController', require('./component/controller/HandlePrintController'));
 MainModule.controller('HandleReportController', require('./component/controller/HandleReportController'));
+MainModule.controller('AsigEstuController', require('./component/controller/AsigEstuController'));
+MainModule.controller('AsigDoceController', require('./component/controller/AsigDoceController'));
 
 MainModule.config(require('./config/routing'));
 
+MainModule.config(require('./component/factory/AjusteAdmin'));
 MainModule.config(require('./component/factory/UserAdmin'));
 MainModule.config(require('./component/factory/PaisAdmin'));
 MainModule.config(require('./component/factory/EstadoAdmin'));

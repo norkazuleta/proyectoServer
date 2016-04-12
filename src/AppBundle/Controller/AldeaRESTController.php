@@ -103,10 +103,9 @@ class AldeaRESTController extends VoryxController
     {
         $entity = new Aldea();
         $form = $this->createForm(new AldeaType(), $entity, array("method" => $request->getMethod()));
+        $this->aldeaTurnoEntity($request, $entity);
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
-
-        $this->aldeaTurnoEntity($request, $entity);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

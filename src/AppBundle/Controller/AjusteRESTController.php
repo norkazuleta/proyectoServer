@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\PnfTrayectoPeriodo;
-use AppBundle\Entity\PnfTrayectoPeriodoUc;
-use AppBundle\Form\PnfTrayectoPeriodoType;
+use AppBundle\Entity\Ajuste;
+use AppBundle\Form\AjusteType;
+
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
@@ -16,28 +16,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * PnfTrayectoPeriodo controller.
- * @RouteResource("PnfTrayectoPeriodo")
+ * Ajuste controller.
+ * @RouteResource("Ajuste")
  */
-class PnfTrayectoPeriodoRESTController extends VoryxController
+class AjusteRESTController extends VoryxController
 {
     /**
-     * Get a PnfTrayectoPeriodo entity
+     * Get a Ajuste entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(PnfTrayectoPeriodo $entity)
+    public function getAction(Ajuste $entity)
     {
         return $entity;
     }
     /**
-     * Get all PnfTrayectoPeriodo entities.
+     * Get all Ajuste entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -63,9 +64,12 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:PnfTrayectoPeriodo');
+            $entity = $em->getRepository('AppBundle:Ajuste');
             if (!empty($q)) {
-                $filters = array();
+                $filters = array(
+                    'key' => '',
+                    'value' => '',
+                );
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -87,7 +91,7 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
         }
     }
     /**
-     * Create a PnfTrayectoPeriodo entity.
+     * Create a Ajuste entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -98,9 +102,8 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new PnfTrayectoPeriodo();
-        $form = $this->createForm(new PnfTrayectoPeriodoType(), $entity, array("method" => $request->getMethod()));
-        $this->ucEntity($request, $entity);
+        $entity = new Ajuste();
+        $form = $this->createForm(new AjusteType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -115,7 +118,7 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a PnfTrayectoPeriodo entity.
+     * Update a Ajuste entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -124,13 +127,12 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, PnfTrayectoPeriodo $entity)
+    public function putAction(Request $request, Ajuste $entity)
     {
-        $this->ucEntity($request, $entity);
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new PnfTrayectoPeriodoType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new AjusteType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -145,7 +147,7 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a PnfTrayectoPeriodo entity.
+     * Partial Update to a Ajuste entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -154,56 +156,12 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, PnfTrayectoPeriodo $entity)
+    public function patchAction(Request $request, Ajuste $entity)
     {
         return $this->putAction($request, $entity);
     }
-
-
-    public function ucEntity(Request $request, PnfTrayectoPeriodo $entity)
-    {
-        if (is_array($request->request->get('uc'))) {
-            $uc = $request->request->get('uc');
-            $em = $this->getDoctrine()->getManager();
-            $entityPnfTrayectoPeriodoUc = $em->getRepository('AppBundle:PnfTrayectoPeriodoUc')->findBy(
-                array('pnfTrayPeri' => $entity->getId())
-            );
-
-            $pnfTrayectoPeriodoIds = array();
-            foreach ($entityPnfTrayectoPeriodoUc as $key => $enti) {
-                $ucId = $enti->getUc()->getUcId();
-                if (in_array($ucId, $uc)) {
-                    if (($key = array_search($ucId, $uc)) !== false) {
-                        unset($uc[$key]);
-                    }
-                } else {
-                    $pnfTrayectoPeriodoIds[] = $enti;
-                }
-            }
-
-            //delete entity
-            foreach ($pnfTrayectoPeriodoIds as $key => $value) {
-                $em->remove($value);
-            }
-
-            if ($pnfTrayectoPeriodoIds) {
-                $em->flush();
-            }
-
-            //add entity
-            foreach ($uc as $key => $value) {
-                $entityUnidadCurricular = $em->getRepository('AppBundle:UnidadCurricular')->find($value);
-                if ($entityUnidadCurricular) {
-                    $entityPnfTrayectoPeriodoUc = new PnfTrayectoPeriodoUc();
-                    $entityPnfTrayectoPeriodoUc->setUc($entityUnidadCurricular);
-                    $entity->addUc($entityPnfTrayectoPeriodoUc);
-                }
-            }
-        }
-    }
-
     /**
-     * Delete a PnfTrayectoPeriodo entity.
+     * Delete a Ajuste entity.
      *
      * @View(statusCode=204)
      *
@@ -212,7 +170,7 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, PnfTrayectoPeriodo $entity)
+    public function deleteAction(Request $request, Ajuste $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

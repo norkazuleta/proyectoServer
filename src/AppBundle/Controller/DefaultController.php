@@ -24,6 +24,13 @@ class DefaultController extends Controller
      */
     public function projAction()
     {
-        return $this->render('default/app.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppBundle:Ajuste')->getAjustes();
+
+        return $this->render('default/app.html.twig', array(
+            'config' => array_merge(array(
+                'webapp_aldea' => '...',
+            ), $entity)
+        ));
     }
 }

@@ -3,7 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 /**
  * Docente
  *
@@ -56,6 +58,23 @@ class Docente
      */
     private $tlf;
 
+    /**
+     * @var string
+     *
+     * @SerializedName("nomb_apell")
+     * @Type("string")
+     * @Accessor(getter="getNombApell")
+     */
+    private $nombApell;
+
+    /**
+     * @var string
+     *
+     * @SerializedName("nomb_apell_cedu")
+     * @Type("string")
+     * @Accessor(getter="getNombApellCedu")
+     */
+    private $nombApellCedu;
 
     /**
      * Set cedu
@@ -193,5 +212,25 @@ class Docente
     public function getTlf()
     {
         return $this->tlf;
+    }
+
+    /**
+     * Get NombApell.
+     *
+     * @return string
+     */
+    public function getNombApell()
+    {
+        return sprintf('%s %s', $this->getNomb(), $this->getApell());
+    }
+
+    /**
+     * Get NombApellCedu.
+     *
+     * @return string
+     */
+    public function getNombApellCedu()
+    {
+        return sprintf('%s %s (%s)', $this->getNomb(), $this->getApell(), $this->getCedu());
     }
 }

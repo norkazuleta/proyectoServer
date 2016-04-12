@@ -2,8 +2,9 @@ define(function(require) {
 	'use strict';
 
 	function SeccionAdmin($provide, NgAdminConfigurationProvider) {
-		$provide.factory('SeccionAdmin', ['$rootScope', 'RestWrapper', 'UtilityService', function($rootScope, RestWrapper, UtilityService) {
+		$provide.factory('SeccionAdmin', ['$rootScope', 'RestWrapper', 'UtilityService', 'appConfig', function($rootScope, RestWrapper, UtilityService, appConfig) {
 			var nga = NgAdminConfigurationProvider;
+			var config = appConfig;
 
 			var util = UtilityService;
 
@@ -12,17 +13,29 @@ define(function(require) {
 				.label('Secciones');
 
 
+
+var asigd = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigDoceController" href="#/seccions/list">
+	<span class="glyphicon" aria-hidden="true"></span>
+	Asignar docente<span class="hidden-xs"></span>
+</a>`;
+var asige = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigEstuController" href="#/seccions/list">
+	<span class="glyphicon" aria-hidden="true"></span>
+	Asignar estudiante<span class="hidden-xs"></span>
+</a>`;
+
 			seccion.listView()
 				.infinitePagination(false)
 				.title('Lista Secciones')
 				.fields([
-					nga.field('secc_id').label('ID'),
 					nga.field('secc_codi').label('Código sección'),
+					nga.field('pa.pa').label('Periodo Académico'),
+					nga.field('aldea_turno').label('Aldea - Turno'),
 					nga.field('pnf.pnf_desc').label('PNF'),
 					nga.field('tray.tray_desc').label('Trayecto'),
 					nga.field('peri.peri_desc').label('Periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
-					nga.field('pa.pa').label('Periodo Académico'),
+					nga.field('doce.cedu.cedu').label('Docente Colaborador'),
+					nga.field('doce.doce_nomb').label('Estudiantes'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -38,11 +51,47 @@ define(function(require) {
 					.label('Mostrar limite')
 					.choices(util.filterLimit()),
 				])
-				.listActions(['edit', 'delete', 'show']);
+				.listActions([asigd, asige, 'edit', 'delete', 'show']);
 
 			seccion.creationView()
 				.title('Nueva Sección')
 				.fields([
+					nga.field('aldea', 'choice')
+					.label('aldea_nomb')
+					.validation({
+						required: true
+					})
+					.attributes({
+						'on-select': 'selAldea($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						util.choiceAldea()(entry, scope);
+
+						$rootScope.$broadcast('choice:aldea:get');
+
+						scope.selAldea = selAldea;
+
+						return [];
+
+						function selAldea($item, $model) {
+							$rootScope.$broadcast('choice:aldeaturno:reset');
+							$rootScope.$broadcast('choice:aldeaturno:get', $item, $model);
+						}
+					}),
+					nga.field('turn', 'choice')
+					.label('Turno')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+
+						util.choiceAldeaTurno()(entry, scope);
+
+						$rootScope.$broadcast('choice:aldeaturno:get');
+
+						return [];
+					}),
 					nga.field('pnf', 'choice')
 					.label('PNF')
 					.validation({
@@ -151,6 +200,52 @@ define(function(require) {
 			seccion.editionView()
 				.title('Actualizar Sección #{{ ::entry.identifierValue }}')
 				.fields([
+					nga.field('aldea', 'choice')
+					.label('aldea_nomb')
+					.validation({
+						required: true
+					})
+					.attributes({
+						'on-select': 'selAldea($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						util.choiceAldea()(entry, scope);
+
+						var aldeaCodi = entry.values['aldea.aldea_codi'];
+						entry.values['aldea'] = aldeaCodi;
+
+						$rootScope.$broadcast('choice:aldea:get', {value: aldeaCodi}, aldeaCodi);
+
+						scope.selAldea = selAldea;
+
+						return [];
+
+						function selAldea($item, $model) {
+							$rootScope.$broadcast('choice:aldeaturno:reset');
+							$rootScope.$broadcast('choice:aldeaturno:get', $item, $model);
+						}
+					}),
+					nga.field('turn', 'choice')
+					.label('Turno')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+
+						util.choiceAldeaTurno()(entry, scope);
+
+
+
+						var turnId = entry.values['turn.turn_id'];
+						var aldeaCodi = entry.values['aldea.aldea_codi'];
+						entry.values['turn'] = turnId;
+
+						$rootScope.$broadcast('choice:aldeaturno:get', {value: aldeaCodi}, aldeaCodi);
+
+						return [];
+					}),
+
 					nga.field('pnf', 'choice')
 					.label('PNF')
 					.validation({
@@ -246,7 +341,7 @@ define(function(require) {
 						required: true
 					})
 					.choices(function(entry, scope) {
-						var id;
+						let id;
 						id = entry.values['peri.peri_id'];
 						entry.values['uc'] = entry.values['uc.uc_id'];
 
@@ -287,6 +382,8 @@ define(function(require) {
 					nga.field('peri.peri_desc').label('periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
 					nga.field('pa.pa').label('Periodo Académico'),
+					nga.field('doce.cedu.cedu').label('Docente colaborador'),
+
 				]);
 
 			return seccion;

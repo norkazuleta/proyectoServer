@@ -1,0 +1,94 @@
+<form name="asigestu.form" ng-submit="asigestu.submitEdition($event)">
+	<div class="modal-header align-center">
+	    <h3 class="modal-title">Asignar Estudiante</h3>
+	</div>
+	<div class="modal-body">
+		<div ng-if="item.loading">
+			<h4 class="text-center">Cargando... Por favor espere.</h4>
+		</div>
+		<span ng-model="secc"></span>
+        <table class="table table-bordered" ng-if="!item.loading">
+            <tbody>
+                <tr>
+                    <td colspan="1">Periodo Acad.:</td>
+                    <th colspan="5">{{ values['pa.pa_anio'] }} - {{ values['pa.pa_codi'] }}</th>
+                </tr>
+                <tr>
+                    <td colspan="1">Aldea:</td>
+                    <th colspan="1">{{ values['aldea.aldea_nomb'] }}</th>
+                    <td colspan="1">Turno:</td>
+                    <th colspan="1">{{ values['turn.turn_desc'] }}</th>
+
+                    <td colspan="1">Estado:</td>
+                    <th colspan="1">{{ values['aldea.parroq.muni.edo.edo_nomb'] }}</th>
+                </tr>
+                <tr>
+                    <td colspan="1">PNF:</td>
+                    <th colspan="1">{{ values['pnf.pnf_desc'] }}</th>
+                    <td colspan="1">Trayecto:</td>
+                    <th colspan="1">{{ values['tray.tray_desc'] }}</th>
+
+                    <td colspan="1">Periodo:</td>
+                    <th colspan="1">{{ values['peri.peri_desc'] }}</th>
+                </tr>
+                <tr>
+                    <td colspan="6">&nbsp;</td>
+                </tr>
+                <tr class="info">
+                    <th colspan="6">Secciones</th>
+                </tr>
+                <tr class="info">
+                    <th colspan="1">N°</th>
+                    <th colspan="1">Sección</th>
+                    <th colspan="3">Unidad Curricular</th>
+                    <th colspan="1">Insc.</th>
+                </tr>
+                <tr>
+                    <td colspan="1"> 1 </td>
+                    <td colspan="1">{{ values['secc_codi'] }}</td>
+                    <td colspan="3">{{ values['uc.uc_desc'] }}</td>
+                    <td colspan="1">0</td>
+                </tr>
+
+                <tr>
+                    <th colspan="6">&nbsp;</th>
+                </tr>
+                <tr class="info">
+                    <th colspan="6">Estudiantes</th>
+                </tr>
+                <tr class="info">
+                    <th colspan="1">Cédula</th>
+                    <th colspan="4">Nombres y Apellidos</th>
+                    <th colspan="1">Teléfono</th>
+                </tr>
+                <tr ng-if="estu.cedu">
+                    <td colspan="1">{{ estu.cedu }}</td>
+                    <td colspan="4">{{ estu.nomb_apell }}</td>
+                    <td colspan="1">{{ estu.tlf }}</td>
+                </tr>
+                <tr ng-if="!estu.cedu">
+                    <td colspan="6">NO ASIGNADO</td>
+                </tr>
+
+                <tr ng-if="!estu.cedu">
+                    <td colspan="6">
+		                <ui-select ui-select-required multiple ng-model="estudiante" ng-required="true" id="estudiante" name="estudiante">
+				            <ui-select-match placeholder="Introdusca los numeros de cédula de los estudiantes.">{{ $item.label }}</ui-select-match>
+				            <ui-select-choices repeat="item.value as item in estudiantes | filter: {label: $select.search}">
+				                {{ item.label }}
+				            </ui-select-choices>
+				        </ui-select>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+		<!-- El proceso para la Asignación de Docente no se encuentra habilitado.
+		Debe realizarlo después del dia dd/mm/yyyy Hasta el dia: dd/mm/yyyy -->
+	</div>
+	<div class="modal-footer">
+	    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Guardar cambios</button>
+	    <a class="btn btn-default" ng-click="close()">Cerrar</a>
+	</div>
+</form>

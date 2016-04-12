@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SeccionDoce
  *
  * @ORM\Table(name="seccion_doce", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="secc_id", columns={"secc_id"}), @ORM\Index(name="cedu", columns={"cedu"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SeccionDoceRepository")
  */
 class SeccionDoce
 {
@@ -24,7 +24,7 @@ class SeccionDoce
     /**
      * @var \Seccion
      *
-     * @ORM\ManyToOne(targetEntity="Seccion")
+     * @ORM\OneToOne(targetEntity="Seccion")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="secc_id", referencedColumnName="secc_id")
      * })

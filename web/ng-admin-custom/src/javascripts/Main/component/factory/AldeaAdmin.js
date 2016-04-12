@@ -27,6 +27,8 @@ define(function(require) {
 		            nga.field('aldea_turno', 'template')
                 		.template('<span ng-repeat="group in entry.values.aldea_turno track by $index" class="label label-default">{{ group.turno.turn_desc }}</span>')
                 	.cssClasses('hidden-xs'),
+
+					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -80,6 +82,7 @@ define(function(require) {
 
 					nga.field('aldea_nomb').label('aldea_nomb'),
 					nga.field('aldea_codi').label('aldea_codi'),
+					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
@@ -158,6 +161,7 @@ define(function(require) {
 					}),
 					nga.field('aldea_nomb').label('aldea_nomb'),
 					nga.field('aldea_codi').label('aldea_codi'),
+					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
@@ -193,6 +197,7 @@ define(function(require) {
 
 					nga.field('aldea_nomb').label('aldea_nomb'),
 					nga.field('aldea_codi').label('aldea_codi'),
+					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
 
 					 nga.field('aldea_turno', 'template')
                 		.template('<span ng-repeat="group in entry.values._aldea_turno track by $index" class="label label-default">{{ group.turno.turn_desc }}</span>')

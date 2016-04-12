@@ -16,6 +16,10 @@ class SeccionType extends AbstractType
     {
         $builder
             ->add('seccCodi')
+            ->add('aldea', 'entity', array(
+                'class' => 'AppBundle:Aldea',
+                'property' => 'aldeaCodi',
+            ))
             ->add('turn', 'entity', array(
                 'class' => 'AppBundle:Turno',
                 'property' => 'turnId',
