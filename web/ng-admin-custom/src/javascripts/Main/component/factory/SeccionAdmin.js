@@ -1,10 +1,9 @@
-define(function(require) {
+define(function() {
 	'use strict';
 
 	function SeccionAdmin($provide, NgAdminConfigurationProvider) {
 		$provide.factory('SeccionAdmin', ['$rootScope', 'RestWrapper', 'UtilityService', 'appConfig', function($rootScope, RestWrapper, UtilityService, appConfig) {
 			var nga = NgAdminConfigurationProvider;
-			var config = appConfig;
 
 			var util = UtilityService;
 
@@ -12,17 +11,18 @@ define(function(require) {
 				.identifier(nga.field('secc_id'))
 				.label('Secciones');
 
-
-
-var asigd = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigDoceController" href="#/seccions/list">
-	<span class="glyphicon" aria-hidden="true"></span>
-	Asignar docente<span class="hidden-xs"></span>
-</a>`;
-var asige = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigEstuController" href="#/seccions/list">
-	<span class="glyphicon" aria-hidden="true"></span>
-	Asignar estudiante<span class="hidden-xs"></span>
-</a>`;
-
+			var asigd = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigDoceController" href="#/seccions/list">
+				<span class="glyphicon" aria-hidden="true"></span>
+				Asignar docente<span class="hidden-xs"></span>
+			</a>`;
+			var asige = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="AsigEstuController" href="#/seccions/list">
+				<span class="glyphicon" aria-hidden="true"></span>
+				Asignar estudiante<span class="hidden-xs"></span>
+			</a>`;
+			var carganota = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values.secc_id, entry.values)" ng-controller="CargaNotaController" href="#/seccions/list">
+				<span class="glyphicon" aria-hidden="true"></span>
+				Cargar Notas<span class="hidden-xs"></span>
+			</a>`;
 			seccion.listView()
 				.infinitePagination(false)
 				.title('Lista Secciones')
@@ -35,7 +35,7 @@ var asige = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.valu
 					nga.field('peri.peri_desc').label('Periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
 					nga.field('doce.cedu.cedu').label('Docente Colaborador'),
-					nga.field('doce.doce_nomb').label('Estudiantes'),
+					nga.field('estu_total').label('Estudiantes'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -51,7 +51,7 @@ var asige = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.valu
 					.label('Mostrar limite')
 					.choices(util.filterLimit()),
 				])
-				.listActions([asigd, asige, 'edit', 'delete', 'show']);
+				.listActions([asigd, asige, carganota, 'edit', 'delete', 'show']);
 
 			seccion.creationView()
 				.title('Nueva Sección')

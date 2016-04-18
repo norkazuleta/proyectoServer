@@ -2,7 +2,6 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\DataFixtures\ORM\LoadFitures;
 use AppBundle\Entity\Ajuste;
 use AppBundle\Entity\Aldea;
 use AppBundle\Entity\Docente;
@@ -5634,8 +5633,8 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
     public function loadAldea(ObjectManager $manager)
     {
         $aldeas = array(
-            /*array('aldea_codi', 'parroq_codi', 'aldea_nomb'),*/
-            array('23150102', '231501', 'CARMEN FERRER ORTIZ'),
+            /*array('aldea_codi', 'parroq_codi', 'aldea_nomb', 'aldea_actual'),*/
+            array('23150102', '231501', 'CARMEN FERRER ORTIZ', 1),
         );
 
         $em = $this->container->get('doctrine')->getEntityManager('default');
@@ -5646,7 +5645,30 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             $entityParroquia = $em->getRepository('AppBundle:Parroquia')->find($data[1]);
             $entityAldea->setAldeaNomb($data[2]);
             $entityAldea->setParroq($entityParroquia);
+            $entityAldea->setAldeaActual($data[3]);
             $manager->persist($entityAldea);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadAldeaTurno(ObjectManager $manager)
+    {
+        $aldeasTurno = array(
+            /*array('id', 'aldea_codi', 'turn_id'),*/
+            array('1', '23150102', 1),
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($aldeasTurno as $data) {
+            $entityAldeaTurno = new AldeaTurno();
+            /*$entityAldeaTurno->setId($data[0]);*/
+            $entityAldea = $em->getRepository('AppBundle:Aldea')->find($data[1]);
+            $entityAldeaTurno->setAldea($entityAldea);
+            $entityTurno = $em->getRepository('AppBundle:Turno')->find($data[2]);
+            $entityAldeaTurno->setTurno($entityTurno);
+            $manager->persist($entityAldeaTurno);
         }
 
         $manager->flush();
@@ -5656,7 +5678,17 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
     {
         $estudiante = array(
             //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
-            array('8355972', 'EFRAIN', 'BONILLA', '1990-05-31', 'efrainbonilla.dev@gmail.com', '04122999862'),
+            array('14697066','YAMILE','AMAYA','1979-02-13','yamilemaya@gmail.com','04125454354'),
+            array('15410809','MARBELYS','LARREAL','1979-06-11','marbelys._15@gmail.com','0424 764893'),
+            array('20660142','NORACXIS','MAPPARI','1998-08-19','noracxi20@gmailcom','04142659025'),
+            array('20660753','DINORA','MAPPARI','1997-06-20','mapparidinora20@gmail.com','02626548760'),
+            array('25251152','CARLEIDY','PEREZ','1999-06-22','carleidyperez25@gmail.com','04163905673'),
+            array('25251356','FREYNER','MAPPARI','1997-07-09','freynermappari@hotmail.com','04128795360'),
+            array('25251357','NEGREY','MAPPARI','1998-05-13','negrey1998@hotmail.com','02628790518'),
+            array('25972558','SERGGIBEL','ALVAREZ','1997-02-05','serggibel1997@gmailcom','04262279056'),
+            array('26536743','EDUMARY','LOZANO','1997-06-16','edumarylozano26@gmail.com','04127612678'),
+            array('30599191','KAROLAY','BRAVO','1997-06-19','karolaybravo30@gmail.com','04260986745'),
+
         );
 
         foreach ($estudiante as $data) {
@@ -5677,7 +5709,13 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
     {
         $estudiante = array(
             //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
-            array('18200574', 'JOSE AUGUSTO', 'AÑEZ', '1984-11-07', 'ja18200574@yahoo.es', '04161660642'),
+            array('11564980','MARIA','MONTIEL','1968-02-10','mariamontiel11@gmail.com','04269644644'),
+            array('12212841','DIOCENIN','ZULETA MILIAN','1972-09-04','zumildioce@gmail.com','04167894531'),
+            array('12657985','KARINA','FERNANDEZ','1974-09-13','karinafernandez12@gmail.com','04261639388'),
+            array('14675897','DAMELYS','ZULETA BARRETO','1981-01-15','suivant_18@hotmail.com','04261640990'),
+            array('17177047','ANGEL','MONTIEL','1988-06-04','angelmontiel17@gmail.com','04264912524'),
+            array('18875050','ENNY','GONZALEZ','1988-09-26','gonzalezenny@gmail.com','04164644965'),
+            array('18875883','NEREYDA','ZULETA MILIAN','2016-04-12','nereydab.-@gmail.com','0426-223472'),
         );
 
         foreach ($estudiante as $data) {

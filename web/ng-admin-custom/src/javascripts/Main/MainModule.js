@@ -24,6 +24,7 @@ MainModule.controller('HandlePrintController', require('./component/controller/H
 MainModule.controller('HandleReportController', require('./component/controller/HandleReportController'));
 MainModule.controller('AsigEstuController', require('./component/controller/AsigEstuController'));
 MainModule.controller('AsigDoceController', require('./component/controller/AsigDoceController'));
+MainModule.controller('CargaNotaController', require('./component/controller/CargaNotaController'));
 
 MainModule.config(require('./config/routing'));
 

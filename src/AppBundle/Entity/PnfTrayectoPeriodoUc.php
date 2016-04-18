@@ -31,7 +31,6 @@ class PnfTrayectoPeriodoUc
      */
     private $pnfTrayPeri;
 
-
     /**
      * @var \UnidadCurricular
      *
@@ -41,7 +40,6 @@ class PnfTrayectoPeriodoUc
      * })
      */
     private $uc;
-
 
     /**
      * Get id
@@ -56,7 +54,7 @@ class PnfTrayectoPeriodoUc
     /**
      * Set pnfTrayPeri
      *
-     * @param \AppBundle\Entity\PnfTrayectoPeriodo $pnfTrayPeri
+     * @param  \AppBundle\Entity\PnfTrayectoPeriodo $pnfTrayPeri
      * @return PnfTrayectoPeriodoUc
      */
     public function setPnfTrayPeri(\AppBundle\Entity\PnfTrayectoPeriodo $pnfTrayPeri = null)
@@ -79,7 +77,7 @@ class PnfTrayectoPeriodoUc
     /**
      * Set uc
      *
-     * @param \AppBundle\Entity\UnidadCurricular $uc
+     * @param  \AppBundle\Entity\UnidadCurricular $uc
      * @return PnfTrayectoPeriodoUc
      */
     public function setUc(\AppBundle\Entity\UnidadCurricular $uc = null)

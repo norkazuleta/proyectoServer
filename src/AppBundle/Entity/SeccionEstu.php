@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SeccionEstu
  *
  * @ORM\Table(name="seccion_estu", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="secc_id", columns={"secc_id"}), @ORM\Index(name="cedu", columns={"cedu"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SeccionEstuRepository")
  */
 class SeccionEstu
 {
@@ -41,12 +41,10 @@ class SeccionEstu
      */
     private $cedu;
 
-
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +54,7 @@ class SeccionEstu
     /**
      * Set secc
      *
-     * @param \AppBundle\Entity\Seccion $secc
+     * @param  \AppBundle\Entity\Seccion $secc
      * @return SeccionEstu
      */
     public function setSecc(\AppBundle\Entity\Seccion $secc = null)
@@ -69,7 +67,7 @@ class SeccionEstu
     /**
      * Get secc
      *
-     * @return \AppBundle\Entity\Seccion 
+     * @return \AppBundle\Entity\Seccion
      */
     public function getSecc()
     {
@@ -79,7 +77,7 @@ class SeccionEstu
     /**
      * Set cedu
      *
-     * @param \AppBundle\Entity\Estudiante $cedu
+     * @param  \AppBundle\Entity\Estudiante $cedu
      * @return SeccionEstu
      */
     public function setCedu(\AppBundle\Entity\Estudiante $cedu = null)
@@ -92,7 +90,7 @@ class SeccionEstu
     /**
      * Get cedu
      *
-     * @return \AppBundle\Entity\Estudiante 
+     * @return \AppBundle\Entity\Estudiante
      */
     public function getCedu()
     {

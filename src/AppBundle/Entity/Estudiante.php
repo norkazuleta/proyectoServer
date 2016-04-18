@@ -2,13 +2,18 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Util\Utility;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Estudiante
  *
  * @ORM\Table(name="estudiante", options={"collate"="utf8_general_ci", "charset"="utf8"})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EstudianteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Estudiante
 {
@@ -57,9 +62,43 @@ class Estudiante
     private $tlf;
 
     /**
+     * @var string
+     *
+     * @SerializedName("nomb_apell")
+     * @Type("string")
+     * @Accessor(getter="getNombApell")
+     */
+    private $nombApell;
+
+    /**
+     * Hook on pre-persist operations.
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->cedu = Utility::upperCase($this->cedu);
+        $this->nomb = Utility::upperCase($this->nomb);
+        $this->apell = Utility::upperCase($this->apell);
+        $this->correo = Utility::lowerCase($this->correo);
+    }
+
+    /**
+     * Hook on pre-update operations.
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->cedu = Utility::upperCase($this->cedu);
+        $this->nomb = Utility::upperCase($this->nomb);
+        $this->apell = Utility::upperCase($this->apell);
+        $this->correo = Utility::lowerCase($this->correo);
+    }
+    /**
      * Set cedu
      *
-     * @param string $cedu
+     * @param  string     $cedu
      * @return Estudiante
      */
     public function setCedu($cedu)
@@ -68,7 +107,6 @@ class Estudiante
 
         return $this;
     }
-
 
     /**
      * Get cedu
@@ -83,7 +121,7 @@ class Estudiante
     /**
      * Set nomb
      *
-     * @param string $nomb
+     * @param  string     $nomb
      * @return Estudiante
      */
     public function setNomb($nomb)
@@ -106,7 +144,7 @@ class Estudiante
     /**
      * Set apell
      *
-     * @param string $apell
+     * @param  string     $apell
      * @return Estudiante
      */
     public function setApell($apell)
@@ -129,7 +167,7 @@ class Estudiante
     /**
      * Set fn
      *
-     * @param \DateTime $fn
+     * @param  \DateTime  $fn
      * @return Estudiante
      */
     public function setFn(\DateTime $fn = null)
@@ -152,7 +190,7 @@ class Estudiante
     /**
      * Set correo
      *
-     * @param string $correo
+     * @param  string     $correo
      * @return Estudiante
      */
     public function setCorreo($correo)
@@ -175,7 +213,7 @@ class Estudiante
     /**
      * Set tlf
      *
-     * @param string $tlf
+     * @param  string     $tlf
      * @return Estudiante
      */
     public function setTlf($tlf)
@@ -193,5 +231,15 @@ class Estudiante
     public function getTlf()
     {
         return $this->tlf;
+    }
+
+    /**
+     * Get NombApell.
+     *
+     * @return string
+     */
+    public function getNombApell()
+    {
+        return sprintf('%s %s', $this->getNomb(), $this->getApell());
     }
 }

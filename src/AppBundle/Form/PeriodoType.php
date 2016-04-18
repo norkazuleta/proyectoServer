@@ -10,7 +10,7 @@ class PeriodoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,7 +18,7 @@ class PeriodoType extends AbstractType
             ->add('periDesc')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

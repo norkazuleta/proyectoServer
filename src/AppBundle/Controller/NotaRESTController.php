@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SeccionDoce;
-use AppBundle\Form\SeccionDoceType;
+use AppBundle\Entity\Nota;
+use AppBundle\Form\NotaType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -19,25 +19,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * SeccionDoce controller.
- * @RouteResource("SeccionDoce")
+ * Nota controller.
+ * @RouteResource("Nota")
  */
-class SeccionDoceRESTController extends VoryxController
+class NotaRESTController extends VoryxController
 {
     /**
-     * Get a SeccionDoce entity
+     * Get a Nota entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(SeccionDoce $entity)
+    public function getAction(Nota $entity)
     {
         return $entity;
     }
     /**
-     * Get all SeccionDoce entities.
+     * Get all Nota entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -52,7 +52,7 @@ class SeccionDoceRESTController extends VoryxController
      * @QueryParam(name="filters", nullable=true, array=true, description="Filter by fields. Must be an array ie. &filters[id]=3")
      * @QueryParam(name="filters_operator", default="LIKE %...%", description="Option filter operator.")
      */
-    public function cgetAction(ParamFetcherInterface $paramFetcher, Request $request)
+    public function cgetAction(ParamFetcherInterface $paramFetcher)
     {
         try {
             $q = $paramFetcher->get('q');
@@ -63,10 +63,10 @@ class SeccionDoceRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:SeccionDoce');
+            $entity = $em->getRepository('AppBundle:Nota');
 
             if (!empty($q)) {
-                $filters_ = array('seccCodi' => '');
+                $filters = array();
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -88,7 +88,7 @@ class SeccionDoceRESTController extends VoryxController
         }
     }
     /**
-     * Create a SeccionDoce entity.
+     * Create a Nota entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -99,8 +99,8 @@ class SeccionDoceRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new SeccionDoce();
-        $form = $this->createForm(new SeccionDoceType(), $entity, array("method" => $request->getMethod()));
+        $entity = new Nota();
+        $form = $this->createForm(new NotaType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -116,7 +116,7 @@ class SeccionDoceRESTController extends VoryxController
     }
 
     /**
-     * Create || Update a SeccionDoce entity.
+     * Create || Update a SeccionEstu entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -128,25 +128,76 @@ class SeccionDoceRESTController extends VoryxController
     public function postAsigAction(Request $request)
     {
         $secc = $request->request->get('secc');
-        $doceCeduReq = $request->request->get('cedu');
+        $notas = $request->request->get('notas');
 
         $em = $this->getDoctrine()->getManager();
-        $entitySeccionDoce = $em->getRepository('AppBundle:SeccionDoce')->findBy(array('secc' => $secc));
+        $entityNota = $em->getRepository('AppBundle:Nota')->findBy(array('secc' => $secc));
 
-        if (count($entitySeccionDoce) > 0) {
-            $seccionDoce = $entitySeccionDoce[0];
-            $doceCedu = $seccionDoce->getCedu();
-            if ($doceCeduReq != $doceCedu) {
-                return $this->putAction($request, $seccionDoce);
+        $notaIds = array();
+        $notaIdsUpdate = array();
+        foreach ($entityNota as $key => $enti) {
+            $ceduEstu = $enti->getCedu()->getCedu();
+            $notaEstu = $enti->getNota();
+            $asistEstu = $enti->getAsist();
+            if (($keyx = array_search($ceduEstu, array_column($notas, 'cedu'))) !== false) {
+                if ($notas[$keyx]['nota'] == $notaEstu && $notas[$keyx]['asist'] == $asistEstu) {
+                    unset($notas[$keyx]);
+                    sort($notas);
+                } else {
+                    $enti->setNota($notas[$keyx]['nota']);
+                    $enti->setAsist($notas[$keyx]['asist']);
+                    $notaIdsUpdate[] = $enti;
+                    unset($notas[$keyx]);
+                    sort($notas);
+                }
             } else {
-                return $seccionDoce;
+                $notaIds[] = $enti;
             }
-        } else {
-            return $this->postAction($request);
         }
+
+        //delete entity
+        foreach ($notaIds as $key => $value) {
+            $em->remove($value);
+        }
+
+        if ($notaIds) {
+            $em->flush();
+        }
+
+        foreach ($notaIdsUpdate as $key => $value) {
+            $em->persist($value);
+        }
+
+        if ($notaIdsUpdate) {
+            $em->flush();
+        }
+
+        //add entity
+        $eNota = array();
+        foreach ($notas as $key => $value) {
+            $entityEstudiante = $em->getRepository('AppBundle:Estudiante')->find($value['cedu']);
+            if ($entityEstudiante) {
+                $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
+                $entityNota = new Nota();
+                $entityNota->setSecc($entitySeccion);
+                $entityNota->setCedu($entityEstudiante);
+                $entityNota->setNota($value['nota']);
+                $entityNota->setAsist($value['asist']);
+
+                $em->persist($entityNota);
+                array_push($eNota, $entityNota);
+            }
+        }
+
+        if (count($notas)) {
+            $em->flush();
+        }
+
+        return $eNota;
     }
+
     /**
-     * Update a SeccionDoce entity.
+     * Update a Nota entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +206,12 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, SeccionDoce $entity)
+    public function putAction(Request $request, Nota $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new SeccionDoceType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new NotaType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -175,7 +226,7 @@ class SeccionDoceRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a SeccionDoce entity.
+     * Partial Update to a Nota entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -184,12 +235,12 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, SeccionDoce $entity)
+    public function patchAction(Request $request, Nota $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a SeccionDoce entity.
+     * Delete a Nota entity.
      *
      * @View(statusCode=204)
      *
@@ -198,7 +249,7 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, SeccionDoce $entity)
+    public function deleteAction(Request $request, Nota $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

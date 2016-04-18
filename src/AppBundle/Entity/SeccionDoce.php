@@ -41,12 +41,10 @@ class SeccionDoce
      */
     private $cedu;
 
-
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +54,7 @@ class SeccionDoce
     /**
      * Set secc
      *
-     * @param \AppBundle\Entity\Seccion $secc
+     * @param  \AppBundle\Entity\Seccion $secc
      * @return SeccionDoce
      */
     public function setSecc(\AppBundle\Entity\Seccion $secc = null)
@@ -69,7 +67,7 @@ class SeccionDoce
     /**
      * Get secc
      *
-     * @return \AppBundle\Entity\Seccion 
+     * @return \AppBundle\Entity\Seccion
      */
     public function getSecc()
     {
@@ -79,7 +77,7 @@ class SeccionDoce
     /**
      * Set cedu
      *
-     * @param \AppBundle\Entity\Docente $cedu
+     * @param  \AppBundle\Entity\Docente $cedu
      * @return SeccionDoce
      */
     public function setCedu(\AppBundle\Entity\Docente $cedu = null)
@@ -92,7 +90,7 @@ class SeccionDoce
     /**
      * Get cedu
      *
-     * @return \AppBundle\Entity\Docente 
+     * @return \AppBundle\Entity\Docente
      */
     public function getCedu()
     {

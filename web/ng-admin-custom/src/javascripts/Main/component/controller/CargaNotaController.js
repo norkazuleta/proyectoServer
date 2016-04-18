@@ -1,6 +1,6 @@
-import asigEstuTemplate from '../../view/layoutModalAsigEstu.html';
+import cargaNotaTemplate from '../../view/layoutModalCargaNota.html';
 
-class AsigEstuModalController {
+class CargaNotaModalController {
 	constructor($scope, $modalInstance, notification, progression, UtilityService, $state, $stateParams, RestWrapper, identifier, values) {
 		this.$scope = $scope;
 		this.$modalInstance = $modalInstance;
@@ -23,11 +23,63 @@ class AsigEstuModalController {
 
 		this.getEstudiates();
 
+		this.$scope.notas = this.getNotas();
+		this.$scope.asists = this.getAsist();
+
 		this.$scope.close = this.close.bind(this);
 		this.$scope.selEstu = this.selEstu.bind(this);
 		this.$scope.removeEstu = this.removeEstu.bind(this);
+		this.$scope.initItem = this.initItem.bind(this);
 
 		this.$scope.$on('$destroy', this.destroy.bind(this));
+	}
+
+	initItem(item, index) {
+		this.$scope.model[index] = {};
+		if (item.cedu) {
+			this.$scope.model[index].cedu = item.cedu;
+		}
+
+		if (item.nota) {
+			this.$scope.model[index].nota = item.nota;
+		}
+
+		if (item.asist) {
+			this.$scope.model[index].asist = item.asist;
+		}
+	}
+
+	getNotas() {
+		var notas = [];
+		notas.push({
+			value: '0',
+			label: 'PI'
+		});
+		for (var i = 0; i < 20; i++) {
+			if (i < 9) {
+				notas.push({
+					value: (i + 1),
+					label: '0' + (i + 1)
+				});
+			} else {
+				notas.push({
+					value: (i + 1),
+					label: (i + 1)
+				});
+			}
+		}
+		return notas;
+	}
+
+	getAsist() {
+		var asist = [];
+		for (var i = 0; i < 100; i++) {
+			asist.push({
+				value: (i + 1),
+				label: (i + 1) + '%'
+			});
+		}
+		return asist;
 	}
 
 	getEstudiates() {
@@ -53,14 +105,28 @@ class AsigEstuModalController {
 					tlf: 'tlf'
 				}]);
 
-				var items = [], estus = [], _estus = [];
-				angular.forEach(this.$scope.values['estu'], function(item){
+				var items = [],
+					estus = [],
+					_estus = [],
+					_notas = [];
+				angular.forEach(this.$scope.values['estu'], function(item) {
 					_estus.push(item.cedu.cedu);
+				});
+
+				angular.forEach(this.$scope.values['nota'], function(item) {
+					_notas.push({cedu: item.cedu.cedu, nota: item.nota, asist: item.asist});
 				});
 
 				if (this.$scope.estudiantes.length) {
 					angular.forEach(this.$scope.estudiantes, (item) => {
 						if (_estus.indexOf(item.cedu) !== -1) {
+							angular.forEach(_notas, function(_item){
+								if (_item.cedu === item.cedu) {
+									item.nota = _item.nota;
+									item.asist = _item.asist;
+								}
+							});
+
 							items.push(item);
 							estus.push(item.cedu);
 						}
@@ -70,7 +136,6 @@ class AsigEstuModalController {
 				if (items.length) {
 
 					this.$scope.insc = estus.length;
-					this.$scope.model.estus = estus;
 
 					this.selected(items);
 				}
@@ -108,21 +173,25 @@ class AsigEstuModalController {
 
 		let data = {
 			secc: this.$scope.secc,
-			cedu: this.$scope.model.estus
+			notas: this.$scope.model
 		};
 
-        this.progression.start();
+		this.progression.start();
 
 		this.rest
-			.createOne(data, 'seccionestus', '/api/seccionestus/asigs')
+			.createOne(data, 'notas', '/api/notas/asigs')
 			.then(() => {
-                this.progression.done();
-                this.notification.log('Changes successfully saved.', { addnCls: 'humane-flatty-success' });
-				this.$scope.insc = this.$scope.model.estus.length;
-                this.refresh();
+				this.progression.done();
+				this.notification.log('Changes successfully saved.', {
+					addnCls: 'humane-flatty-success'
+				});
+
+				this.refresh();
 			}, () => {
 				this.progression.done();
-        		this.notification.log('Error 500.', {addnCls: 'humane-flatty-error'});
+				this.notification.log('Error 500.', {
+					addnCls: 'humane-flatty-error'
+				});
 			});
 	}
 
@@ -167,9 +236,9 @@ export default class AsigEstuController {
 
 		this.$modal.open({
 			animation: true,
-			template: asigEstuTemplate,
-			controller: AsigEstuModalController,
-			controllerAs: 'asigestu',
+			template: cargaNotaTemplate,
+			controller: CargaNotaModalController,
+			controllerAs: 'carganota',
 			size: 'lg',
 			resolve: {
 				identifier: function() {
@@ -188,6 +257,6 @@ export default class AsigEstuController {
 	}
 }
 
-AsigEstuModalController.$inject = ['$scope', '$modalInstance', 'notification', 'progression', 'UtilityService', '$state', '$stateParams', 'RestWrapper', 'identifier', 'values'];
+CargaNotaModalController.$inject = ['$scope', '$modalInstance', 'notification', 'progression', 'UtilityService', '$state', '$stateParams', 'RestWrapper', 'identifier', 'values'];
 
 AsigEstuController.$inject = ['$scope', '$modal'];

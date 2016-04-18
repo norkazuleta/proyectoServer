@@ -69,8 +69,6 @@ class PeriodoAcademico
      */
     private $pnfTipo;
 
-
-
     /**
      * @var string
      *
@@ -83,7 +81,7 @@ class PeriodoAcademico
     /**
      * Get paId
      *
-     * @return integer 
+     * @return integer
      */
     public function getPaId()
     {
@@ -93,7 +91,7 @@ class PeriodoAcademico
     /**
      * Set paAnio
      *
-     * @param string $paAnio
+     * @param  string           $paAnio
      * @return PeriodoAcademico
      */
     public function setPaAnio($paAnio)
@@ -106,7 +104,7 @@ class PeriodoAcademico
     /**
      * Get paAnio
      *
-     * @return string 
+     * @return string
      */
     public function getPaAnio()
     {
@@ -116,7 +114,7 @@ class PeriodoAcademico
     /**
      * Set paCodi
      *
-     * @param string $paCodi
+     * @param  string           $paCodi
      * @return PeriodoAcademico
      */
     public function setPaCodi($paCodi)
@@ -129,7 +127,7 @@ class PeriodoAcademico
     /**
      * Get paCodi
      *
-     * @return string 
+     * @return string
      */
     public function getPaCodi()
     {
@@ -139,7 +137,7 @@ class PeriodoAcademico
     /**
      * Set paIni
      *
-     * @param \DateTime $paIni
+     * @param  \DateTime        $paIni
      * @return PeriodoAcademico
      */
     public function setPaIni(\Datetime $paIni = null)
@@ -152,7 +150,7 @@ class PeriodoAcademico
     /**
      * Get paIni
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPaIni()
     {
@@ -162,7 +160,7 @@ class PeriodoAcademico
     /**
      * Set paFin
      *
-     * @param \DateTime $paFin
+     * @param  \DateTime        $paFin
      * @return PeriodoAcademico
      */
     public function setPaFin(\Datetime $paFin = null)
@@ -175,7 +173,7 @@ class PeriodoAcademico
     /**
      * Get paFin
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPaFin()
     {
@@ -185,7 +183,7 @@ class PeriodoAcademico
     /**
      * Set paStatus
      *
-     * @param boolean $paStatus
+     * @param  boolean          $paStatus
      * @return PeriodoAcademico
      */
     public function setPaStatus($paStatus)
@@ -198,7 +196,7 @@ class PeriodoAcademico
     /**
      * Get paStatus
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPaStatus()
     {
@@ -208,7 +206,7 @@ class PeriodoAcademico
     /**
      * Set pnfTipo
      *
-     * @param \AppBundle\Entity\PnfTipo $pnfTipo
+     * @param  \AppBundle\Entity\PnfTipo $pnfTipo
      * @return PeriodoAcademico
      */
     public function setPnfTipo(\AppBundle\Entity\PnfTipo $pnfTipo = null)
@@ -221,7 +219,7 @@ class PeriodoAcademico
     /**
      * Get pnfTipo
      *
-     * @return \AppBundle\Entity\PnfTipo 
+     * @return \AppBundle\Entity\PnfTipo
      */
     public function getPnfTipo()
     {

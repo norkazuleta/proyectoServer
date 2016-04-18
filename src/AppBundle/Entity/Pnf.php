@@ -28,12 +28,10 @@ class Pnf
      */
     private $pnfDesc;
 
-
-
     /**
      * Get pnfId
      *
-     * @return integer 
+     * @return integer
      */
     public function getPnfId()
     {
@@ -43,7 +41,7 @@ class Pnf
     /**
      * Set pnfDesc
      *
-     * @param string $pnfDesc
+     * @param  string $pnfDesc
      * @return Pnf
      */
     public function setPnfDesc($pnfDesc)
@@ -56,7 +54,7 @@ class Pnf
     /**
      * Get pnfDesc
      *
-     * @return string 
+     * @return string
      */
     public function getPnfDesc()
     {

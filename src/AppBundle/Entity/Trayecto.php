@@ -28,12 +28,10 @@ class Trayecto
      */
     private $trayDesc;
 
-
-
     /**
      * Get trayId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTrayId()
     {
@@ -43,7 +41,7 @@ class Trayecto
     /**
      * Set trayDesc
      *
-     * @param string $trayDesc
+     * @param  string   $trayDesc
      * @return Trayecto
      */
     public function setTrayDesc($trayDesc)
@@ -56,7 +54,7 @@ class Trayecto
     /**
      * Get trayDesc
      *
-     * @return string 
+     * @return string
      */
     public function getTrayDesc()
     {

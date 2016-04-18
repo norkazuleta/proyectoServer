@@ -1,6 +1,6 @@
-<form name="asigestu.form" ng-submit="asigestu.submitEdition($event)">
+<form name="carganota.form" ng-submit="carganota.submitEdition($event)">
 	<div class="modal-header align-center">
-	    <h3 class="modal-title">Asignar Estudiante</h3>
+	    <h3 class="modal-title">Cargar Notas</h3>
 	</div>
 	<div class="modal-body">
 		<div ng-if="item.loading">
@@ -58,26 +58,32 @@
                 </tr>
                 <tr class="info">
                     <th colspan="1">Cédula</th>
-                    <th colspan="4">Nombres y Apellidos</th>
-                    <th colspan="1">Teléfono</th>
+                    <th colspan="3">Nombres y Apellidos</th>
+                    <th colspan="1">Nota</th>
+                    <th colspan="1">Asist.</th>
                 </tr>
                 <tr ng-repeat="item in estus track by $index">
-                    <td colspan="1">{{ item.cedu }}</td>
-                    <td colspan="4">{{ item.nomb_apell }}</td>
-                    <td colspan="1">{{ item.tlf }}</td>
+                    <td colspan="1" ng-init="initItem(item, $index)"> {{ item.cedu }}</td>
+                    <td colspan="3">{{ item.nomb_apell }}</td>
+                    <td colspan="1">
+                        <ui-select  ng-model="model[$index].nota" ng-required="true" required="required" id="nota" name="nota">
+                            <ui-select-match allow-clear="false" placeholder="Nota.">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="item.value as item in notas | filter: {label: $select.search} track by $index">
+                                {{ item.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
+                    <td colspan="1">
+                        <ui-select  ng-model="model[$index].asist" ng-required="true" required="required" id="asist" name="asist">
+                            <ui-select-match allow-clear="false" placeholder="Asistencia.">{{ $select.selected.label }}</ui-select-match>
+                            <ui-select-choices repeat="item.value as item in asists | filter: {label: $select.search} track by $index">
+                                {{ item.label }}
+                            </ui-select-choices>
+                        </ui-select>
+                    </td>
                 </tr>
                 <tr ng-if="!estus.length>0">
                     <td colspan="6">NO ASIGNADO</td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-		                <ui-select ui-select-required multiple on-select="selEstu($item, $model, $select)" on-remove="removeEstu($item, $mode, $select)" ng-model="model.estus" ng-required="true" id="estus" name="estus">
-				            <ui-select-match placeholder="Introduzca los numeros de cédula de los estudiantes.">{{ $item.label }}</ui-select-match>
-				            <ui-select-choices repeat="item.value as item in estudiantes | filter: {label: $select.search}">
-				                {{ item.label }}
-				            </ui-select-choices>
-				        </ui-select>
-                    </td>
                 </tr>
             </tbody>
         </table>

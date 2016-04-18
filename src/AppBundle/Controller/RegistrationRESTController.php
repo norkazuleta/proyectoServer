@@ -6,7 +6,6 @@ use AppBundle\AppEvents;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View as FOSView;
@@ -76,7 +75,6 @@ class RegistrationRESTController extends VoryxController
                 }
 
                 //$dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
                 return $entity;
             }
 
@@ -162,6 +160,7 @@ class RegistrationRESTController extends VoryxController
 
         //autenticate user
         /*$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+
         return $response;*/
 
         return $user;

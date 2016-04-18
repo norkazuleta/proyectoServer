@@ -45,7 +45,6 @@ class PnfTrayectoPeriodo
      */
     private $tray;
 
-
     /**
      * @var \Periodo
      *
@@ -55,7 +54,6 @@ class PnfTrayectoPeriodo
      * })
      */
     private $peri;
-
 
     /**
      * @var \PnfTrayectoPeriodoUc
@@ -85,7 +83,7 @@ class PnfTrayectoPeriodo
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -95,7 +93,7 @@ class PnfTrayectoPeriodo
     /**
      * Set pnf
      *
-     * @param \AppBundle\Entity\Pnf $pnf
+     * @param  \AppBundle\Entity\Pnf $pnf
      * @return PnfTrayectoPeriodo
      */
     public function setPnf(\AppBundle\Entity\Pnf $pnf = null)
@@ -108,7 +106,7 @@ class PnfTrayectoPeriodo
     /**
      * Get pnf
      *
-     * @return \AppBundle\Entity\Pnf 
+     * @return \AppBundle\Entity\Pnf
      */
     public function getPnf()
     {
@@ -118,7 +116,7 @@ class PnfTrayectoPeriodo
     /**
      * Set tray
      *
-     * @param \AppBundle\Entity\Trayecto $tray
+     * @param  \AppBundle\Entity\Trayecto $tray
      * @return PnfTrayectoPeriodo
      */
     public function setTray(\AppBundle\Entity\Trayecto $tray = null)
@@ -131,7 +129,7 @@ class PnfTrayectoPeriodo
     /**
      * Get tray
      *
-     * @return \AppBundle\Entity\Trayecto 
+     * @return \AppBundle\Entity\Trayecto
      */
     public function getTray()
     {
@@ -141,7 +139,7 @@ class PnfTrayectoPeriodo
     /**
      * Set peri
      *
-     * @param \AppBundle\Entity\Periodo $peri
+     * @param  \AppBundle\Entity\Periodo $peri
      * @return PnfTrayectoPeriodo
      */
     public function setPeri(\AppBundle\Entity\Periodo $peri = null)
@@ -154,7 +152,7 @@ class PnfTrayectoPeriodo
     /**
      * Get peri
      *
-     * @return \AppBundle\Entity\Periodo 
+     * @return \AppBundle\Entity\Periodo
      */
     public function getPeri()
     {
@@ -164,7 +162,7 @@ class PnfTrayectoPeriodo
     /**
      * Add uc
      *
-     * @param \AppBundle\Entity\PnfTrayectoPeriodoUc $uc
+     * @param  \AppBundle\Entity\PnfTrayectoPeriodoUc $uc
      * @return PnfTrayectoPeriodo
      */
     public function addUc(\AppBundle\Entity\PnfTrayectoPeriodoUc $uc)
@@ -188,7 +186,7 @@ class PnfTrayectoPeriodo
     /**
      * Get uc
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUc()
     {

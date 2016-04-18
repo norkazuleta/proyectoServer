@@ -96,8 +96,8 @@ define(function() {
 			.addChild(nga.menu().title('Seguimiento Académico').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu().title('Nueva Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/create'))
 				/*.addChild(nga.menu().title('Asignar Docente').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=a'))
-				.addChild(nga.menu().title('Asignar Estudiante').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=b'))*/
-				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=c'))
+				.addChild(nga.menu().title('Asignar Estudiante').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=b'))
+				.addChild(nga.menu().title('Cargar Notas').icon('<span class="fa fa-user"> </span>').link('/seccions/list?op=c'))*/
 				.addChild(nga.menu().title('Administrar Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/list'))
 			)
 			.addChild(nga.menu().title('Periodo Académico').icon('<span class="fa fa-key"> </span>')

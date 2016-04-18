@@ -4,13 +4,9 @@ namespace AppBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcherInterface;
-use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use JasperPHP\JasperPHP;
 
 class ConsultasREPORTController extends ReportController
 {
@@ -41,7 +37,6 @@ class ConsultasREPORTController extends ReportController
         $report = $paramFetcher->get('report');
         $format = $paramFetcher->get('format');
         $param = $paramFetcher->get('param');
-
 
         $this->initialize();
 

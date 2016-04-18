@@ -5,7 +5,6 @@ namespace AppBundle\Form\Type;
 use FOS\UserBundle\Form\Type\RegistrationFormType as RegistrationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class RegistrationFormType extends RegistrationType
 {

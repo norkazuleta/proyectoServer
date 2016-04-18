@@ -49,7 +49,7 @@ data_fixtures_load:
 
 app_install: clear db_database_create db_schema_create data_fixtures_load clear
 
-app_uninstall: db_database_drop
+app_uninstall: db_database_drop clear
 
 ifeq ($(OS),Windows_NT)
 

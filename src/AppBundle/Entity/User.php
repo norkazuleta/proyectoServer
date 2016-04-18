@@ -68,8 +68,6 @@ class User extends BaseUser
      */
     private $gender;
 
-
-
     /**
      * @Accessor("getUsername")
      * @Expose
@@ -113,7 +111,6 @@ class User extends BaseUser
     {
         $this->updateAt = new \DateTime();
     }
-
 
     /**
      * Get id.
@@ -185,7 +182,7 @@ class User extends BaseUser
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      * @return User
      */
     public function setCreatedAt($createdAt)
@@ -198,7 +195,7 @@ class User extends BaseUser
     /**
      * Set updateAt
      *
-     * @param \DateTime $updateAt
+     * @param  \DateTime $updateAt
      * @return User
      */
     public function setUpdateAt($updateAt)
@@ -211,7 +208,7 @@ class User extends BaseUser
     /**
      * Set lastName
      *
-     * @param string $lastName
+     * @param  string $lastName
      * @return User
      */
     public function setLastName($lastName)
@@ -224,7 +221,7 @@ class User extends BaseUser
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -234,7 +231,7 @@ class User extends BaseUser
     /**
      * Set firstName
      *
-     * @param string $firstName
+     * @param  string $firstName
      * @return User
      */
     public function setFirstName($firstName)
@@ -247,7 +244,7 @@ class User extends BaseUser
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -266,7 +263,7 @@ class User extends BaseUser
     /**
      * Set gender
      *
-     * @param string $gender
+     * @param  string $gender
      * @return User
      */
     public function setGender($gender)
@@ -279,7 +276,7 @@ class User extends BaseUser
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {

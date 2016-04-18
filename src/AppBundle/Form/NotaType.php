@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserType extends AbstractType
+class NotaType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,15 +15,16 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('email')
-            ->add('lastName')
-            ->add('firstName')
-            ->add('enabled', 'checkbox', array(
-                'required' => false,
-                'compound' => false,
+            ->add('nota')
+            ->add('asist')
+            ->add('cedu', 'entity', array(
+                'class' => 'AppBundle:Estudiante',
+                'property' => 'cedu',
             ))
-            /*->add('plainPassword')*/
+            ->add('secc', 'entity', array(
+                'class' => 'AppBundle:Seccion',
+                'property' => 'seccId',
+            ))
         ;
     }
 
@@ -33,7 +34,7 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User',
+            'data_class' => 'AppBundle\Entity\Nota',
             'csrf_protection' => false,
         ));
     }
@@ -43,6 +44,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_user';
+        return 'appbundle_nota';
     }
 }

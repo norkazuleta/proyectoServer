@@ -28,12 +28,10 @@ class Turno
      */
     private $turnDesc;
 
-
-
     /**
      * Get turnId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTurnId()
     {
@@ -43,7 +41,7 @@ class Turno
     /**
      * Set turnDesc
      *
-     * @param string $turnDesc
+     * @param  string $turnDesc
      * @return Turno
      */
     public function setTurnDesc($turnDesc)
@@ -56,7 +54,7 @@ class Turno
     /**
      * Get turnDesc
      *
-     * @return string 
+     * @return string
      */
     public function getTurnDesc()
     {

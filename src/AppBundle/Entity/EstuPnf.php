@@ -21,7 +21,6 @@ class EstuPnf
      */
     private $id;
 
-
     /**
      * @var \Estudiante
      *
@@ -55,7 +54,7 @@ class EstuPnf
     /**
      * Set estu
      *
-     * @param \AppBundle\Entity\Estudiante $estu
+     * @param  \AppBundle\Entity\Estudiante $estu
      * @return EstuPnf
      */
     public function setEstu(\AppBundle\Entity\Estudiante $estu = null)
@@ -78,7 +77,7 @@ class EstuPnf
     /**
      * Set pnf
      *
-     * @param \AppBundle\Entity\Pnf $pnf
+     * @param  \AppBundle\Entity\Pnf $pnf
      * @return EstuPnf
      */
     public function setPnf(\AppBundle\Entity\Pnf $pnf = null)

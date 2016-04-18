@@ -28,12 +28,10 @@ class PnfTipo
      */
     private $tipoDesc;
 
-
-
     /**
      * Get tipoId
      *
-     * @return integer 
+     * @return integer
      */
     public function getTipoId()
     {
@@ -43,7 +41,7 @@ class PnfTipo
     /**
      * Set tipoDesc
      *
-     * @param string $tipoDesc
+     * @param  string  $tipoDesc
      * @return PnfTipo
      */
     public function setTipoDesc($tipoDesc)
@@ -56,7 +54,7 @@ class PnfTipo
     /**
      * Get tipoDesc
      *
-     * @return string 
+     * @return string
      */
     public function getTipoDesc()
     {

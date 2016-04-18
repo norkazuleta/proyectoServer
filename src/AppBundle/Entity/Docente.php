@@ -2,15 +2,18 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Util\Utility;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
+
 /**
  * Docente
  *
  * @ORM\Table(name="docente", options={"collate"="utf8_general_ci", "charset"="utf8"})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocenteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Docente
 {
@@ -77,9 +80,35 @@ class Docente
     private $nombApellCedu;
 
     /**
+     * Hook on pre-persist operations.
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->cedu = Utility::upperCase($this->cedu);
+        $this->nomb = Utility::upperCase($this->nomb);
+        $this->apell = Utility::upperCase($this->apell);
+        $this->correo = Utility::lowerCase($this->correo);
+    }
+
+    /**
+     * Hook on pre-update operations.
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->cedu = Utility::upperCase($this->cedu);
+        $this->nomb = Utility::upperCase($this->nomb);
+        $this->apell = Utility::upperCase($this->apell);
+        $this->correo = Utility::lowerCase($this->correo);
+    }
+
+    /**
      * Set cedu
      *
-     * @param string $cedu
+     * @param  string     $cedu
      * @return Estudiante
      */
     public function setCedu($cedu)
@@ -102,7 +131,7 @@ class Docente
     /**
      * Set nomb
      *
-     * @param string $nomb
+     * @param  string  $nomb
      * @return Docente
      */
     public function setNomb($nomb)
@@ -125,7 +154,7 @@ class Docente
     /**
      * Set apell
      *
-     * @param string $apell
+     * @param  string  $apell
      * @return Docente
      */
     public function setApell($apell)
@@ -148,7 +177,7 @@ class Docente
     /**
      * Set fn
      *
-     * @param \DateTime $fn
+     * @param  \DateTime $fn
      * @return Docente
      */
     public function setFn(\DateTime $fn = null)
@@ -171,7 +200,7 @@ class Docente
     /**
      * Set correo
      *
-     * @param string $correo
+     * @param  string  $correo
      * @return Docente
      */
     public function setCorreo($correo)
@@ -194,7 +223,7 @@ class Docente
     /**
      * Set tlf
      *
-     * @param string $tlf
+     * @param  string  $tlf
      * @return Docente
      */
     public function setTlf($tlf)

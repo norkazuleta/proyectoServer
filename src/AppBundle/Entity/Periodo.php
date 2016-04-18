@@ -28,12 +28,10 @@ class Periodo
      */
     private $periDesc;
 
-
-
     /**
      * Get periId
      *
-     * @return integer 
+     * @return integer
      */
     public function getPeriId()
     {
@@ -43,7 +41,7 @@ class Periodo
     /**
      * Set periDesc
      *
-     * @param string $periDesc
+     * @param  string  $periDesc
      * @return Periodo
      */
     public function setPeriDesc($periDesc)
@@ -56,7 +54,7 @@ class Periodo
     /**
      * Get periDesc
      *
-     * @return string 
+     * @return string
      */
     public function getPeriDesc()
     {

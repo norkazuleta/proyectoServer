@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\SerializedName;
@@ -109,18 +110,50 @@ class Seccion
     private $doce;
 
     /**
+     * @var \SeccionEstu
+     *
+     * @ORM\OneToMany(targetEntity="SeccionEstu", mappedBy="secc", cascade={"remove"})
+     */
+    private $estu;
+
+    /**
+     * @var \Nota
+     *
+     * @ORM\OneToMany(targetEntity="Nota", mappedBy="secc", cascade={"remove"})
+     */
+    private $nota;
+
+    /**
      * @var string
      *
      * @SerializedName("aldea_turno")
      * @Type("string")
      * @Accessor(getter="getAldeaTurno")
      */
-    private $estbRif;
+    private $aldeaTurno;
+
+    /**
+     * @var string
+     *
+     * @SerializedName("estu_total")
+     * @Type("string")
+     * @Accessor(getter="getEstuTotal")
+     */
+    private $estuTotal;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->estu = new ArrayCollection();
+        $this->nota = new ArrayCollection();
+    }
 
     /**
      * Get seccId
      *
-     * @return integer 
+     * @return integer
      */
     public function getSeccId()
     {
@@ -130,7 +163,7 @@ class Seccion
     /**
      * Set seccCodi
      *
-     * @param string $seccCodi
+     * @param  string  $seccCodi
      * @return Seccion
      */
     public function setSeccCodi($seccCodi)
@@ -143,7 +176,7 @@ class Seccion
     /**
      * Get seccCodi
      *
-     * @return string 
+     * @return string
      */
     public function getSeccCodi()
     {
@@ -153,7 +186,7 @@ class Seccion
     /**
      * Set turn
      *
-     * @param \AppBundle\Entity\Turno $turn
+     * @param  \AppBundle\Entity\Turno $turn
      * @return Seccion
      */
     public function setTurn(\AppBundle\Entity\Turno $turn = null)
@@ -166,7 +199,7 @@ class Seccion
     /**
      * Get turn
      *
-     * @return \AppBundle\Entity\Turno 
+     * @return \AppBundle\Entity\Turno
      */
     public function getTurn()
     {
@@ -176,7 +209,7 @@ class Seccion
     /**
      * Set pnf
      *
-     * @param \AppBundle\Entity\Pnf $pnf
+     * @param  \AppBundle\Entity\Pnf $pnf
      * @return Seccion
      */
     public function setPnf(\AppBundle\Entity\Pnf $pnf = null)
@@ -189,7 +222,7 @@ class Seccion
     /**
      * Get pnf
      *
-     * @return \AppBundle\Entity\Pnf 
+     * @return \AppBundle\Entity\Pnf
      */
     public function getPnf()
     {
@@ -199,7 +232,7 @@ class Seccion
     /**
      * Set tray
      *
-     * @param \AppBundle\Entity\Trayecto $tray
+     * @param  \AppBundle\Entity\Trayecto $tray
      * @return Seccion
      */
     public function setTray(\AppBundle\Entity\Trayecto $tray = null)
@@ -212,7 +245,7 @@ class Seccion
     /**
      * Get tray
      *
-     * @return \AppBundle\Entity\Trayecto 
+     * @return \AppBundle\Entity\Trayecto
      */
     public function getTray()
     {
@@ -222,7 +255,7 @@ class Seccion
     /**
      * Set peri
      *
-     * @param \AppBundle\Entity\Periodo $peri
+     * @param  \AppBundle\Entity\Periodo $peri
      * @return Seccion
      */
     public function setPeri(\AppBundle\Entity\Periodo $peri = null)
@@ -235,7 +268,7 @@ class Seccion
     /**
      * Get peri
      *
-     * @return \AppBundle\Entity\Periodo 
+     * @return \AppBundle\Entity\Periodo
      */
     public function getPeri()
     {
@@ -245,7 +278,7 @@ class Seccion
     /**
      * Set uc
      *
-     * @param \AppBundle\Entity\UnidadCurricular $uc
+     * @param  \AppBundle\Entity\UnidadCurricular $uc
      * @return Seccion
      */
     public function setUc(\AppBundle\Entity\UnidadCurricular $uc = null)
@@ -258,7 +291,7 @@ class Seccion
     /**
      * Get uc
      *
-     * @return \AppBundle\Entity\UnidadCurricular 
+     * @return \AppBundle\Entity\UnidadCurricular
      */
     public function getUc()
     {
@@ -268,7 +301,7 @@ class Seccion
     /**
      * Set pa
      *
-     * @param \AppBundle\Entity\PeriodoAcademico $pa
+     * @param  \AppBundle\Entity\PeriodoAcademico $pa
      * @return Seccion
      */
     public function setPa(\AppBundle\Entity\PeriodoAcademico $pa = null)
@@ -281,7 +314,7 @@ class Seccion
     /**
      * Get pa
      *
-     * @return \AppBundle\Entity\PeriodoAcademico 
+     * @return \AppBundle\Entity\PeriodoAcademico
      */
     public function getPa()
     {
@@ -291,7 +324,7 @@ class Seccion
     /**
      * Set aldea
      *
-     * @param \AppBundle\Entity\Aldea $aldea
+     * @param  \AppBundle\Entity\Aldea $aldea
      * @return Seccion
      */
     public function setAldea(\AppBundle\Entity\Aldea $aldea = null)
@@ -304,13 +337,12 @@ class Seccion
     /**
      * Get aldea
      *
-     * @return \AppBundle\Entity\Aldea 
+     * @return \AppBundle\Entity\Aldea
      */
     public function getAldea()
     {
         return $this->aldea;
     }
-
 
     /**
      * Set doce.
@@ -345,5 +377,81 @@ class Seccion
     public function getAldeaTurno()
     {
         return sprintf('%s - %s', $this->getAldea()->getAldeaNomb(), ($this->getTurn())? $this->getTurn()->getTurnDesc() : ':-)');
+    }
+
+    /**
+     * Add estu
+     *
+     * @param  \AppBundle\Entity\SeccionEstu $estu
+     * @return Seccion
+     */
+    public function addEstu(\AppBundle\Entity\SeccionEstu $estu)
+    {
+        $this->estu[] = $estu;
+
+        return $this;
+    }
+
+    /**
+     * Remove estu
+     *
+     * @param \AppBundle\Entity\SeccionEstu $estu
+     */
+    public function removeEstu(\AppBundle\Entity\SeccionEstu $estu)
+    {
+        $this->estu->removeElement($estu);
+    }
+
+    /**
+     * Get estu
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEstu()
+    {
+        return $this->estu;
+    }
+
+    /**
+     * Get count estu.
+     *
+     * @return string
+     */
+    public function getEstuTotal()
+    {
+        return count($this->estu);
+    }
+
+    /**
+     * Add nota
+     *
+     * @param  \AppBundle\Entity\Nota $nota
+     * @return Seccion
+     */
+    public function addNota(\AppBundle\Entity\Nota $nota)
+    {
+        $this->nota[] = $nota;
+
+        return $this;
+    }
+
+    /**
+     * Remove nota
+     *
+     * @param \AppBundle\Entity\Nota $nota
+     */
+    public function removeNota(\AppBundle\Entity\Nota $nota)
+    {
+        $this->nota->removeElement($nota);
+    }
+
+    /**
+     * Get estu
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNota()
+    {
+        return $this->nota;
     }
 }

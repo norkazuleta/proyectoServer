@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SeccionDoce;
-use AppBundle\Form\SeccionDoceType;
+use AppBundle\Entity\SeccionEstu;
+use AppBundle\Form\SeccionEstuType;
 
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -19,25 +19,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * SeccionDoce controller.
- * @RouteResource("SeccionDoce")
+ * SeccionEstu controller.
+ * @RouteResource("SeccionEstu")
  */
-class SeccionDoceRESTController extends VoryxController
+class SeccionEstuRESTController extends VoryxController
 {
     /**
-     * Get a SeccionDoce entity
+     * Get a SeccionEstu entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(SeccionDoce $entity)
+    public function getAction(SeccionEstu $entity)
     {
         return $entity;
     }
     /**
-     * Get all SeccionDoce entities.
+     * Get all SeccionEstu entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -63,7 +63,7 @@ class SeccionDoceRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:SeccionDoce');
+            $entity = $em->getRepository('AppBundle:SeccionEstu');
 
             if (!empty($q)) {
                 $filters_ = array('seccCodi' => '');
@@ -88,7 +88,7 @@ class SeccionDoceRESTController extends VoryxController
         }
     }
     /**
-     * Create a SeccionDoce entity.
+     * Create a SeccionEstu entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -99,8 +99,8 @@ class SeccionDoceRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new SeccionDoce();
-        $form = $this->createForm(new SeccionDoceType(), $entity, array("method" => $request->getMethod()));
+        $entity = new SeccionEstu();
+        $form = $this->createForm(new SeccionEstuType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -116,7 +116,7 @@ class SeccionDoceRESTController extends VoryxController
     }
 
     /**
-     * Create || Update a SeccionDoce entity.
+     * Create || Update a SeccionEstu entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -128,25 +128,55 @@ class SeccionDoceRESTController extends VoryxController
     public function postAsigAction(Request $request)
     {
         $secc = $request->request->get('secc');
-        $doceCeduReq = $request->request->get('cedu');
+        $estus = $request->request->get('cedu');
 
         $em = $this->getDoctrine()->getManager();
-        $entitySeccionDoce = $em->getRepository('AppBundle:SeccionDoce')->findBy(array('secc' => $secc));
+        $entitySeccionEstu = $em->getRepository('AppBundle:SeccionEstu')->findBy(array('secc' => $secc));
 
-        if (count($entitySeccionDoce) > 0) {
-            $seccionDoce = $entitySeccionDoce[0];
-            $doceCedu = $seccionDoce->getCedu();
-            if ($doceCeduReq != $doceCedu) {
-                return $this->putAction($request, $seccionDoce);
+        $seccionEstuIds = array();
+        foreach ($entitySeccionEstu as $key => $enti) {
+            $ceduEstu = $enti->getCedu()->getCedu();
+            if (in_array($ceduEstu, $estus)) {
+                if (($key = array_search($ceduEstu, $estus)) !== false) {
+                    unset($estus[$key]);
+                }
             } else {
-                return $seccionDoce;
+                $seccionEstuIds[] = $enti;
             }
-        } else {
-            return $this->postAction($request);
         }
+
+        //delete entity
+        foreach ($seccionEstuIds as $key => $value) {
+            $em->remove($value);
+        }
+
+        if ($seccionEstuIds) {
+            $em->flush();
+        }
+
+        //add entityentityEstudiante
+        $seccEstus = array();
+        foreach ($estus as $key => $value) {
+            $entityEstudiante = $em->getRepository('AppBundle:Estudiante')->find($value);
+            if ($entityEstudiante) {
+                $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
+                $entitySeccionEstu = new SeccionEstu();
+                $entitySeccionEstu->setSecc($entitySeccion);
+                $entitySeccionEstu->setCedu($entityEstudiante);
+                $em->persist($entitySeccionEstu);
+                array_push($seccEstus, $entitySeccionEstu);
+            }
+        }
+
+        if (count($estus)) {
+            $em->flush();
+        }
+
+        return $seccEstus;
     }
+
     /**
-     * Update a SeccionDoce entity.
+     * Update a SeccionEstu entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,12 +185,12 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, SeccionDoce $entity)
+    public function putAction(Request $request, SeccionEstu $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new SeccionDoceType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new SeccionEstuType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -175,7 +205,7 @@ class SeccionDoceRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a SeccionDoce entity.
+     * Partial Update to a SeccionEstu entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -184,12 +214,12 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, SeccionDoce $entity)
+    public function patchAction(Request $request, SeccionEstu $entity)
     {
         return $this->putAction($request, $entity);
     }
     /**
-     * Delete a SeccionDoce entity.
+     * Delete a SeccionEstu entity.
      *
      * @View(statusCode=204)
      *
@@ -198,7 +228,7 @@ class SeccionDoceRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, SeccionDoce $entity)
+    public function deleteAction(Request $request, SeccionEstu $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();

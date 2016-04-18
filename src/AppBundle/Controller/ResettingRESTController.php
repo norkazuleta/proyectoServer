@@ -2,12 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppEvents;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View as FOSView;
@@ -20,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
@@ -65,6 +62,7 @@ class ResettingRESTController extends VoryxController
         try {
             if (null === $user) {
                 $request->attributes->set('_redirect_route_name', 'request_resetting');
+
                 return FOSView::create(
                     array('errors' => array('invalid_username' => $username)),
                     Codes::HTTP_INTERNAL_SERVER_ERROR
@@ -73,6 +71,7 @@ class ResettingRESTController extends VoryxController
 
             if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
                 $request->attributes->set('_redirect_route_name', 'send_email_resetting');
+
                 return  array();
             }
 
@@ -88,6 +87,7 @@ class ResettingRESTController extends VoryxController
             $this->get('fos_user.user_manager')->updateUser($user);
 
             $request->attributes->set('_redirect_route_name', 'check_email_resetting');
+
             return array('email' => $this->getObfuscatedEmail($user));
 
         } catch (\Exception $e) {
@@ -179,7 +179,6 @@ class ResettingRESTController extends VoryxController
                 }
 
                 //$dispatcher->dispatch(FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
                 return $user;
             }
 

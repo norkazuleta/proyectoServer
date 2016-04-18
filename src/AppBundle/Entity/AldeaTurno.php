@@ -21,7 +21,6 @@ class AldeaTurno
      */
     private $id;
 
-
     /**
      * @var \Aldea
      *
@@ -42,11 +41,10 @@ class AldeaTurno
      */
     private $turno;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +54,7 @@ class AldeaTurno
     /**
      * Set aldea
      *
-     * @param \AppBundle\Entity\Aldea $aldea
+     * @param  \AppBundle\Entity\Aldea $aldea
      * @return AldeaTurno
      */
     public function setAldea(\AppBundle\Entity\Aldea $aldea = null)
@@ -69,7 +67,7 @@ class AldeaTurno
     /**
      * Get aldea
      *
-     * @return \AppBundle\Entity\Aldea 
+     * @return \AppBundle\Entity\Aldea
      */
     public function getAldea()
     {
@@ -79,7 +77,7 @@ class AldeaTurno
     /**
      * Set turno
      *
-     * @param \AppBundle\Entity\Turno $turno
+     * @param  \AppBundle\Entity\Turno $turno
      * @return AldeaTurno
      */
     public function setTurno(\AppBundle\Entity\Turno $turno = null)
@@ -92,7 +90,7 @@ class AldeaTurno
     /**
      * Get turno
      *
-     * @return \AppBundle\Entity\Turno 
+     * @return \AppBundle\Entity\Turno
      */
     public function getTurno()
     {

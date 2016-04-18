@@ -48,7 +48,6 @@ class Aldea
      */
     private $parroq;
 
-
     /**
      * @var \AldeaTurno
      *
@@ -112,7 +111,7 @@ class Aldea
     /**
      * Set aldeaNomb
      *
-     * @param string $aldeaNomb
+     * @param  string $aldeaNomb
      * @return Aldea
      */
     public function setAldeaNomb($aldeaNomb)
@@ -135,7 +134,7 @@ class Aldea
     /**
      * Set aldeaActual
      *
-     * @param string $aldeaActual
+     * @param  string $aldeaActual
      * @return Aldea
      */
     public function setAldeaActual($aldeaActual)
@@ -158,7 +157,7 @@ class Aldea
     /**
      * Set parroq
      *
-     * @param \AppBundle\Entity\Parroquia $parroq
+     * @param  \AppBundle\Entity\Parroquia $parroq
      * @return Aldea
      */
     public function setParroq(\AppBundle\Entity\Parroquia $parroq = null)
@@ -181,7 +180,7 @@ class Aldea
     /**
      * Add aldeaTurno
      *
-     * @param \AppBundle\Entity\AldeaTurno $aldeaTurno
+     * @param  \AppBundle\Entity\AldeaTurno $aldeaTurno
      * @return Aldea
      */
     public function addAldeaTurno(\AppBundle\Entity\AldeaTurno $aldeaTurno)

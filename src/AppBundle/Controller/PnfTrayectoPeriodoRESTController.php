@@ -11,7 +11,6 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View as FOSView;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,7 +157,6 @@ class PnfTrayectoPeriodoRESTController extends VoryxController
     {
         return $this->putAction($request, $entity);
     }
-
 
     public function ucEntity(Request $request, PnfTrayectoPeriodo $entity)
     {

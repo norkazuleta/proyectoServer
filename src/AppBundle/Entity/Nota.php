@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Nota
  *
  * @ORM\Table(name="nota", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="cedu", columns={"cedu"}), @ORM\Index(name="secc_id", columns={"secc_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NotaRepository")
  */
 class Nota
 {
@@ -55,12 +55,10 @@ class Nota
      */
     private $secc;
 
-
-
     /**
      * Get notaId
      *
-     * @return integer 
+     * @return integer
      */
     public function getNotaId()
     {
@@ -70,7 +68,7 @@ class Nota
     /**
      * Set nota
      *
-     * @param integer $nota
+     * @param  integer $nota
      * @return Nota
      */
     public function setNota($nota)
@@ -83,7 +81,7 @@ class Nota
     /**
      * Get nota
      *
-     * @return integer 
+     * @return integer
      */
     public function getNota()
     {
@@ -93,7 +91,7 @@ class Nota
     /**
      * Set asist
      *
-     * @param string $asist
+     * @param  string $asist
      * @return Nota
      */
     public function setAsist($asist)
@@ -106,7 +104,7 @@ class Nota
     /**
      * Get asist
      *
-     * @return string 
+     * @return string
      */
     public function getAsist()
     {
@@ -116,7 +114,7 @@ class Nota
     /**
      * Set cedu
      *
-     * @param \AppBundle\Entity\Estudiante $cedu
+     * @param  \AppBundle\Entity\Estudiante $cedu
      * @return Nota
      */
     public function setCedu(\AppBundle\Entity\Estudiante $cedu = null)
@@ -129,7 +127,7 @@ class Nota
     /**
      * Get cedu
      *
-     * @return \AppBundle\Entity\Estudiante 
+     * @return \AppBundle\Entity\Estudiante
      */
     public function getCedu()
     {
@@ -139,7 +137,7 @@ class Nota
     /**
      * Set secc
      *
-     * @param \AppBundle\Entity\Seccion $secc
+     * @param  \AppBundle\Entity\Seccion $secc
      * @return Nota
      */
     public function setSecc(\AppBundle\Entity\Seccion $secc = null)
@@ -152,7 +150,7 @@ class Nota
     /**
      * Get secc
      *
-     * @return \AppBundle\Entity\Seccion 
+     * @return \AppBundle\Entity\Seccion
      */
     public function getSecc()
     {

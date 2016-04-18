@@ -46,7 +46,6 @@ class ReportController extends Controller
      */
     public $formats = array('html', 'pdf');
 
-
     /**
      * Format View
      * @var array
@@ -78,7 +77,6 @@ class ReportController extends Controller
         );
     }
 
-
     public function jasperProccess($inputFile)
     {
         return $this->jasper->process(
@@ -94,8 +92,8 @@ class ReportController extends Controller
 
     /**
      * outputBinaryFile response
-     * @param  string  $file                file path absolute
-     * @param  boolean $deleteFileAfterSend
+     * @param  string   $file                file path absolute
+     * @param  boolean  $deleteFileAfterSend
      * @return Response
      */
     public function outputBinaryFile($file = null, $deleteFileAfterSend = false)
@@ -115,6 +113,7 @@ class ReportController extends Controller
         if (in_array($format, $this->formatViews)) {
             $content = file_get_contents($file);
             $bf = new BinaryFileResponse($file);
+
             return  new Response($content, 200, array('Content-Type' => $bf->getFile()->getMimeType()));
         } else {
             return $this->outputBinaryFile($file);

@@ -38,7 +38,7 @@ class Ajuste
     /**
      * Get id
      *
-     * @return string 
+     * @return string
      */
     public function getId()
     {
@@ -48,7 +48,7 @@ class Ajuste
     /**
      * Set key
      *
-     * @param string $key
+     * @param  string $key
      * @return Ajuste
      */
     public function setKey($key)
@@ -61,7 +61,7 @@ class Ajuste
     /**
      * Get key
      *
-     * @return string 
+     * @return string
      */
     public function getKey()
     {
@@ -71,7 +71,7 @@ class Ajuste
     /**
      * Set value
      *
-     * @param string $value
+     * @param  string $value
      * @return Ajuste
      */
     public function setValue($value)
@@ -84,7 +84,7 @@ class Ajuste
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {

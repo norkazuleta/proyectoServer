@@ -38,12 +38,10 @@ class UnidadCurricular
      */
     private $pnf;
 
-
-
     /**
      * Get ucId
      *
-     * @return integer 
+     * @return integer
      */
     public function getUcId()
     {
@@ -53,7 +51,7 @@ class UnidadCurricular
     /**
      * Set ucDesc
      *
-     * @param string $ucDesc
+     * @param  string           $ucDesc
      * @return UnidadCurricular
      */
     public function setUcDesc($ucDesc)
@@ -66,7 +64,7 @@ class UnidadCurricular
     /**
      * Get ucDesc
      *
-     * @return string 
+     * @return string
      */
     public function getUcDesc()
     {
@@ -76,7 +74,7 @@ class UnidadCurricular
     /**
      * Set pnf
      *
-     * @param \AppBundle\Entity\Pnf $pnf
+     * @param  \AppBundle\Entity\Pnf $pnf
      * @return UnidadCurricular
      */
     public function setPnf(\AppBundle\Entity\Pnf $pnf = null)
@@ -89,7 +87,7 @@ class UnidadCurricular
     /**
      * Get pnf
      *
-     * @return \AppBundle\Entity\Pnf 
+     * @return \AppBundle\Entity\Pnf
      */
     public function getPnf()
     {
