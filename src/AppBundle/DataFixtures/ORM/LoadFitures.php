@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Ajuste;
 use AppBundle\Entity\Aldea;
+use AppBundle\Entity\AldeaTurno;
 use AppBundle\Entity\Docente;
 use AppBundle\Entity\Estado;
 use AppBundle\Entity\Estudiante;
