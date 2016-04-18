@@ -61,6 +61,7 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $this->loadParroquia($manager);
         $this->loadZona($manager);
         $this->loadAldea($manager);
+        $this->loadAldeaTurno($manager);
         $this->loadEstudiante($manager);
         $this->loadDocente($manager);
         $this->loadPnf($manager);
