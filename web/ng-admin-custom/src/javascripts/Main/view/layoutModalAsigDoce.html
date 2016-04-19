@@ -6,7 +6,6 @@
 		<div ng-if="item.loading">
 			<h4 class="text-center">Cargando... Por favor espere.</h4>
 		</div>
-		<span ng-model="secc"></span>
         <table class="table table-bordered" ng-if="!item.loading">
             <tbody>
                 <tr>
@@ -47,7 +46,7 @@
                     <td colspan="1"> 1 </td>
                     <td colspan="1">{{ values['secc_codi'] }}</td>
                     <td colspan="3">{{ values['uc.uc_desc'] }}</td>
-                    <td colspan="1">0</td>
+                    <td colspan="1">{{ insc }}</td>
                 </tr>
 
                 <tr>
@@ -86,7 +85,7 @@
 		Debe realizarlo después del dia dd/mm/yyyy Hasta el dia: dd/mm/yyyy -->
 	</div>
 	<div class="modal-footer">
-	    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Guardar cambios</button>
+	    <button ng-if="!item.loading" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Guardar cambios</button>
 	    <a class="btn btn-default" ng-click="close()">Cerrar</a>
 	</div>
 </form>

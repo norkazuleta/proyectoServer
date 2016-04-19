@@ -10,8 +10,8 @@ class AsigEstuModalController {
 		this.$state = $state;
 		this.$stateParams = $stateParams;
 		this.rest = RestWrapper;
-		this.$scope.secc = identifier;
 
+		this.$scope.secc = identifier;
 		this.$scope.values = values;
 		this.$scope.model = {};
 		this.$scope.estus = [];
@@ -20,6 +20,10 @@ class AsigEstuModalController {
 		this.$scope.item = {
 			loading: true
 		};
+
+		this.$scope.changedItem = false;
+
+		this.items = [];
 
 		this.getEstudiates();
 
@@ -46,6 +50,8 @@ class AsigEstuModalController {
 				}, {
 					'nomb_apell': 'nomb_apell'
 				}, {
+					'cedu_nomb_apell': 'cedu_nomb_apell'
+				}, {
 					cedu: 'cedu'
 				}, {
 					correo: 'correo'
@@ -67,19 +73,56 @@ class AsigEstuModalController {
 					});
 				}
 
+
+				this.items = items;
+
 				if (items.length) {
-
-					this.$scope.insc = estus.length;
 					this.$scope.model.estus = estus;
-
 					this.selected(items);
 				}
+
+
+				this.$scope.insc = estus.length;
 
 				this.$scope.item = {
 					loading: false
 				};
 			});
 	}
+
+	changedItem() {
+		let a = this.items.length;
+		let b = this.$scope.estus.length;
+
+		if (b === 0) {
+			return false;
+		}
+
+		if (a === b) {
+			var encontrado = false;
+			for (var i = 0; i < this.$scope.estus.length; i++) {
+				encontrado = false;
+				for (var o = 0; o < this.items.length; o++) {
+					if (this.items[o].cedu === this.$scope.estus[i].cedu) {
+						encontrado = true;
+						continue;
+					}
+				}
+				if (!encontrado) {
+					break;
+				}
+			}
+
+			return !encontrado;
+
+		} else if (a > b) {
+			return true;
+		} else if (b > a) {
+			return true;
+		}
+	}
+
+
 
 	selEstu($item, $model, $select) {
 		this.selected($select.selected);
@@ -91,6 +134,11 @@ class AsigEstuModalController {
 
 	selected(items) {
 		this.$scope.estus = items;
+		this.changed();
+	}
+
+	changed() {
+		this.$scope.changedItem = this.changedItem();
 	}
 
 	refresh() {

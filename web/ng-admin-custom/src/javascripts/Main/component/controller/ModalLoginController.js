@@ -1,45 +1,82 @@
-define(function() {
-	'use strict';
+export default class ModalLoginController {
+	constructor($rootScope, $scope, $modalInstance, AuthenticationService, progression, notification, $state) {
+		this.$rootScope = $rootScope;
+		this.$scope = $scope;
+		this.$modalInstance = $modalInstance;
+		this.AuthenticationService = AuthenticationService;
+		this.progression = progression;
+		this.notification = notification;
+		this.$state = $state;
 
-	var ModalLoginController = function($rootScope, $scope, $modalInstance, AuthenticationService, progression, $state) {
-		$scope.credentials = {
+		this.$scope.credentials = {
 			/*username: 'admin',
 			password: '123456'*/
 		};
 
-		$scope.$on('event:auth-login-failed', function(even, data) {
-			$scope.errorMessage = data.message ? 'status.' + data.code : 'Bad credentials';
-		});
+		this.$scope.$on('event:auth-login-failed', this.authLoginFailed.bind(this));
+		this.$scope.$on('event:auth-login-complete', this.authLoginComplete.bind(this));
 
-		$scope.$on('event:auth-login-complete', function() {
-			$modalInstance.close();
-		});
+		this.$scope.submit = this.submit.bind(this);
+		this.$scope.cancel = this.cancel.bind(this);
+		this.$scope.goHome = this.goHome.bind(this);
+		this.$scope.goLostpassword = this.goLostpassword.bind(this);
 
-		$scope.submit = function(credentials) {
-			AuthenticationService.loginModal(credentials);
-		};
+		this.$scope.$on('$destroy', this.destroy.bind(this));
+	}
 
-		$scope.cancel = function() {
-			AuthenticationService.cancel();
-		};
+	authLoginFailed(even,data) {
+		this.$scope.errorMessage = data.message ? 'status.' + data.code : 'Bad credentials';
+	}
 
-		$scope.goHome = function() {
-            progression.done();
-			$modalInstance.close();
-			AuthenticationService.cancel();
-            $state.go('home');
+	authLoginComplete() {
+		this.$modalInstance.close();
+	}
 
-		};
+	submit(credentials) {
+		if (!this.validateForm()) {
+			return;
+		}
 
-		$scope.goLostpassword = function() {
-            progression.done();
-			$modalInstance.close();
-			AuthenticationService.cancel();
-            $state.go('lostpassword');
-		};
-	};
+		this.AuthenticationService.loginModal(credentials);
+	}
 
-	ModalLoginController.$inject = ['$rootScope', '$scope', '$modalInstance', 'AuthenticationService', 'progression', '$state'];
+	validateForm() {
+		if (!this.form.$valid) {
+			this.notification.log('invalid form', {
+				addnCls: 'humane-flatty-error'
+			});
+			return false;
+		}
 
-	return ModalLoginController;
-});
+		return true;
+	}
+
+	cancel() {
+		this.AuthenticationService.cancel();
+	}
+
+	goHome() {
+		this.progression.done();
+		this.$modalInstance.close();
+		this.AuthenticationService.cancel();
+        this.$state.go('home');
+	}
+
+	goLostpassword() {
+		this.progression.done();
+		this.$modalInstance.close();
+		this.AuthenticationService.cancel();
+		this.$state.go('lostpassword');
+	}
+
+	destroy() {
+		this.$rootScope = undefined;
+		this.$scope = undefined;
+		this.$modalInstance = undefined;
+		this.AuthenticationService = undefined;
+		this.progression = undefined;
+		this.$state = undefined;
+	}
+}
+
+ModalLoginController.$inject = ['$rootScope', '$scope', '$modalInstance', 'AuthenticationService', 'progression', 'notification', '$state'];

@@ -92,7 +92,10 @@
 		Debe realizarlo después del dia dd/mm/yyyy Hasta el dia: dd/mm/yyyy -->
 	</div>
 	<div class="modal-footer">
-	    <button ng-if="!item.loading" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Guardar cambios</button>
+        <span ng-if="!item.loading">
+            <button ng-if="estus.length == 0" type="submit" class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-ok"></span> Guardar</button>
+            <button ng-if="estus.length>0" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Guardar cambios</button>
+        </span>
 	    <a class="btn btn-default" ng-click="close()">Cerrar</a>
 	</div>
 </form>

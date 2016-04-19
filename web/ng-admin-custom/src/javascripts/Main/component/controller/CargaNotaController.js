@@ -135,10 +135,11 @@ class CargaNotaModalController {
 
 				if (items.length) {
 
-					this.$scope.insc = estus.length;
 
 					this.selected(items);
 				}
+
+				this.$scope.insc = estus.length;
 
 				this.$scope.item = {
 					loading: false

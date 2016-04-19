@@ -22,6 +22,7 @@ define(function () {
 				$modal.open({
 					template: loginTemplate,
 					controller: 'ModalLoginCtrl',
+					controllerAs: 'login',
 					backdrop: 'static',
 					size: 'sm',
 					keyboard: false,

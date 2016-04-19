@@ -71,6 +71,15 @@ class Estudiante
     private $nombApell;
 
     /**
+     * @var string
+     *
+     * @SerializedName("cedu_nomb_apell")
+     * @Type("string")
+     * @Accessor(getter="getCeduNombApell")
+     */
+    private $ceduNombApell;
+
+    /**
      * Hook on pre-persist operations.
      *
      * @ORM\PrePersist
@@ -241,5 +250,15 @@ class Estudiante
     public function getNombApell()
     {
         return sprintf('%s %s', $this->getNomb(), $this->getApell());
+    }
+
+    /**
+     * Get CeduNombApell.
+     *
+     * @return string
+     */
+    public function getCeduNombApell()
+    {
+        return sprintf('%s (%s %s)', $this->getCedu(), $this->getNomb(), $this->getApell());
     }
 }

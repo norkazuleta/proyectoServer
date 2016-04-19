@@ -10,11 +10,8 @@ class AsigDoceModalController {
 		this.$state = $state;
 		this.$stateParams = $stateParams;
 		this.rest = RestWrapper;
-		this.identifier = identifier;
-		this.$scope.secc = identifier;
-		this.values = values;
 
-		this.$scope.identifier = identifier;
+		this.$scope.secc = identifier;
 		this.$scope.values = values;
 		this.$scope.doce = {};
 		this.$scope.docentes = [];
@@ -26,7 +23,6 @@ class AsigDoceModalController {
 		this.getDocentes();
 
 		this.$scope.close = this.close.bind(this);
-
 		this.$scope.selDoce = this.selDoce.bind(this);
 
 		this.$scope.$on('$destroy', this.destroy.bind(this));
@@ -45,7 +41,7 @@ class AsigDoceModalController {
 				}, {
 					apell: 'apell'
 				}, {
-					nomb_apell: 'nomb_apell'
+					'nomb_apell': 'nomb_apell'
 				}, {
 					cedu: 'cedu'
 				}, {
@@ -61,6 +57,8 @@ class AsigDoceModalController {
 						}
 					});
 				}
+
+				this.$scope.insc = this.$scope.values['estu'].length;
 
 				this.$scope.item = {
 					loading: false
@@ -101,7 +99,7 @@ class AsigDoceModalController {
 
 		this.rest
 			.createOne(data, 'secciondoces', '/api/secciondoces/asigs')
-			.then((response) => {
+			.then(() => {
                 this.progression.done();
                 this.notification.log('Changes successfully saved.', { addnCls: 'humane-flatty-success' });
                 this.refresh();
@@ -133,8 +131,6 @@ class AsigDoceModalController {
 		this.progression = undefined;
 		this.RestWrapper = undefined;
 		this.util = undefined;
-		this.identifier = undefined;
-		this.values = undefined;
 	}
 }
 
