@@ -49,6 +49,7 @@ MainModule.config(require('./component/factory/PeriodoAcademicoAdmin'));
 MainModule.config(require('./component/factory/SeccionAdmin'));
 MainModule.config(require('./component/factory/PnfTrayectoPeriodoAdmin'));
 MainModule.config(require('./component/factory/PnfTrayectoPeriodoUcAdmin'));
+MainModule.config(require('./component/factory/EstuPnfAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));
@@ -56,5 +57,6 @@ MainModule.config(require('./config/notification'));
 
 MainModule.provider('UserService', require('./component/service/UserService'));
 
+MainModule.run(require('./run/initGlobal'));
 MainModule.run(require('./run/LoaderToken'));
 MainModule.run(require('./run/initMoment'));

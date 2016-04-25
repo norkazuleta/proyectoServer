@@ -675,6 +675,9 @@ define(function() {
 							}, {
 								id: 'pnf.pnf_id'
 							}]);
+
+							pnftray = $rootScope._.uniq(pnftray, 'label');
+
 							scope.$broadcast('choices:update', {
 								choices: pnftray
 							});
@@ -961,7 +964,6 @@ define(function() {
 			},
 
 			apiPnfTrayectoPeriodo: function($item, $model, $limit) {
-				console.log($item, $model, 'pnftrayectoperiodos');
 				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?filters[pnf]='+$item.id+'&filters[tray]='+$model+'&limit=' + ($limit || '1000'));
 			},
 
@@ -996,6 +998,10 @@ define(function() {
 
 			apiEstudiante: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'estudiantes', '/api/estudiantes?limit=' + ($limit || '10000'));
+			},
+
+			apiPnfEstudiante: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'estupnfs', '/api/estupnfs?filters[pnf]='+$model+'&limit=' + ($limit || '10000'));
 			},
 		};
 	}

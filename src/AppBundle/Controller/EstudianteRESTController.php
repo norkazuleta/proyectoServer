@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EstuPnf;
 use AppBundle\Entity\Estudiante;
 use AppBundle\Form\EstudianteType;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
@@ -111,6 +112,7 @@ class EstudianteRESTController extends VoryxController
         $entity = new Estudiante();
         $entity->setFn($fn);
         $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
+        $this->estuPnfEntity($request, $entity);
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -136,11 +138,13 @@ class EstudianteRESTController extends VoryxController
      */
     public function putAction(Request $request, Estudiante $entity)
     {
-        try {
-            $fn = $request->request->get('fn');
-            $fn = new \DateTime($fn);
-            $entity->setFn($fn);
+        $this->estuPnfEntity($request, $entity);
 
+        try {
+            if ($fn = $request->request->get('fn')) {
+                $fn = new \DateTime($fn);
+                $entity->setFn($fn);
+            }
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
             $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
@@ -170,6 +174,49 @@ class EstudianteRESTController extends VoryxController
     public function patchAction(Request $request, Estudiante $entity)
     {
         return $this->putAction($request, $entity);
+    }
+
+    public function estuPnfEntity(Request $request, Estudiante $entity)
+    {
+        if (is_array($request->request->get('estuPnf'))) {
+            $pnf = $request->request->get('estuPnf');
+            $em = $this->getDoctrine()->getManager();
+            $entityEstuPnf = $em->getRepository('AppBundle:EstuPnf')->findBy(
+                array('estu' => $entity->getCedu())
+            );
+
+            $estuPnfIds = array();
+            foreach ($entityEstuPnf as $key => $enti) {
+                $pnfId = $enti->getPnf()->getPnfId();
+                if (in_array($pnfId, $pnf)) {
+                    if (($key = array_search($pnfId, $pnf)) !== false) {
+                        unset($pnf[$key]);
+                        sort($pnf);
+                    }
+                } else {
+                    $estuPnfIds[] = $enti;
+                }
+            }
+
+            //delete entity
+            foreach ($estuPnfIds as $key => $value) {
+                $em->remove($value);
+            }
+
+            if ($estuPnfIds) {
+                $em->flush();
+            }
+
+            //add entity
+            foreach ($pnf as $key => $value) {
+                $entityPnf = $em->getRepository('AppBundle:Pnf')->find($value);
+                if ($entityPnf) {
+                    $entityEstuPnf = new EstuPnf();
+                    $entityEstuPnf->setPnf($entityPnf);
+                    $entity->addEstuPnf($entityEstuPnf);
+                }
+            }
+        }
     }
     /**
      * Delete a Estudiante entity.

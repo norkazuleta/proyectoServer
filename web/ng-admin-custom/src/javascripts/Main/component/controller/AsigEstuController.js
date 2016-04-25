@@ -36,27 +36,27 @@ class AsigEstuModalController {
 
 	getEstudiates() {
 		this.util
-			.apiEstudiante()
+			.apiPnfEstudiante({}, this.$scope.values['pnf.pnf_id'])
 			.then((response) => {
 
 				this.$scope.estudiantes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'cedu'
+					label: 'estu.cedu'
 				}, {
-					value: 'cedu'
+					value: 'estu.cedu'
 				}, {
-					nomb: 'nomb'
+					nomb: 'estu.nomb'
 				}, {
-					apell: 'apell'
+					apell: 'estu.apell'
 				}, {
-					'nomb_apell': 'nomb_apell'
+					'nomb_apell': 'estu.nomb_apell'
 				}, {
-					'cedu_nomb_apell': 'cedu_nomb_apell'
+					'cedu_nomb_apell': 'estu.cedu_nomb_apell'
 				}, {
-					cedu: 'cedu'
+					cedu: 'estu.cedu'
 				}, {
-					correo: 'correo'
+					correo: 'estu.correo'
 				}, {
-					tlf: 'tlf'
+					tlf: 'estu.tlf'
 				}]);
 
 				var items = [], estus = [], _estus = [];

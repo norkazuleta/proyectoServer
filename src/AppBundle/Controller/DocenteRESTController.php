@@ -138,9 +138,10 @@ class DocenteRESTController extends VoryxController
     public function putAction(Request $request, Docente $entity)
     {
         try {
-            $fn = $request->request->get('fn');
-            $fn = new \DateTime($fn);
-            $entity->setFn($fn);
+            if ($fn = $request->request->get('fn')) {
+                $fn = new \DateTime($fn);
+                $entity->setFn($fn);
+            }
 
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH

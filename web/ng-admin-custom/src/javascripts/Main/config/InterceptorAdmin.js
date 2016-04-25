@@ -66,6 +66,16 @@ define(function () {
 				response.data.aldea_turno = aldea_turno;
 			}
 
+			//extra reference_many
+			if (operation === 'get' && what === 'estudiantes' && angular.isArray(data.estu_pnf)) {
+				response.data._estu_pnf = response.data.estu_pnf;
+				var estu_pnf = [];
+				angular.forEach(response.data.estu_pnf, function(item) {
+					estu_pnf.push(item.pnf.pnf_id);
+				});
+				response.data.estu_pnf = estu_pnf;
+			}
+
 			if (operation === 'get' && what === 'pnftrayectoperiodos' && angular.isArray(data.uc)) {
 
 				response.data._uc = response.data.uc;

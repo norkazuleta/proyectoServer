@@ -1,4 +1,4 @@
-define(function(require) {
+define(function() {
 	'use strict';
 
 	function AldeaAdmin($provide, NgAdminConfigurationProvider, PaisAdminProvider, EstadoAdminProvider, MunicipioAdminProvider, ParroquiaAdminProvider, TurnoAdminProvider) {
@@ -47,6 +47,7 @@ define(function(require) {
 				.listActions(['edit', 'delete', 'show']);
 
 			aldea.creationView()
+				.title('Crear nueva Aldea')
 				.fields([
 					nga.field('pais', 'choice')
 					.label('pais_nomb')
@@ -60,6 +61,9 @@ define(function(require) {
 						$rootScope.$broadcast('choice:pais:get');
 
 						return [];
+					})
+					.validation({
+						required: true
 					}),
 
 					nga.field('edo', 'choice')
@@ -67,31 +71,61 @@ define(function(require) {
 					.attributes({
 						'on-select': 'selEdo($item, $model)'
 					})
-					.choices(util.choiceEstado()),
+					.choices(util.choiceEstado())
+					.validation({
+						required: true
+					}),
 
 					nga.field('muni', 'choice')
 					.label('muni_nomb')
 					.attributes({
 						'on-select': 'selMuni($item, $model)'
 					})
-					.choices(util.choiceMunicipio()),
+					.choices(util.choiceMunicipio())
+					.validation({
+						required: true
+					}),
 
 					nga.field('parroq', 'choice')
 					.label('parroq_nomb')
-					.choices(util.choiceParroquia()),
+					.choices(util.choiceParroquia())
+					.validation({
+						required: true
+					}),
 
-					nga.field('aldea_nomb').label('aldea_nomb'),
-					nga.field('aldea_codi').label('aldea_codi'),
-					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
+					nga.field('aldea_nomb').label('aldea_nomb')
+					.validation({
+						required: true
+					}),
+					nga.field('aldea_codi').label('aldea_codi')
+					.validation({
+						required: true
+					}),
+					nga.field('aldea_actual', 'boolean')
+					.label('aldea_actual')
+					.choices([
+				          { value: null, label: 'No seleccionado' },
+				          { value: true, label: 'Activado' },
+				          { value: false, label: 'Inactivo' }
+			      	])
+					/*.validation({
+						required: true
+					})*/,
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
+					.attributes({
+						placeholder: 'Filtrar/Seleccionar Turno.'
+					})
                     .targetEntity(turno)
                     .targetField(nga.field('turn_desc'))
                     .filters(function(search) {
                         return search ? { q: search } : null;
                     })
-                    .remoteComplete(true, { refreshDelay: 300 }),
+                    .remoteComplete(true, { refreshDelay: 300 })
+                    .validation({
+						required: true
+					}),
 				]);
 
 			aldea.editionView()
@@ -110,6 +144,9 @@ define(function(require) {
 						$rootScope.$broadcast('choice:pais:get');
 
 						return [];
+					})
+					.validation({
+						required: true
 					}),
 
 					nga.field('edo', 'choice')
@@ -127,6 +164,9 @@ define(function(require) {
 						$rootScope.$broadcast('choice:estados:get', {value: paisId}, paisId);
 
 						return [];
+					})
+					.validation({
+						required: true
 					}),
 
 					nga.field('muni', 'choice')
@@ -144,6 +184,9 @@ define(function(require) {
 						$rootScope.$broadcast('choice:municipios:get', {value: edoCodi}, edoCodi);
 
 						return [];
+					})
+					.validation({
+						required: true
 					}),
 
 					nga.field('parroq', 'choice')
@@ -158,19 +201,37 @@ define(function(require) {
 						$rootScope.$broadcast('choice:parroquias:get', {value: muniCodi}, muniCodi);
 
 						return [];
+					})
+					.validation({
+						required: true
 					}),
-					nga.field('aldea_nomb').label('aldea_nomb'),
-					nga.field('aldea_codi').label('aldea_codi'),
-					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
+					nga.field('aldea_nomb').label('aldea_nomb')
+					.validation({
+						required: true
+					}),
+					nga.field('aldea_codi').label('aldea_codi')
+					.validation({
+						required: true
+					}),
+					nga.field('aldea_actual', 'boolean').label('aldea_actual')
+					.validation({
+						required: true
+					}),
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
+					.attributes({
+						placeholder: 'Filtrar/Seleccionar Turno.'
+					})
                     .targetEntity(turno)
                     .targetField(nga.field('turn_desc'))
                     .filters(function(search) {
                         return search ? { q: search } : null;
                     })
-                    .remoteComplete(false, { refreshDelay: 300 }),
+                    .remoteComplete(false, { refreshDelay: 300 })
+                    .validation({
+						required: true
+					}),
 				]);
 
 			aldea.showView()

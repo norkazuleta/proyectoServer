@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * EstuPnf
  *
  * @ORM\Table(name="estu_pnf", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="cedu", columns={"cedu"}), @ORM\Index(name="pnf_id", columns={"pnf_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EstuPnfRepository")
  */
 class EstuPnf
 {

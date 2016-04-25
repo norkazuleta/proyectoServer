@@ -99,6 +99,10 @@ class SeccionRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $lastId = $em->getRepository('AppBundle:Seccion')->getSeccionLastId();
+        $request->request->set('seccCodi', sprintf("%04s", ($lastId+1)));
+
         $entity = new Seccion();
         $form = $this->createForm(new SeccionType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);

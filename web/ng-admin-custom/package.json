@@ -5,6 +5,7 @@
   "main": "build/custom.min.js",
   "dependencies": {
     "angular-filter": "^0.5.5",
+    "angular-i18n": "^1.5.5",
     "angular-moment": "^0.10.2",
     "bower": "^1.4.1",
     "imports-loader": "^0.6.4",

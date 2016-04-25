@@ -17,7 +17,8 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
 				])
@@ -43,7 +44,8 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
 				]);
@@ -54,7 +56,8 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
 				]);
@@ -65,7 +68,8 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
 				]);

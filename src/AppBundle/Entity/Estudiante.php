@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Util\Utility;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\SerializedName;
@@ -43,6 +44,7 @@ class Estudiante
     /**
      * @var \DateTime
      *
+     * @Type("DateTime<'Y-m-d'>")
      * @ORM\Column(name="fn", type="date", nullable=false)
      */
     private $fn;
@@ -62,6 +64,13 @@ class Estudiante
     private $tlf;
 
     /**
+     * @var \EstuPnf
+     *
+     * @ORM\OneToMany(targetEntity="EstuPnf", mappedBy="estu", cascade={"persist", "remove"})
+     */
+    private $estuPnf;
+
+    /**
      * @var string
      *
      * @SerializedName("nomb_apell")
@@ -78,6 +87,14 @@ class Estudiante
      * @Accessor(getter="getCeduNombApell")
      */
     private $ceduNombApell;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->estuPnf = new ArrayCollection();
+    }
 
     /**
      * Hook on pre-persist operations.
@@ -260,5 +277,39 @@ class Estudiante
     public function getCeduNombApell()
     {
         return sprintf('%s (%s %s)', $this->getCedu(), $this->getNomb(), $this->getApell());
+    }
+
+    /**
+     * Add estuPnf
+     *
+     * @param \AppBundle\Entity\EstuPnf $estuPnf
+     * @return Estudiante
+     */
+    public function addEstuPnf(\AppBundle\Entity\EstuPnf $estuPnf)
+    {
+        $this->estuPnf[] = $estuPnf;
+        $estuPnf->setEstu($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove estuPnf
+     *
+     * @param \AppBundle\Entity\EstuPnf $estuPnf
+     */
+    public function removeEstuPnf(\AppBundle\Entity\EstuPnf $estuPnf)
+    {
+        $this->estuPnf->removeElement($estuPnf);
+    }
+
+    /**
+     * Get estuPnf
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEstuPnf()
+    {
+        return $this->estuPnf;
     }
 }

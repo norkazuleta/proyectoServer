@@ -36,6 +36,9 @@ define(function() {
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
 					nga.field('doce.cedu.cedu').label('Docente Colaborador'),
 					nga.field('estu_total').label('Estudiantes'),
+					nga.field('nt', 'template')
+						.label('Notas Cargados')
+                		.template('<span class="label label-default">{{ entry.values.nota.length }}</span>')
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -52,6 +55,10 @@ define(function() {
 					.choices(util.filterLimit()),
 				])
 				.listActions([asigd, asige, carganota, 'edit', 'delete', 'show']);
+
+
+
+
 
 			seccion.creationView()
 				.title('Nueva Sección')
@@ -143,7 +150,9 @@ define(function() {
 							$rootScope.$broadcast('choice:pnftrayectoperiodo:reset');
 							$rootScope.$broadcast('choice:pnftrayectoperiodo:get', $item, $model);
 						}
-					}),
+					})
+					/*.template(trayTemplate)*/,
+
 					nga.field('peri', 'choice')
 					.label('Periodo')
 					.validation({
@@ -177,11 +186,11 @@ define(function() {
 
 						return [];
 					}),
-					nga.field('secc_codi')
+					/*nga.field('secc_codi')
 					.label('Código sección')
 					.validation({
 						required: true
-					}),
+					}),*/
 					nga.field('pa', 'choice')
 					.label('Periodo Académico')
 					.validation({
@@ -234,9 +243,6 @@ define(function() {
 					.choices(function(entry, scope) {
 
 						util.choiceAldeaTurno()(entry, scope);
-
-
-
 						var turnId = entry.values['turn.turn_id'];
 						var aldeaCodi = entry.values['aldea.aldea_codi'];
 						entry.values['turn'] = turnId;

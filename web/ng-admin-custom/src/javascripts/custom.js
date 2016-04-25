@@ -9,6 +9,8 @@ for (var i = 0; i < transKeys.length; i++) {
 	__webpack_require__(req.resolve(transKeys[i]));
 }
 
+require('./../../node_modules/angular-i18n/angular-locale_es-es.js');
+
 require('./Main/MainModule');
 require('./Crud/CrudModule');
 

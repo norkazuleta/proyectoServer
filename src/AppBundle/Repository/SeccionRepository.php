@@ -11,4 +11,12 @@ class SeccionRepository extends CustomEntityRepository
                     ->getQuery()
                     ->getSingleScalarResult();
     }
+
+    public function getSeccionLastId()
+    {
+        return $this->createQueryBuilder('p')
+                    ->select('MAX(p.seccId)')
+                    ->getQuery()
+                    ->getSingleScalarResult();
+    }
 }

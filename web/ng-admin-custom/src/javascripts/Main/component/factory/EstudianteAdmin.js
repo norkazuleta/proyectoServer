@@ -1,10 +1,11 @@
 define(function() {
 	'use strict';
 
-	function EstudianteAdmin($provide, NgAdminConfigurationProvider) {
+	function EstudianteAdmin($provide, NgAdminConfigurationProvider, PnfAdminProvider) {
 		$provide.factory('EstudianteAdmin', ['$rootScope', 'RestWrapper', 'UtilityService', function($rootScope, RestWrapper, UtilityService) {
 			var nga = NgAdminConfigurationProvider;
 
+			var pnf = PnfAdminProvider.$get();
 			var util = UtilityService;
 
 			var estudiante = nga.entity('estudiantes')
@@ -17,9 +18,14 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
+					nga.field('estu_pnf', 'template')
+					.label('PNF')
+					.template('<span ng-repeat="item in entry.values.estu_pnf track by $index" class="label label-default">{{ item.pnf.pnf_desc }}</span>')
+					.cssClasses('hidden-xs'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -52,7 +58,8 @@ define(function() {
 					.validation({
 						required: true
 					}),
-					nga.field('fn','date').label('fn')
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy')
 					.validation({
 						required: true
 					}),
@@ -63,6 +70,22 @@ define(function() {
 					nga.field('tlf').label('tlf')
 					.validation({
 						required: true
+					}),
+
+					nga.field('estu_pnf', 'reference_many')
+					.label('PNF')
+					.attributes({
+						placeholder: 'Filtrar/Seleccionar PNF.'
+					})
+					.targetEntity(pnf)
+					.targetField(nga.field('pnf_desc'))
+					.filters(function(search) {
+						return search ? {
+							q: search
+						} : null;
+					})
+					.remoteComplete(true, {
+						refreshDelay: 300
 					}),
 				]);
 
@@ -82,6 +105,7 @@ define(function() {
 						required: true
 					}),
 					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy')
 					.validation({
 						required: true
 					}),
@@ -93,6 +117,22 @@ define(function() {
 					.validation({
 						required: true
 					}),
+
+					nga.field('estu_pnf', 'reference_many')
+					.label('PNF')
+					.attributes({
+						placeholder: 'Filtrar/Seleccionar PNF.'
+					})
+					.targetEntity(pnf)
+					.targetField(nga.field('pnf_desc'))
+					.filters(function(search) {
+						return search ? {
+							q: search
+						} : null;
+					})
+					.remoteComplete(false, {
+						refreshDelay: 300
+					}),
 				]);
 
 			estudiante.showView()
@@ -101,18 +141,22 @@ define(function() {
 					nga.field('cedu').label('cedu'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn'),
+					nga.field('fn', 'date').label('fn')
+					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('tlf').label('tlf'),
-
+					nga.field('aldea_turno', 'template')
+					.label('PNF')
+					.template('<span ng-repeat="item in entry.values._estu_pnf track by $index" class="label label-default">{{ item.pnf.pnf_desc }}</span>')
+					.cssClasses('hidden-xs'),
 					nga.field('Mostrar').label('')
-          			.template('<a class="btn btn-default" ng-click="open($event, entry.values.cedu)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
+					.template('<a class="btn btn-default" ng-click="open($event, entry.values.cedu)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
 				]);
 
 			return estudiante;
 		}]);
 	}
-	EstudianteAdmin.$inject = ['$provide', 'NgAdminConfigurationProvider'];
+	EstudianteAdmin.$inject = ['$provide', 'NgAdminConfigurationProvider', 'PnfAdminProvider'];
 
 	return EstudianteAdmin;
 });
