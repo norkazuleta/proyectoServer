@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Docente
+ * AldeaCoord
  *
- * @ORM\Table(name="docente", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DocenteRepository")
+ * @ORM\Table(name="aldea_coord", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AldeaCoordRepository")
  */
-class Docente
+class AldeaCoord
 {
     /**
      * @var integer
@@ -32,6 +32,17 @@ class Docente
     private $persona;
 
     /**
+     * @var \Aldea
+     *
+     * @ORM\ManyToOne(targetEntity="Aldea")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="aldea_codi", referencedColumnName="aldea_codi")
+     * })
+     */
+    private $aldea;
+
+
+    /**
      * Get id
      *
      * @return integer
@@ -45,7 +56,7 @@ class Docente
      * Set persona
      *
      * @param  \AppBundle\Entity\Persona $persona
-     * @return Docente
+     * @return AldeaCoord
      */
     public function setPersona(\AppBundle\Entity\Persona $persona = null)
     {
@@ -62,5 +73,28 @@ class Docente
     public function getPersona()
     {
         return $this->persona;
+    }
+
+    /**
+     * Set aldea
+     *
+     * @param  \AppBundle\Entity\Aldea $aldea
+     * @return AldeaCoord
+     */
+    public function setAldea(\AppBundle\Entity\Aldea $aldea = null)
+    {
+        $this->aldea = $aldea;
+
+        return $this;
+    }
+
+    /**
+     * Get aldea
+     *
+     * @return \AppBundle\Entity\Aldea
+     */
+    public function getAldea()
+    {
+        return $this->aldea;
     }
 }

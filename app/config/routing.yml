@@ -1,3 +1,13 @@
+app_aldea_coord_api:
+    resource: "@AppBundle/Controller/AldeaCoordRESTController.php"
+    type:   rest
+    prefix:   /api
+
+app_persona_api:
+    resource: "@AppBundle/Controller/PersonaRESTController.php"
+    type:   rest
+    prefix:   /api
+
 app_nota_api:
     resource: "@AppBundle/Controller/NotaRESTController.php"
     type:   rest

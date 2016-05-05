@@ -36,9 +36,9 @@ class Nota
     private $asist;
 
     /**
-     * @var \Estudiante
+     * @var \Persona
      *
-     * @ORM\ManyToOne(targetEntity="Estudiante")
+     * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="cedu", referencedColumnName="cedu")
      * })
@@ -114,10 +114,10 @@ class Nota
     /**
      * Set cedu
      *
-     * @param  \AppBundle\Entity\Estudiante $cedu
+     * @param  \AppBundle\Entity\Persona $cedu
      * @return Nota
      */
-    public function setCedu(\AppBundle\Entity\Estudiante $cedu = null)
+    public function setCedu(\AppBundle\Entity\Persona $cedu = null)
     {
         $this->cedu = $cedu;
 
@@ -127,7 +127,7 @@ class Nota
     /**
      * Get cedu
      *
-     * @return \AppBundle\Entity\Estudiante
+     * @return \AppBundle\Entity\Persona
      */
     public function getCedu()
     {

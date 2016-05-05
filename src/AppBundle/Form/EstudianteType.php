@@ -15,12 +15,14 @@ class EstudianteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cedu')
-            ->add('nomb')
-            ->add('apell')
-            /*->add('fn')*/
-            ->add('correo')
-            ->add('tlf')
+            ->add('persona', 'entity', array(
+                'class' => 'AppBundle:Persona',
+                'property' => 'cedu',
+            ))
+            ->add('pnf', 'entity', array(
+                'class' => 'AppBundle:Pnf',
+                'property' => 'pnfId',
+            ))
         ;
     }
 

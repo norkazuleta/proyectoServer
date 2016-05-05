@@ -25,6 +25,7 @@ class AldeaType extends AbstractType
                 'class' => 'AppBundle:Parroquia',
                 'property' => 'parroqCodi',
             ))
+            ->add('coord', new AldeaCoordType())
         ;
     }
 

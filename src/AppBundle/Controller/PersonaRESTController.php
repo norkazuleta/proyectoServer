@@ -2,11 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\EstuPnf;
-use AppBundle\Entity\Estudiante;
-use AppBundle\Form\EstudianteType;
+use AppBundle\Entity\Persona;
+use AppBundle\Form\PersonaType;
+
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -16,28 +15,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Estudiante controller.
- * @RouteResource("Estudiante")
+ * Persona controller.
+ * @RouteResource("Persona")
  */
-class EstudianteRESTController extends VoryxController
+class PersonaRESTController extends VoryxController
 {
     /**
-     * Get a Estudiante entity
+     * Get a Persona entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Estudiante $entity)
+    public function getAction(Persona $entity)
     {
         return $entity;
     }
     /**
-     * Get all Estudiante entities.
+     * Get all Persona entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -63,12 +63,16 @@ class EstudianteRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Estudiante');
-
-            $order_by = array('pnf' => 'ASC', 'persona' => 'ASC');
-
+            $entity = $em->getRepository('AppBundle:Persona');
             if (!empty($q)) {
-                $filters = array('persona' => $q);
+                $filters_ = array(
+                    'cedu' => '',
+                    'nomb' => '',
+                    'apell' => '',
+                    'telf' => '',
+                );
+
+                $filters = array_merge($filters, $filters_);
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -90,7 +94,7 @@ class EstudianteRESTController extends VoryxController
         }
     }
     /**
-     * Create a Estudiante entity.
+     * Create a Persona entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +105,15 @@ class EstudianteRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Estudiante();
-        $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
+        if ($fechnac = $request->request->get('fechnac')) {
+            $fechnac = new \DateTime($fechnac);
+        } else {
+            $fechnac = null;
+        }
+
+        $entity = new Persona();
+        $entity->setFechnac($fechnac);
+        $form = $this->createForm(new PersonaType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +128,7 @@ class EstudianteRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Estudiante entity.
+     * Update a Persona entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +137,16 @@ class EstudianteRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Estudiante $entity)
+    public function putAction(Request $request, Persona $entity)
     {
         try {
+            if ($fechnac = $request->request->get('fechnac')) {
+                $fechnac = new \DateTime($fechnac);
+                $entity->setFechnac($fechnac);
+            }
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new PersonaType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +161,7 @@ class EstudianteRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Estudiante entity.
+     * Partial Update to a Persona entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -154,56 +169,13 @@ class EstudianteRESTController extends VoryxController
      * @param $entity
      *
      * @return Response
-     */
-    public function patchAction(Request $request, Estudiante $entity)
+*/
+    public function patchAction(Request $request, Persona $entity)
     {
         return $this->putAction($request, $entity);
     }
-
-    public function estuPnfEntity(Request $request, Estudiante $entity)
-    {
-        if (is_array($request->request->get('estuPnf'))) {
-            $pnf = $request->request->get('estuPnf');
-            $em = $this->getDoctrine()->getManager();
-            $entityEstuPnf = $em->getRepository('AppBundle:EstuPnf')->findBy(
-                array('estu' => $entity->getCedu())
-            );
-
-            $estuPnfIds = array();
-            foreach ($entityEstuPnf as $key => $enti) {
-                $pnfId = $enti->getPnf()->getPnfId();
-                if (in_array($pnfId, $pnf)) {
-                    if (($key = array_search($pnfId, $pnf)) !== false) {
-                        unset($pnf[$key]);
-                        sort($pnf);
-                    }
-                } else {
-                    $estuPnfIds[] = $enti;
-                }
-            }
-
-            //delete entity
-            foreach ($estuPnfIds as $key => $value) {
-                $em->remove($value);
-            }
-
-            if ($estuPnfIds) {
-                $em->flush();
-            }
-
-            //add entity
-            foreach ($pnf as $key => $value) {
-                $entityPnf = $em->getRepository('AppBundle:Pnf')->find($value);
-                if ($entityPnf) {
-                    $entityEstuPnf = new EstuPnf();
-                    $entityEstuPnf->setPnf($entityPnf);
-                    $entity->addEstuPnf($entityEstuPnf);
-                }
-            }
-        }
-    }
     /**
-     * Delete a Estudiante entity.
+     * Delete a Persona entity.
      *
      * @View(statusCode=204)
      *
@@ -212,7 +184,7 @@ class EstudianteRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Estudiante $entity)
+    public function deleteAction(Request $request, Persona $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -225,35 +197,108 @@ class EstudianteRESTController extends VoryxController
         }
     }
 
-        /**
-     * Get report s.
+
+
+    /**
+     * Get all Pnf  for Persona entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
-     * @Route("/reports/s", name="reports_s")
-     *
-     * @QueryParam(name="uriReport", nullable=true, description="")
-     * @QueryParam(name="id", nullable=true, description="")
+     * @param ParamFetcherInterface $paramFetcher
      *
      * @return Response
+     *
+     * @QueryParam(name="cedu", nullable=true, description="cedu...")
      */
-    public function rptAction(ParamFetcherInterface $paramFetcher)
+    public function pnfsAction(ParamFetcherInterface $paramFetcher, Request $request)
     {
-        $cedu = $paramFetcher->get('id');
-        $username = $this->getUser()->getUserName();
+        try {
+            $cedu = $paramFetcher->get('cedu');
 
-        $param = array(
-            'action'  => 'record',
-            'report'  => 'recordEstu',
-            'format' => 'pdf',
-            'param' => array(
-                'cedu' => $cedu
-            )
-        );
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getPersonaPnf(array('cedu' => $cedu));
 
-        return array(
-            'url' => $this->generateUrl('reports_q', $param),
-            'parameters' => $param
-        );
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get all Estudiante entities.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @param ParamFetcherInterface $paramFetcher
+     *
+     * @return Response
+     *
+     */
+    public function estusAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getPersonaEstu();
+
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get all Docente entities.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @param ParamFetcherInterface $paramFetcher
+     *
+     * @return Response
+     *
+     */
+    public function docesAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getPersonaDoce();
+
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get all AldeaCoord entities.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @param ParamFetcherInterface $paramFetcher
+     *
+     * @return Response
+     *
+     */
+    public function coordsAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getPersonaCoord();
+
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

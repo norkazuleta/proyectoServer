@@ -2,42 +2,43 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\EstuPnf;
-use AppBundle\Entity\Estudiante;
-use AppBundle\Form\EstudianteType;
+use AppBundle\Entity\AldeaCoord;
+use AppBundle\Form\AldeaCoordType;
+
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View as FOSView;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use Voryx\RESTGeneratorBundle\Controller\VoryxController;
 
 /**
- * Estudiante controller.
- * @RouteResource("Estudiante")
+ * AldeaCoord controller.
+ * @RouteResource("AldeaCoord")
  */
-class EstudianteRESTController extends VoryxController
+class AldeaCoordRESTController extends VoryxController
 {
     /**
-     * Get a Estudiante entity
+     * Get a AldeaCoord entity
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
      * @return Response
      *
      */
-    public function getAction(Estudiante $entity)
+    public function getAction(AldeaCoord $entity)
     {
         return $entity;
     }
     /**
-     * Get all Estudiante entities.
+     * Get all AldeaCoord entities.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -63,9 +64,7 @@ class EstudianteRESTController extends VoryxController
             $filters_operator = $paramFetcher->get('filters_operator');
 
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Estudiante');
-
-            $order_by = array('pnf' => 'ASC', 'persona' => 'ASC');
+            $entity = $em->getRepository('AppBundle:AldeaCoord');
 
             if (!empty($q)) {
                 $filters = array('persona' => $q);
@@ -90,7 +89,7 @@ class EstudianteRESTController extends VoryxController
         }
     }
     /**
-     * Create a Estudiante entity.
+     * Create a AldeaCoord entity.
      *
      * @View(statusCode=201, serializerEnableMaxDepthChecks=true)
      *
@@ -101,8 +100,8 @@ class EstudianteRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $entity = new Estudiante();
-        $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
+        $entity = new AldeaCoord();
+        $form = $this->createForm(new AldeaCoordType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
 
@@ -117,7 +116,7 @@ class EstudianteRESTController extends VoryxController
         return FOSView::create(array('errors' => $form->getErrors()), Codes::HTTP_INTERNAL_SERVER_ERROR);
     }
     /**
-     * Update a Estudiante entity.
+     * Update a AldeaCoord entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -126,12 +125,12 @@ class EstudianteRESTController extends VoryxController
      *
      * @return Response
      */
-    public function putAction(Request $request, Estudiante $entity)
+    public function putAction(Request $request, AldeaCoord $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
-            $form = $this->createForm(new EstudianteType(), $entity, array("method" => $request->getMethod()));
+            $form = $this->createForm(new AldeaCoordType(), $entity, array("method" => $request->getMethod()));
             $this->removeExtraFields($request, $form);
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -146,7 +145,7 @@ class EstudianteRESTController extends VoryxController
         }
     }
     /**
-     * Partial Update to a Estudiante entity.
+     * Partial Update to a AldeaCoord entity.
      *
      * @View(serializerEnableMaxDepthChecks=true)
      *
@@ -155,55 +154,12 @@ class EstudianteRESTController extends VoryxController
      *
      * @return Response
      */
-    public function patchAction(Request $request, Estudiante $entity)
+    public function patchAction(Request $request, AldeaCoord $entity)
     {
         return $this->putAction($request, $entity);
     }
-
-    public function estuPnfEntity(Request $request, Estudiante $entity)
-    {
-        if (is_array($request->request->get('estuPnf'))) {
-            $pnf = $request->request->get('estuPnf');
-            $em = $this->getDoctrine()->getManager();
-            $entityEstuPnf = $em->getRepository('AppBundle:EstuPnf')->findBy(
-                array('estu' => $entity->getCedu())
-            );
-
-            $estuPnfIds = array();
-            foreach ($entityEstuPnf as $key => $enti) {
-                $pnfId = $enti->getPnf()->getPnfId();
-                if (in_array($pnfId, $pnf)) {
-                    if (($key = array_search($pnfId, $pnf)) !== false) {
-                        unset($pnf[$key]);
-                        sort($pnf);
-                    }
-                } else {
-                    $estuPnfIds[] = $enti;
-                }
-            }
-
-            //delete entity
-            foreach ($estuPnfIds as $key => $value) {
-                $em->remove($value);
-            }
-
-            if ($estuPnfIds) {
-                $em->flush();
-            }
-
-            //add entity
-            foreach ($pnf as $key => $value) {
-                $entityPnf = $em->getRepository('AppBundle:Pnf')->find($value);
-                if ($entityPnf) {
-                    $entityEstuPnf = new EstuPnf();
-                    $entityEstuPnf->setPnf($entityPnf);
-                    $entity->addEstuPnf($entityEstuPnf);
-                }
-            }
-        }
-    }
     /**
-     * Delete a Estudiante entity.
+     * Delete a AldeaCoord entity.
      *
      * @View(statusCode=204)
      *
@@ -212,7 +168,7 @@ class EstudianteRESTController extends VoryxController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Estudiante $entity)
+    public function deleteAction(Request $request, AldeaCoord $entity)
     {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -223,37 +179,5 @@ class EstudianteRESTController extends VoryxController
         } catch (\Exception $e) {
             return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-        /**
-     * Get report s.
-     *
-     * @View(serializerEnableMaxDepthChecks=true)
-     *
-     * @Route("/reports/s", name="reports_s")
-     *
-     * @QueryParam(name="uriReport", nullable=true, description="")
-     * @QueryParam(name="id", nullable=true, description="")
-     *
-     * @return Response
-     */
-    public function rptAction(ParamFetcherInterface $paramFetcher)
-    {
-        $cedu = $paramFetcher->get('id');
-        $username = $this->getUser()->getUserName();
-
-        $param = array(
-            'action'  => 'record',
-            'report'  => 'recordEstu',
-            'format' => 'pdf',
-            'param' => array(
-                'cedu' => $cedu
-            )
-        );
-
-        return array(
-            'url' => $this->generateUrl('reports_q', $param),
-            'parameters' => $param
-        );
     }
 }

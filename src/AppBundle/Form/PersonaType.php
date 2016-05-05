@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DocenteType extends AbstractType
+class PersonaType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,10 +15,16 @@ class DocenteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('persona', 'entity', array(
-                'class' => 'AppBundle:Persona',
-                'property' => 'cedu',
-            ))
+            ->add('cedu')
+            ->add('naci')
+            ->add('nomb')
+            ->add('apell')
+            /*->add('fechnac')*/
+            ->add('telf')
+            ->add('correo')
+            ->add('profesionFix')
+                /*->add('fechcreado')
+                ->add('fechmodi')*/
         ;
     }
 
@@ -28,7 +34,7 @@ class DocenteType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Docente',
+            'data_class' => 'AppBundle\Entity\Persona',
             'csrf_protection' => false,
         ));
     }
@@ -38,6 +44,6 @@ class DocenteType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_docente';
+        return 'appbundle_persona';
     }
 }

@@ -161,6 +161,9 @@ define(function() {
 					}, {
 						label: 'E',
 						value: 'E'
+					}, {
+						label: 'P',
+						value: 'P'
 					}];
 				};
 			},
@@ -921,6 +924,206 @@ define(function() {
 				};
 			},
 
+			choicePersonaPnf: function() {
+				var util = this;
+				return function(entry, scope) {
+
+					var personapnfs = [];
+
+					var dPersonaPnfs = $rootScope.$on('choice:personapnfs:get', getPersonaPnfs);
+					var dresetPersonaPnfs = $rootScope.$on('choice:personapnfs:reset', resetPersonaPnfs);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return personapnfs;
+
+					function getPersonaPnfs(e, $item, $model) {
+						util.apiPersonaPnf($item, $model).then((response) => {
+							personapnfs = util.dataPrepare(response.data.originalElement, [{label:'pnf_desc', value: 'pnf_id'}]);
+
+							scope.$broadcast('choices:update', {
+								choices: personapnfs
+							});
+						});
+					}
+
+					function resetPersonaPnfs() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPersonaPnfs();
+						dresetPersonaPnfs();
+					}
+				};
+			},
+
+			choicePersonaEstu: function() {
+				var util = this;
+				return function(entry, scope) {
+
+					var personaestus = [];
+
+					var dPersonaEstus = $rootScope.$on('choice:personaestus:get', getPersonaEstus);
+					var dresetPersonaEstus = $rootScope.$on('choice:personaestus:reset', resetPersonaEstus);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return personaestus;
+
+					function getPersonaEstus(e, $item, $model) {
+						util.apiPersonaEstu($item, $model).then((response) => {
+							personaestus = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+
+							scope.$broadcast('choices:update', {
+								choices: personaestus
+							});
+						});
+					}
+
+					function resetPersonaEstus() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPersonaEstus();
+						dresetPersonaEstus();
+					}
+				};
+			},
+
+			choicePersonaDoce: function() {
+				var util = this;
+				return function(entry, scope) {
+
+					var personadoces = [];
+
+					var dPersonaDoces = $rootScope.$on('choice:personadoces:get', getPersonaDoces);
+					var dresetPersonaDoces = $rootScope.$on('choice:personadoces:reset', resetPersonaDoces);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return personadoces;
+
+					function getPersonaDoces(e, $item, $model) {
+						util.apiPersonaDoce($item, $model).then((response) => {
+							personadoces = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+
+							scope.$broadcast('choices:update', {
+								choices: personadoces
+							});
+						});
+					}
+
+					function resetPersonaDoces() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPersonaDoces();
+						dresetPersonaDoces();
+					}
+				};
+			},
+
+			choicePersonaCoord: function() {
+				var util = this;
+				return function(entry, scope) {
+
+					var personacoords = [];
+
+					var dPersonaCoords = $rootScope.$on('choice:personacoords:get', getPersonaCoords);
+					var dresetPersonaCoords = $rootScope.$on('choice:personacoords:reset', resetPersonaCoords);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return personacoords;
+
+					function getPersonaCoords(e, $item, $model) {
+						util.apiPersonaCoord($item, $model).then((response) => {
+							personacoords = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+
+							scope.$broadcast('choices:update', {
+								choices: personacoords
+							});
+						});
+					}
+
+					function resetPersonaCoords() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPersonaCoords();
+						dresetPersonaCoords();
+					}
+				};
+			},
+
+			choicePersona: function() {
+				var util = this;
+				return function(entry, scope) {
+
+					var personas = [];
+
+					var dPersonas = $rootScope.$on('choice:personas:get', getPersonas);
+					var dresetPersonas = $rootScope.$on('choice:personas:reset', resetPersonas);
+
+					scope.$on('$destroy', destroyEvent);
+
+					return personas;
+
+					function getPersonas(e, $item, $model) {
+						util.apiPersona($item, $model).then((response) => {
+							personas = util.dataPrepare(response.data.originalElement, util.choicePersonaProperty());
+
+							scope.$broadcast('choices:update', {
+								choices: personas
+							});
+						});
+					}
+
+					function resetPersonas() {
+						scope.$broadcast('choices:update', {
+							choices: []
+						});
+					}
+
+					function destroyEvent() {
+						dPersonas();
+						dresetPersonas();
+					}
+				};
+			},
+
+			choicePersonaProperty: function() {
+				return [{
+					label: 'cedu_nomb_apell'
+				}, {
+					value: 'cedu'
+				}, {
+					'nac_cedu': 'nac_cedu'
+				}, {
+					'nomb_apell': 'nomb_apell'
+				}, {
+					'cedu_nomb_apell': 'cedu_nomb_apell'
+				}, {
+					nomb: 'nomb'
+				}, {
+					apell: 'apell'
+				}, {
+					telf: 'telf'
+				}];
+			},
+
 			apiPais: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pais', '/api/pais?limit=' + ($limit || '1000'));
 			},
@@ -968,7 +1171,6 @@ define(function() {
 			},
 
 			apiPnfTrayectoPeriodoUc: function($item, $model, $limit) {
-				console.log($item, $model, 'pnftrayectoperiodoucs');
 				return RestWrapper.getList({}, 'pnftrayectoperiodoucs', '/api/pnftrayectoperiodoucs?filters[pnfTrayPeri]='+$model+'&limit=' + ($limit || '1000'));
 			},
 
@@ -1002,6 +1204,24 @@ define(function() {
 
 			apiPnfEstudiante: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'estupnfs', '/api/estupnfs?filters[pnf]='+$model+'&limit=' + ($limit || '10000'));
+			},
+
+			apiPersonaPnf: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personapnfs', '/api/personas/pnfs?cedu='+$model+'&limit=' + ($limit || '10000'));
+			},
+
+			apiPersonaDoce: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personadoces', '/api/personas/doces?limit=' + ($limit || '10000'));
+			},
+			apiPersonaEstu: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personaestus', '/api/personas/estus?limit=' + ($limit || '10000'));
+			},
+			apiPersonaCoord: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personaestus', '/api/personas/coords?limit=' + ($limit || '10000'));
+			},
+
+			apiPersona: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personas', '/api/personas?limit=' + ($limit || '5000'));
 			},
 		};
 	}

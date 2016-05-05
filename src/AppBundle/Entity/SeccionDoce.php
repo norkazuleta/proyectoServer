@@ -32,9 +32,9 @@ class SeccionDoce
     private $secc;
 
     /**
-     * @var \Docente
+     * @var \Persona
      *
-     * @ORM\ManyToOne(targetEntity="Docente")
+     * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="cedu", referencedColumnName="cedu")
      * })
@@ -77,10 +77,10 @@ class SeccionDoce
     /**
      * Set cedu
      *
-     * @param  \AppBundle\Entity\Docente $cedu
+     * @param  \AppBundle\Entity\Persona $cedu
      * @return SeccionDoce
      */
-    public function setCedu(\AppBundle\Entity\Docente $cedu = null)
+    public function setCedu(\AppBundle\Entity\Persona $cedu = null)
     {
         $this->cedu = $cedu;
 
@@ -90,7 +90,7 @@ class SeccionDoce
     /**
      * Get cedu
      *
-     * @return \AppBundle\Entity\Docente
+     * @return \AppBundle\Entity\Persona
      */
     public function getCedu()
     {

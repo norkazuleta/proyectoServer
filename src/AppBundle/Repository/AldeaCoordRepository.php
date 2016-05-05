@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-class DocenteRepository extends CustomEntityRepository
+class AldeaCoordRepository extends CustomEntityRepository
 {
     public function getNbResults()
     {

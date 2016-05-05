@@ -2,314 +2,98 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Util\Utility;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Accessor;
-use JMS\Serializer\Annotation\SerializedName;
-use JMS\Serializer\Annotation\Type;
 
 /**
  * Estudiante
  *
- * @ORM\Table(name="estudiante", options={"collate"="utf8_general_ci", "charset"="utf8"})
+ * @ORM\Table(name="estudiante", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EstudianteRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class Estudiante
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="cedu", type="string", length=11, nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $cedu;
+    private $id;
 
     /**
-     * @var string
+     * @var \Persona
      *
-     * @ORM\Column(name="nomb", type="string", length=100, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="persona_cedu", referencedColumnName="cedu")
+     * })
      */
-    private $nomb;
+    private $persona;
 
     /**
-     * @var string
+     * @var \Pnf
      *
-     * @ORM\Column(name="apell", type="string", length=100, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Pnf")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pnf_id", referencedColumnName="pnf_id")
+     * })
      */
-    private $apell;
+    private $pnf;
 
     /**
-     * @var \DateTime
+     * Get id
      *
-     * @Type("DateTime<'Y-m-d'>")
-     * @ORM\Column(name="fn", type="date", nullable=false)
+     * @return integer
      */
-    private $fn;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="correo", type="string", length=100, nullable=false)
-     */
-    private $correo;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tlf", type="string", length=11, nullable=false)
-     */
-    private $tlf;
-
-    /**
-     * @var \EstuPnf
-     *
-     * @ORM\OneToMany(targetEntity="EstuPnf", mappedBy="estu", cascade={"persist", "remove"})
-     */
-    private $estuPnf;
-
-    /**
-     * @var string
-     *
-     * @SerializedName("nomb_apell")
-     * @Type("string")
-     * @Accessor(getter="getNombApell")
-     */
-    private $nombApell;
-
-    /**
-     * @var string
-     *
-     * @SerializedName("cedu_nomb_apell")
-     * @Type("string")
-     * @Accessor(getter="getCeduNombApell")
-     */
-    private $ceduNombApell;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function getId()
     {
-        $this->estuPnf = new ArrayCollection();
+        return $this->id;
     }
 
     /**
-     * Hook on pre-persist operations.
+     * Set persona
      *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->cedu = Utility::upperCase($this->cedu);
-        $this->nomb = Utility::upperCase($this->nomb);
-        $this->apell = Utility::upperCase($this->apell);
-        $this->correo = Utility::lowerCase($this->correo);
-    }
-
-    /**
-     * Hook on pre-update operations.
-     *
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->cedu = Utility::upperCase($this->cedu);
-        $this->nomb = Utility::upperCase($this->nomb);
-        $this->apell = Utility::upperCase($this->apell);
-        $this->correo = Utility::lowerCase($this->correo);
-    }
-    /**
-     * Set cedu
-     *
-     * @param  string     $cedu
+     * @param  \AppBundle\Entity\Persona $persona
      * @return Estudiante
      */
-    public function setCedu($cedu)
+    public function setPersona(\AppBundle\Entity\Persona $persona = null)
     {
-        $this->cedu = $cedu;
+        $this->persona = $persona;
 
         return $this;
     }
 
     /**
-     * Get cedu
+     * Get persona
      *
-     * @return string
+     * @return \AppBundle\Entity\Persona
      */
-    public function getCedu()
+    public function getPersona()
     {
-        return $this->cedu;
+        return $this->persona;
     }
 
     /**
-     * Set nomb
+     * Set pnf
      *
-     * @param  string     $nomb
+     * @param  \AppBundle\Entity\Pnf $pnf
      * @return Estudiante
      */
-    public function setNomb($nomb)
+    public function setPnf(\AppBundle\Entity\Pnf $pnf = null)
     {
-        $this->nomb = $nomb;
+        $this->pnf = $pnf;
 
         return $this;
     }
 
     /**
-     * Get nomb
+     * Get pnf
      *
-     * @return string
+     * @return \AppBundle\Entity\Pnf
      */
-    public function getNomb()
+    public function getPnf()
     {
-        return $this->nomb;
-    }
-
-    /**
-     * Set apell
-     *
-     * @param  string     $apell
-     * @return Estudiante
-     */
-    public function setApell($apell)
-    {
-        $this->apell = $apell;
-
-        return $this;
-    }
-
-    /**
-     * Get apell
-     *
-     * @return string
-     */
-    public function getApell()
-    {
-        return $this->apell;
-    }
-
-    /**
-     * Set fn
-     *
-     * @param  \DateTime  $fn
-     * @return Estudiante
-     */
-    public function setFn(\DateTime $fn = null)
-    {
-        $this->fn = $fn;
-
-        return $this;
-    }
-
-    /**
-     * Get fn
-     *
-     * @return \DateTime
-     */
-    public function getFn()
-    {
-        return $this->fn;
-    }
-
-    /**
-     * Set correo
-     *
-     * @param  string     $correo
-     * @return Estudiante
-     */
-    public function setCorreo($correo)
-    {
-        $this->correo = $correo;
-
-        return $this;
-    }
-
-    /**
-     * Get correo
-     *
-     * @return string
-     */
-    public function getCorreo()
-    {
-        return $this->correo;
-    }
-
-    /**
-     * Set tlf
-     *
-     * @param  string     $tlf
-     * @return Estudiante
-     */
-    public function setTlf($tlf)
-    {
-        $this->tlf = $tlf;
-
-        return $this;
-    }
-
-    /**
-     * Get tlf
-     *
-     * @return string
-     */
-    public function getTlf()
-    {
-        return $this->tlf;
-    }
-
-    /**
-     * Get NombApell.
-     *
-     * @return string
-     */
-    public function getNombApell()
-    {
-        return sprintf('%s %s', $this->getNomb(), $this->getApell());
-    }
-
-    /**
-     * Get CeduNombApell.
-     *
-     * @return string
-     */
-    public function getCeduNombApell()
-    {
-        return sprintf('%s (%s %s)', $this->getCedu(), $this->getNomb(), $this->getApell());
-    }
-
-    /**
-     * Add estuPnf
-     *
-     * @param \AppBundle\Entity\EstuPnf $estuPnf
-     * @return Estudiante
-     */
-    public function addEstuPnf(\AppBundle\Entity\EstuPnf $estuPnf)
-    {
-        $this->estuPnf[] = $estuPnf;
-        $estuPnf->setEstu($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove estuPnf
-     *
-     * @param \AppBundle\Entity\EstuPnf $estuPnf
-     */
-    public function removeEstuPnf(\AppBundle\Entity\EstuPnf $estuPnf)
-    {
-        $this->estuPnf->removeElement($estuPnf);
-    }
-
-    /**
-     * Get estuPnf
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getEstuPnf()
-    {
-        return $this->estuPnf;
+        return $this->pnf;
     }
 }

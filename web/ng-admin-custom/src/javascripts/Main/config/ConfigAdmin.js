@@ -28,6 +28,7 @@ define(function() {
 		AldeaAdminProvider,
 
 		PnfAdminProvider,
+		PersonaAdminProvider,
 		DocenteAdminProvider,
 		EstudianteAdminProvider,
 		UcAdminProvider,
@@ -68,6 +69,7 @@ define(function() {
 			.addEntity(UcAdminProvider.$get())
 			.addEntity(TrayectoAdminProvider.$get())
 			.addEntity(PeriodoAdminProvider.$get())
+			.addEntity(PersonaAdminProvider.$get())
 			.addEntity(DocenteAdminProvider.$get())
 			.addEntity(EstudianteAdminProvider.$get())
 			.addEntity(PnfTrayectoPeriodoAdminProvider.$get())
@@ -113,6 +115,7 @@ define(function() {
 				.addChild(nga.menu(PeriodoAdminProvider.$get()))
 				.addChild(nga.menu(UcAdminProvider.$get()))
 			)
+			.addChild(nga.menu().title('Administrar Persona').icon('<span class="fa fa-user"> </span>').link('/personas/list'))
 			.addChild(nga.menu().title('Administrar Docente').icon('<span class="fa fa-user"> </span>').link('/docentes/list'))
 			.addChild(nga.menu().title('Administrar Estudiante').icon('<span class="fa fa-user"> </span>').link('/estudiantes/list'))
 		);
@@ -163,6 +166,7 @@ define(function() {
 		'AldeaAdminProvider',
 
 		'PnfAdminProvider',
+		'PersonaAdminProvider',
 		'DocenteAdminProvider',
 		'EstudianteAdminProvider',
 		'UcAdminProvider',

@@ -39,6 +39,7 @@ MainModule.config(require('./component/factory/TurnoAdmin'));
 MainModule.config(require('./component/factory/AldeaAdmin'));
 
 MainModule.config(require('./component/factory/PnfAdmin'));
+MainModule.config(require('./component/factory/PersonaAdmin'));
 MainModule.config(require('./component/factory/EstudianteAdmin'));
 MainModule.config(require('./component/factory/DocenteAdmin'));
 MainModule.config(require('./component/factory/UcAdmin'));

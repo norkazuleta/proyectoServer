@@ -1,84 +1,113 @@
 /*global define*/
+import template from '../../view/layoutModalReport.html';
 
-define(function() {
-	'use strict';
-    var template = require('../../view/layoutModalReport.html');
+class HandleReportModalController {
 
-	var HandleReportController = function($scope, $modal) {
+	constructor($scope, $modalInstance, progression, RestWrapper, $sce, UtilityService, identifier) {
+		this.$scope = $scope;
+		this.$modalInstance = $modalInstance;
+		this.progression = progression;
+		this.rest = RestWrapper;
+		this.$sce = $sce;
+		this.util = UtilityService;
+		this.identifier = identifier;
 
-		$scope.open = function($event, identifier) {
-			$event.preventDefault();
-			$event.stopPropagation();
+		this.$scope.item = { loading: true, loadingIFrame: false };
 
-			$scope.identifier = identifier;
+		this.initIframe();
+		this.request();
 
-			$modal.open({
-                animation: true,
-                template: template,
-                controller: ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$sce', 'UtilityService', 'identifier', function($scope, $modalInstance, progression, RestWrapper, $sce, UtilityService, identifier) {
-                	this.$scope = $scope;
-					this.rest = RestWrapper;
-                	this.util = UtilityService;
-                	this.progression = progression;
-					this.$sce = $sce;
-					this.$scope.item = {loading:true, loadingIFrame: false};
-					this.identifier = identifier;
+		this.$scope.close = this.close.bind(this);
+		this.$scope.$on('$destroy', this.destroy.bind(this));
+	}
 
-                	this.requestReport = function() {
+	request() {
+		var queryString = this.util.toQueryString({ id: this.identifier });
+		this.progression.start();
 
-						var queryString = this.util.toQueryString({id: this.identifier});
+		this.rest
+			.getOne('reports', '/api/reports/s?' + queryString)
+			.then((data) => {
+				var url = data.originalElement.url + '&v=' + (new Date()).getTime() + Math.floor(Math.random() * 1000000);
+				this.$scope.reportURL = this.$sce.trustAsResourceUrl(url);
+				this.$scope.item = { loading: false, loadingIFrame: true };
+				this.progression.done();
+			}, () => {
+				this.progression.done();
+			});
+	}
 
-						this.progression.start();
+	resetLoading(elem) {
+		elem.style.display = 'block';
+		if (elem.nextSibling.nextElementSibling) {
+			elem.nextSibling.nextElementSibling.style.display = 'none';
+		}
+	}
 
-						this.rest
-							.getOne('reports', '/api/reports/s?' + queryString)
-							.then((data) => {
-								var url = data.originalElement.url + '&v=' + (new Date()).getTime() + Math.floor(Math.random() * 1000000);
-								this.$scope.reportURL = this.$sce.trustAsResourceUrl(url);
-								this.$scope.item = {loading:false, loadingIFrame: true};
-								this.progression.done();
-							}, () => {
-								this.progression.done();
-							});
-                	};
-
-                	this.resetLoading = function (elem) {
-						elem.style.display = 'block';
-                		if (elem.nextSibling.nextElementSibling) {
-                			elem.nextSibling.nextElementSibling.style.display = 'none';
-                		}
-                	};
-                	var load = false, selfa = this;
-                	window.iframeload = function (iframe) {
-						iframe.height = '800px';
-						if (navigator.userAgent.indexOf("Chrome") > 0){
-							if (!load) {
-								load = true;
-							} else{
-								selfa.resetLoading(iframe);
-							}
-						} else {
-							selfa.resetLoading(iframe);
-						}
-					};
-
-                	$scope.cancel = function () {
-						$modalInstance.close();
-					};
-
-                	this.requestReport();
-                }],
-                size: 'lg',
-                resolve: {
-                    identifier: function () {
-                        return $scope.identifier;
-                    }
-                }
-            });
+	initIframe() {
+		var load = false;
+		window.iframeload = (iframe) => {
+			iframe.height = '800px';
+			if (navigator.userAgent.indexOf("Chrome") > 0) {
+				if (!load) {
+					load = true;
+				} else {
+					this.resetLoading(iframe);
+				}
+			} else {
+				this.resetLoading(iframe);
+			}
 		};
-	};
+	}
 
-	HandleReportController.$inject = ['$scope', '$modal'];
+	close() {
+		this.$modalInstance.close();
+	}
 
-	return HandleReportController;
-});
+	destroy() {
+		this.$scope = undefined;
+		this.rest = undefined;
+		this.util = undefined;
+		this.progression = undefined;
+		this.$sce = undefined;
+		this.$scope = undefined;
+
+	}
+}
+
+export default class HandleReportController {
+	constructor($scope, $modal) {
+		this.$scope = $scope;
+		this.$modal = $modal;
+
+		this.$scope.open = this.openModal.bind(this);
+		this.$scope.$on('$destroy', this.destroy.bind(this));
+	}
+
+	openModal($event, identifier) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		this.$modal.open({
+			animation: true,
+			template: template,
+			controller: HandleReportModalController,
+			controllerAs: 'handlereport',
+			size: 'lg',
+			resolve: {
+				identifier: function() {
+					return identifier;
+				}
+			}
+		});
+	}
+
+	destroy() {
+		this.$scope = undefined;
+		this.$modal = undefined;
+	}
+}
+
+HandleReportModalController.$inject = ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$sce', 'UtilityService', 'identifier'];
+
+HandleReportController.$inject = ['$scope', '$modal'];

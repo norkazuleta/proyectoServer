@@ -56,10 +56,6 @@ define(function() {
 				])
 				.listActions([asigd, asige, carganota, 'edit', 'delete', 'show']);
 
-
-
-
-
 			seccion.creationView()
 				.title('Nueva Sección')
 				.fields([

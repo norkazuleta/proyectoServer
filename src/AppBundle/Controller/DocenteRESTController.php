@@ -66,14 +66,7 @@ class DocenteRESTController extends VoryxController
             $entity = $em->getRepository('AppBundle:Docente');
 
             if (!empty($q)) {
-                $filters = array(
-                    'cedu' => '',
-                    'nomb' => '',
-                    'apell' => '',
-                    'fn' => '',
-                    'correo' => '',
-                    'tlf' => '',
-                );
+                $filters = array('persona' => $q);
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
@@ -106,11 +99,8 @@ class DocenteRESTController extends VoryxController
      */
     public function postAction(Request $request)
     {
-        $fn = $request->request->get('fn');
-        $fn = new \DateTime($fn);
 
         $entity = new Docente();
-        $entity->setFn($fn);
         $form = $this->createForm(new DocenteType(), $entity, array("method" => $request->getMethod()));
         $this->removeExtraFields($request, $form);
         $form->handleRequest($request);
@@ -138,11 +128,6 @@ class DocenteRESTController extends VoryxController
     public function putAction(Request $request, Docente $entity)
     {
         try {
-            if ($fn = $request->request->get('fn')) {
-                $fn = new \DateTime($fn);
-                $entity->setFn($fn);
-            }
-
             $em = $this->getDoctrine()->getManager();
             $request->setMethod('PATCH'); //Treat all PUTs as PATCH
             $form = $this->createForm(new DocenteType(), $entity, array("method" => $request->getMethod()));

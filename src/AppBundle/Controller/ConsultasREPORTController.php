@@ -44,7 +44,7 @@ class ConsultasREPORTController extends ReportController
             $this->setParameters(
                 array_merge(
                     array(
-                        'URI_WORKSPACE' => "\"" . dirname(realpath($this->jrxmlDir .'/' . $report . '.jrxml')) . "\"" ,
+                        'URI_WORKSPACE' => "\"" . dirname(realpath($this->jrxmlDir .'/' . $report . '.jasper')) . "\"" ,
                         'URI_LOGO_LEFT' => "\"" . realpath($this->jrxmlDir .'/logo-left.png') . "\"" ,
                         'URI_LOGO_RIGHT' => "\"" . realpath($this->jrxmlDir .'/logo-right.png') . "\""
                     ),

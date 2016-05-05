@@ -9,29 +9,31 @@ define(function() {
 			var util = UtilityService;
 
 			var estudiante = nga.entity('estudiantes')
-				.identifier(nga.field('cedu'))
+				.identifier(nga.field('id'))
 				.label('Estudiantes');
+
+var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values['persona.cedu'])" ng-controller="HandleReportController" href="#">
+	<span class="fa fa-file-pdf-o"></span>
+	<span class="hidden-xs"></span>
+</a>`;
 
 			estudiante.listView()
 				.infinitePagination(false)
 				.fields([
-					nga.field('cedu').label('cedu'),
-					nga.field('nomb').label('nomb'),
-					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn')
+					nga.field('persona.cedu').label('cedu'),
+					nga.field('persona.nomb').label('nomb'),
+					nga.field('persona.apell').label('apell'),
+					nga.field('persona.fechnac', 'date').label('fn')
 					.format('dd-MM-yyyy'),
-					nga.field('correo').label('correo'),
-					nga.field('tlf').label('tlf'),
-					nga.field('estu_pnf', 'template')
-					.label('PNF')
-					.template('<span ng-repeat="item in entry.values.estu_pnf track by $index" class="label label-default">{{ item.pnf.pnf_desc }}</span>')
-					.cssClasses('hidden-xs'),
+					nga.field('persona.correo').label('correo'),
+					nga.field('persona.telf').label('tlf'),
+					nga.field('pnf.pnf_desc').label('PNF'),
 				])
 				.filters([
 					nga.field('q', 'template')
 					.label('')
 					.pinned(true)
-					.template('<div class="input-group"><input type="text" ng-model="value" ng-model-options="{debounce: 1500}" placeholder="Buscar" class="form-control"></input><span ng-click="$parent.filterCtrl.filter()" class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span></div>'),
+					.template('<div class="input-group"><input type="text" ng-model="value" ng-model-options="{debounce: 1500}" placeholder="Cédula" class="form-control"></input><span ng-click="$parent.filterCtrl.filter()" class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span></div>'),
 
 					nga.field('filters_operator', 'choice')
 					.label('Operador SQL')
@@ -41,116 +43,115 @@ define(function() {
 					.label('Mostrar limite')
 					.choices(util.filterLimit()),
 				])
-				.listActions(['edit', 'delete', 'show']);
+				.listActions([pdf, 'delete', 'show']);
 
 			estudiante.creationView()
 				.title('Crear nuevo estudiante')
 				.fields([
-					nga.field('cedu').label('cedu')
+					nga.field('persona', 'choice')
+					.label('Persona')
 					.validation({
 						required: true
-					}),
-					nga.field('nomb').label('nomb')
-					.validation({
-						required: true
-					}),
-					nga.field('apell').label('apell')
-					.validation({
-						required: true
-					}),
-					nga.field('fn', 'date').label('fn')
-					.format('dd-MM-yyyy')
-					.validation({
-						required: true
-					}),
-					nga.field('correo').label('correo')
-					.validation({
-						required: true
-					}),
-					nga.field('tlf').label('tlf')
-					.validation({
-						required: true
+					})
+					.attributes({
+						'on-select': 'selPersonaEstu($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						util.choicePersonaEstu()(entry, scope);
+
+						scope.selPersonaEstu = selPersonaEstu;
+
+						$rootScope.$broadcast('choice:personaestus:get');
+
+						return [];
+
+						function selPersonaEstu($item, $model) {
+							entry.values['pnf'] = '';
+
+							$rootScope.$broadcast('choice:personapnfs:reset');
+							$rootScope.$broadcast('choice:personapnfs:get', $item, $model);
+						}
 					}),
 
-					nga.field('estu_pnf', 'reference_many')
+					nga.field('pnf', 'choice')
 					.label('PNF')
-					.attributes({
-						placeholder: 'Filtrar/Seleccionar PNF.'
+					.validation({
+						required: true
 					})
-					.targetEntity(pnf)
-					.targetField(nga.field('pnf_desc'))
-					.filters(function(search) {
-						return search ? {
-							q: search
-						} : null;
-					})
-					.remoteComplete(true, {
-						refreshDelay: 300
+					.choices(function(entry, scope) {
+
+						util.choicePersonaPnf()(entry, scope);
+
+						/*$rootScope.$broadcast('choice:personapnfs:get');*/
+
+						return [];
 					}),
 				]);
 
-			estudiante.editionView()
+			/*estudiante.editionView()
 				.title('Actualizar estudiante #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('cedu').label('cedu')
+					nga.field('persona', 'choice')
+					.label('Persona')
 					.validation({
 						required: true
-					}),
-					nga.field('nomb').label('nomb')
-					.validation({
-						required: true
-					}),
-					nga.field('apell').label('apell')
-					.validation({
-						required: true
-					}),
-					nga.field('fn', 'date').label('fn')
-					.format('dd-MM-yyyy')
-					.validation({
-						required: true
-					}),
-					nga.field('correo').label('correo')
-					.validation({
-						required: true
-					}),
-					nga.field('tlf').label('tlf')
-					.validation({
-						required: true
+					})
+					.attributes({
+						'on-select': 'selPers($item, $model)',
+					})
+					.choices(function(entry, scope) {
+
+						entry.values['persona'] = entry.values['persona.cedu'];
+
+						util.choicePers()(entry, scope);
+
+						scope.selPers = selPers;
+
+						$rootScope.$broadcast('choice:pers:get');
+
+						return [];
+
+						function selPers($item, $model) {
+							entry.values['pnf'] = '';
+
+							$rootScope.$broadcast('choice:personapnfs:reset');
+							$rootScope.$broadcast('choice:personapnfs:get', $item, $model);
+						}
 					}),
 
-					nga.field('estu_pnf', 'reference_many')
+					nga.field('pnf', 'choice')
 					.label('PNF')
-					.attributes({
-						placeholder: 'Filtrar/Seleccionar PNF.'
+					.validation({
+						required: true
 					})
-					.targetEntity(pnf)
-					.targetField(nga.field('pnf_desc'))
-					.filters(function(search) {
-						return search ? {
-							q: search
-						} : null;
-					})
-					.remoteComplete(false, {
-						refreshDelay: 300
+					.choices(function(entry, scope) {
+
+						entry.values['pnf'] = entry.values['pnf.pnf_id'];
+						var cedu = entry.values['persona.cedu'];
+
+						util.choicePersonaPnf()(entry, scope);
+
+						$rootScope.$broadcast('choice:personapnfs:get', {}, cedu);
+
+						return [];
 					}),
-				]);
+				]);*/
 
 			estudiante.showView()
 				.title('Detalle estudiante #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('cedu').label('cedu'),
-					nga.field('nomb').label('nomb'),
-					nga.field('apell').label('apell'),
-					nga.field('fn', 'date').label('fn')
+					nga.field('persona.cedu').label('cedu'),
+					nga.field('persona.nomb').label('nomb'),
+					nga.field('persona.apell').label('apell'),
+					nga.field('persona.fechnac', 'date').label('fn')
 					.format('dd-MM-yyyy'),
-					nga.field('correo').label('correo'),
-					nga.field('tlf').label('tlf'),
-					nga.field('aldea_turno', 'template')
-					.label('PNF')
-					.template('<span ng-repeat="item in entry.values._estu_pnf track by $index" class="label label-default">{{ item.pnf.pnf_desc }}</span>')
-					.cssClasses('hidden-xs'),
+					nga.field('persona.correo').label('correo'),
+					nga.field('persona.telf').label('tlf'),
+					nga.field('pnf.pnf_desc').label('PNF'),
+
 					nga.field('Mostrar').label('')
-					.template('<a class="btn btn-default" ng-click="open($event, entry.values.cedu)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
+					.template('<a class="btn btn-default" ng-click="open($event, entry.values.persona.cedu)" ng-controller="HandleReportController" href="#"><span class="fa fa-file-pdf-o"></span>&nbsp;<span class="hidden-xs">Record académico</span> </a>'),
 				]);
 
 			return estudiante;

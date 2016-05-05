@@ -102,15 +102,12 @@ define(function() {
 						required: true
 					}),
 					nga.field('aldea_actual', 'boolean')
-					.label('aldea_actual')
+					.label('Aldea Actual')
 					.choices([
 				          { value: null, label: 'No seleccionado' },
 				          { value: true, label: 'Activado' },
 				          { value: false, label: 'Inactivo' }
-			      	])
-					/*.validation({
-						required: true
-					})*/,
+			      	]),
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
@@ -125,6 +122,20 @@ define(function() {
                     .remoteComplete(true, { refreshDelay: 300 })
                     .validation({
 						required: true
+					}),
+
+					nga.field('coord.persona', 'choice')
+					.label('Coordinador(a)')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+
+						util.choicePersonaCoord()(entry, scope);
+
+						$rootScope.$broadcast('choice:personacoords:get');
+
+						return [];
 					}),
 				]);
 
@@ -213,10 +224,13 @@ define(function() {
 					.validation({
 						required: true
 					}),
-					nga.field('aldea_actual', 'boolean').label('aldea_actual')
-					.validation({
-						required: true
-					}),
+					nga.field('aldea_actual', 'boolean')
+					.label('Aldea Actual')
+					.choices([
+				          { value: null, label: 'No seleccionado' },
+				          { value: true, label: 'Activado' },
+				          { value: false, label: 'Inactivo' }
+			      	]),
 
 					nga.field('aldea_turno', 'reference_many')
 					.label('Turno')
@@ -231,6 +245,27 @@ define(function() {
                     .remoteComplete(false, { refreshDelay: 300 })
                     .validation({
 						required: true
+					}),
+
+					nga.field('coord.persona', 'choice')
+					.label('Coordinador(a)')
+					.validation({
+						required: true
+					})
+					.choices(function(entry, scope) {
+						delete entry.values['coord.id'];
+						delete entry.values['coord.aldea'];
+						if (entry.values['coord.persona.cedu']) {
+							entry.values['coord.persona'] = entry.values['coord.persona.cedu'];
+						} else {
+							entry.values['coord'] = {};
+						}
+
+						util.choicePersonaCoord()(entry, scope);
+
+						$rootScope.$broadcast('choice:personacoords:get');
+
+						return [];
 					}),
 				]);
 

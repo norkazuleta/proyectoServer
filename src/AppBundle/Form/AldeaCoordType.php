@@ -6,11 +6,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DocenteType extends AbstractType
+class AldeaCoordType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,16 +19,20 @@ class DocenteType extends AbstractType
                 'class' => 'AppBundle:Persona',
                 'property' => 'cedu',
             ))
+            ->add('aldea', 'entity', array(
+                'class' => 'AppBundle:Aldea',
+                'property' => 'aldeaCodi',
+            ))
         ;
     }
-
+    
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Docente',
+            'data_class' => 'AppBundle\Entity\AldeaCoord',
             'csrf_protection' => false,
         ));
     }
@@ -38,6 +42,6 @@ class DocenteType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_docente';
+        return 'appbundle_aldeacoord';
     }
 }

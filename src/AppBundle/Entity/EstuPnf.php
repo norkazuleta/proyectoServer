@@ -22,9 +22,9 @@ class EstuPnf
     private $id;
 
     /**
-     * @var \Estudiante
+     * @var \Persona
      *
-     * @ORM\ManyToOne(targetEntity="Estudiante")
+     * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="cedu", referencedColumnName="cedu")
      * })
@@ -54,10 +54,10 @@ class EstuPnf
     /**
      * Set estu
      *
-     * @param  \AppBundle\Entity\Estudiante $estu
+     * @param  \AppBundle\Entity\Persona $estu
      * @return EstuPnf
      */
-    public function setEstu(\AppBundle\Entity\Estudiante $estu = null)
+    public function setEstu(\AppBundle\Entity\Persona $estu = null)
     {
         $this->estu = $estu;
 
@@ -67,7 +67,7 @@ class EstuPnf
     /**
      * Get estu
      *
-     * @return \AppBundle\Entity\Estudiante
+     * @return \AppBundle\Entity\Persona
      */
     public function getEstu()
     {

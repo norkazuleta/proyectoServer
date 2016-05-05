@@ -56,6 +56,13 @@ class Aldea
     private $aldeaTurno;
 
     /**
+     * @var \AldeaCoord
+     *
+     * @ORM\OneToOne(targetEntity="AldeaCoord", mappedBy="aldea", cascade={"persist", "remove"})
+     */
+    private $coord;
+
+    /**
      * Hook on pre-persist operations.
      *
      * @ORM\PrePersist
@@ -209,5 +216,29 @@ class Aldea
     public function getAldeaTurno()
     {
         return $this->aldeaTurno;
+    }
+
+    /**
+     * Set coord
+     *
+     * @param \AppBundle\Entity\AldeaCoord $coord
+     * @return Aldea
+     */
+    public function setCoord(\AppBundle\Entity\AldeaCoord $coord = null)
+    {
+        $this->coord = $coord;
+        $this->coord->setAldea($this);
+
+        return $this;
+    }
+
+    /**
+     * Get coord
+     *
+     * @return \AppBundle\Entity\AldeaCoord 
+     */
+    public function getCoord()
+    {
+        return $this->coord;
     }
 }

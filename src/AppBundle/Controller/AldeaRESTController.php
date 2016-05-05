@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Aldea;
+use AppBundle\Entity\AldeaCoord;
 use AppBundle\Entity\AldeaTurno;
 use AppBundle\Form\AldeaType;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
@@ -176,6 +177,7 @@ class AldeaRESTController extends VoryxController
                 if (in_array($turnId, $turn)) {
                     if (($key = array_search($turnId, $turn)) !== false) {
                         unset($turn[$key]);
+                        sort($turn);
                     }
                 } else {
                     $aldeaTurnoIds[] = $enti;
