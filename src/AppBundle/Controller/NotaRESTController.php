@@ -175,12 +175,12 @@ class NotaRESTController extends VoryxController
         //add entity
         $eNota = array();
         foreach ($notas as $key => $value) {
-            $entityEstudiante = $em->getRepository('AppBundle:Estudiante')->find($value['cedu']);
-            if ($entityEstudiante) {
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($value['cedu']);
+            if ($entityPersona) {
                 $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
                 $entityNota = new Nota();
                 $entityNota->setSecc($entitySeccion);
-                $entityNota->setCedu($entityEstudiante);
+                $entityNota->setCedu($entityPersona);
                 $entityNota->setNota($value['nota']);
                 $entityNota->setAsist($value['asist']);
 

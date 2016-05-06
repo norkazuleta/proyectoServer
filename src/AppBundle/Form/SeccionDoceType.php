@@ -20,7 +20,7 @@ class SeccionDoceType extends AbstractType
                 'property' => 'seccId',
             ))
             ->add('cedu', 'entity', array(
-                'class' => 'AppBundle:Docente',
+                'class' => 'AppBundle:Persona',
                 'property' => 'cedu',
             ))
         ;

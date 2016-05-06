@@ -154,15 +154,15 @@ class SeccionEstuRESTController extends VoryxController
             $em->flush();
         }
 
-        //add entityentityEstudiante
+        //add entity Estudiante
         $seccEstus = array();
         foreach ($estus as $key => $value) {
-            $entityEstudiante = $em->getRepository('AppBundle:Estudiante')->find($value);
-            if ($entityEstudiante) {
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($value);
+            if ($entityPersona) {
                 $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
                 $entitySeccionEstu = new SeccionEstu();
                 $entitySeccionEstu->setSecc($entitySeccion);
-                $entitySeccionEstu->setCedu($entityEstudiante);
+                $entitySeccionEstu->setCedu($entityPersona);
                 $em->persist($entitySeccionEstu);
                 array_push($seccEstus, $entitySeccionEstu);
             }
