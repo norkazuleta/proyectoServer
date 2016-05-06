@@ -57,11 +57,6 @@ app_periodo_academico_api:
     type:   rest
     prefix:   /api
 
-app_estu_pnf_api:
-    resource: "@AppBundle/Controller/EstuPnfRESTController.php"
-    type:   rest
-    prefix:   /api
-
 app_seccion_api:
     resource: "@AppBundle/Controller/SeccionRESTController.php"
     type:   rest

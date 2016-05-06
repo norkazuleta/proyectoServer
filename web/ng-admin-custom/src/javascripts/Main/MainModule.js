@@ -50,7 +50,6 @@ MainModule.config(require('./component/factory/PeriodoAcademicoAdmin'));
 MainModule.config(require('./component/factory/SeccionAdmin'));
 MainModule.config(require('./component/factory/PnfTrayectoPeriodoAdmin'));
 MainModule.config(require('./component/factory/PnfTrayectoPeriodoUcAdmin'));
-MainModule.config(require('./component/factory/EstuPnfAdmin'));
 
 MainModule.config(require('./config/InterceptorAdmin'));
 MainModule.config(require('./config/ConfigAdmin'));

@@ -88,21 +88,21 @@ class CargaNotaModalController {
 			.then((response) => {
 
 				this.$scope.estudiantes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'cedu'
+					label: 'persona.cedu'
 				}, {
-					value: 'cedu'
+					value: 'persona.cedu'
 				}, {
-					nomb: 'nomb'
+					nomb: 'persona.nomb'
 				}, {
-					apell: 'apell'
+					apell: 'persona.apell'
 				}, {
-					'nomb_apell': 'nomb_apell'
+					'nomb_apell': 'persona.nomb_apell'
 				}, {
-					cedu: 'cedu'
+					cedu: 'persona.cedu'
 				}, {
-					correo: 'correo'
+					correo: 'persona.correo'
 				}, {
-					tlf: 'tlf'
+					telf: 'persona.telf'
 				}]);
 
 				var items = [],

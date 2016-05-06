@@ -39,8 +39,7 @@ define(function() {
 		SeccionAdminProvider,
 		TurnoAdminProvider,
 		PnfTrayectoPeriodoAdminProvider,
-		PnfTrayectoPeriodoUcAdminProvider,
-		EstuPnfAdminProvider
+		PnfTrayectoPeriodoUcAdminProvider
 		) {
 
 
@@ -74,7 +73,6 @@ define(function() {
 			.addEntity(EstudianteAdminProvider.$get())
 			.addEntity(PnfTrayectoPeriodoAdminProvider.$get())
 			.addEntity(PnfTrayectoPeriodoUcAdminProvider.$get())
-			.addEntity(EstuPnfAdminProvider.$get())
 		;
 
 		admin.menu(nga.menu()
@@ -96,7 +94,6 @@ define(function() {
 				.addChild(nga.menu(TurnoAdminProvider.$get()))
 				.addChild(nga.menu(PnfTrayectoPeriodoAdminProvider.$get()))
 				.addChild(nga.menu(PnfTrayectoPeriodoUcAdminProvider.$get()))
-				.addChild(nga.menu(EstuPnfAdminProvider.$get()))
 			)
 			.addChild(nga.menu().title('Seguimiento Académico').icon('<span class="fa fa-key"> </span>')
 				.addChild(nga.menu().title('Nueva Sección').icon('<span class="fa fa-user"> </span>').link('/seccions/create'))
@@ -178,7 +175,6 @@ define(function() {
 		'TurnoAdminProvider',
 		'PnfTrayectoPeriodoAdminProvider',
 		'PnfTrayectoPeriodoUcAdminProvider',
-		'EstuPnfAdminProvider',
 	];
 
 	return ConfigAdmin;

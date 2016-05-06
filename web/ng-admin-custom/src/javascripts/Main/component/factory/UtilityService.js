@@ -1203,7 +1203,7 @@ define(function() {
 			},
 
 			apiPnfEstudiante: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'estupnfs', '/api/estupnfs?filters[pnf]='+$model+'&limit=' + ($limit || '10000'));
+				return RestWrapper.getList({}, 'estudiantes', '/api/estudiantes?filters[pnf]='+$model+'&limit=' + ($limit || '10000'));
 			},
 
 			apiPersonaPnf: function($item, $model, $limit) {

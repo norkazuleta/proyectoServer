@@ -33,21 +33,21 @@ class AsigDoceModalController {
 			.apiDocente()
 			.then((response) => {
 				this.$scope.docentes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'nomb_apell_cedu'
+					label: 'persona.cedu_nomb_apell'
 				}, {
-					value: 'cedu'
+					value: 'persona.cedu'
 				}, {
-					nomb: 'nomb'
+					nomb: 'persona.nomb'
 				}, {
-					apell: 'apell'
+					apell: 'persona.apell'
 				}, {
-					'nomb_apell': 'nomb_apell'
+					'nomb_apell': 'persona.nomb_apell'
 				}, {
-					cedu: 'cedu'
+					cedu: 'persona.cedu'
 				}, {
-					correo: 'correo'
+					correo: 'persona.correo'
 				}, {
-					tlf: 'tlf'
+					telf: 'persona.telf'
 				}]);
 
 				if (this.$scope.docentes.length) {
@@ -80,7 +80,7 @@ class AsigDoceModalController {
 	selected(item) {
 		this.$scope.doce.cedu = item.cedu;
 		this.$scope.doce.nomb_apell = item.nomb_apell;
-		this.$scope.doce.tlf = item.tlf;
+		this.$scope.doce.telf = item.telf;
 		this.$scope.docente = item.cedu;
 	}
 

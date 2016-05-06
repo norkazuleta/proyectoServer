@@ -40,23 +40,23 @@ class AsigEstuModalController {
 			.then((response) => {
 
 				this.$scope.estudiantes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'estu.cedu'
+					label: 'persona.cedu'
 				}, {
-					value: 'estu.cedu'
+					value: 'persona.cedu'
 				}, {
-					nomb: 'estu.nomb'
+					nomb: 'persona.nomb'
 				}, {
-					apell: 'estu.apell'
+					apell: 'persona.apell'
 				}, {
-					'nomb_apell': 'estu.nomb_apell'
+					'nomb_apell': 'persona.nomb_apell'
 				}, {
-					'cedu_nomb_apell': 'estu.cedu_nomb_apell'
+					'cedu_nomb_apell': 'persona.cedu_nomb_apell'
 				}, {
-					cedu: 'estu.cedu'
+					cedu: 'persona.cedu'
 				}, {
-					correo: 'estu.correo'
+					correo: 'persona.correo'
 				}, {
-					tlf: 'estu.tlf'
+					telf: 'persona.telf'
 				}]);
 
 				var items = [], estus = [], _estus = [];
