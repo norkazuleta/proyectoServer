@@ -65,6 +65,14 @@ class SeccionRESTController extends VoryxController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppBundle:Seccion');
 
+
+            $order_by = array(
+                'pa' => 'ASC',
+                'pnf' => 'ASC',
+                'tray' => 'ASC',
+                'peri' => 'ASC',
+                'seccId' => 'DESC',
+            );
             if (!empty($q)) {
                 $filters_ = array('seccCodi' => '');
 
