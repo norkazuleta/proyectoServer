@@ -1,3 +1,5 @@
+import estudianteCreateView  from '../../view/estudianteCreateView.html';
+
 define(function() {
 	'use strict';
 
@@ -12,10 +14,10 @@ define(function() {
 				.identifier(nga.field('id'))
 				.label('Estudiantes');
 
-var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values['persona.cedu'])" ng-controller="HandleReportController" href="#">
-	<span class="fa fa-file-pdf-o"></span>
-	<span class="hidden-xs"></span>
-</a>`;
+			var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values['persona.cedu'])" ng-controller="HandleReportController" href="#">
+				<span class="fa fa-file-pdf-o"></span>
+				<span class="hidden-xs"></span>
+			</a>`;
 
 			estudiante.listView()
 				.infinitePagination(false)
@@ -87,7 +89,8 @@ var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values
 
 						return [];
 					}),
-				]);
+				])
+				.template(estudianteCreateView);
 
 			/*estudiante.editionView()
 				.title('Actualizar estudiante #{{ ::entry.identifierValue }}')
@@ -144,10 +147,10 @@ var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values
 					nga.field('persona.cedu').label('cedu'),
 					nga.field('persona.nomb').label('nomb'),
 					nga.field('persona.apell').label('apell'),
-					nga.field('persona.fechnac', 'date').label('fn')
+					nga.field('persona.fechnac', 'date').label('Fecha de nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('persona.correo').label('correo'),
-					nga.field('persona.telf').label('tlf'),
+					nga.field('persona.telf').label('Teléfono'),
 					nga.field('pnf.pnf_desc').label('PNF'),
 
 					nga.field('Mostrar').label('')

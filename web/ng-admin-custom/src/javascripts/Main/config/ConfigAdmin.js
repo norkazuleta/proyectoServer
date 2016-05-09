@@ -77,14 +77,14 @@ define(function() {
 
 		admin.menu(nga.menu()
 			.addChild(nga.menu().title('Escritorio').icon('<span class="fa fa-dashboard"> </span>').link('/dashboard'))
-			.addChild(nga.menu().title('Usuario').icon('<span class="fa fa-user"> </span>')
+			/*.addChild(nga.menu().title('Usuario').icon('<span class="fa fa-user"> </span>')
 				.addChild(nga.menu().title('Perfil').icon('<span class="fa fa-user"> </span>').link('/profile/show'))
 				.addChild(nga.menu().title('Cuenta').icon('<span class="fa fa-user"> </span>').link('/profile/edit'))
 				.addChild(nga.menu().title('Contraseña').icon('<span class="fa fa-lock"> </span>').link('/profile/change-password'))
-			)
+			)*/
 			.addChild(nga.menu().title('Configuración').icon('<span class="fa fa-gears"> </span>')
 				.addChild(nga.menu(AjusteAdminProvider.$get()).icon('<span class="fa fa-gears"> </span>'))
-				.addChild(nga.menu(UserAdminProvider.$get()).icon('<span class="fa fa-users"> </span>'))
+				/*.addChild(nga.menu(UserAdminProvider.$get()).icon('<span class="fa fa-users"> </span>'))*/
 				/*.addChild(nga.menu(PaisAdminProvider.$get()))*/
 				.addChild(nga.menu(EstadoAdminProvider.$get()))
 				.addChild(nga.menu(MunicipioAdminProvider.$get()))
@@ -135,15 +135,33 @@ define(function() {
 		admin.header(customHeaderTemplate);
 
 		admin.dashboard(nga.dashboard()
-	    	.addCollection(nga.collection(UserAdminProvider.$get())
+	    	/*.addCollection(nga.collection(UserAdminProvider.$get())
 	    		.title('Usuarios')
 	    		.fields([
 					nga.field('username').label('profile.show.username'),
 					nga.field('email').label('Correo electrónico'),
 					nga.field('enabled', 'boolean').label('Estado')
 				])
-	    	)
+	    	)*/
 
+	    	.addCollection(nga.collection(EstudianteAdminProvider.$get())
+	    		.title('Estudiantes')
+	    		.perPage(10)
+	    		.fields([
+					nga.field('persona.nac_cedu').label('Documento de identidad'),
+					nga.field('persona.nomb_apell').label('Nombre y Apellido'),
+					nga.field('pnf.pnf_desc').label('PNF')
+				])
+	    	)
+	    	.addCollection(nga.collection(DocenteAdminProvider.$get())
+	    		.title('Docentes')
+	    		.perPage(10)
+	    		.fields([
+					nga.field('persona.nac_cedu').label('Documento de identidad'),
+					nga.field('persona.nomb_apell').label('Nombre y Apellido'),
+					nga.field('persona.telf').label('Teléfono')
+				])
+	    	)
 			.template(customDashboardTemplate)
 		);
 

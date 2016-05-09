@@ -17,7 +17,7 @@ define(function() {
 					nga.field('nac_cedu').label('Documento de identidad'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fechnac', 'date').label('fechnac')
+					nga.field('fechnac', 'date').label('Fecha nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
 					nga.field('telf').label('Teléfono'),
@@ -58,10 +58,10 @@ define(function() {
 					.validation({
 						required: true
 					}),
-					nga.field('fechnac', 'date').label('fechnac')
+					nga.field('fechnac', 'date').label('Fecha nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
-					nga.field('telf').label('telf')
+					nga.field('telf').label('Teléfono')
 					.validation({
 						required: true
 					}),
@@ -89,10 +89,10 @@ define(function() {
 					.validation({
 						required: true
 					}),
-					nga.field('fechnac', 'date').label('fechnac')
+					nga.field('fechnac', 'date').label('Fecha nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
-					nga.field('telf').label('telf')
+					nga.field('telf').label('Teléfono')
 					.validation({
 						required: true
 					}),
@@ -105,10 +105,10 @@ define(function() {
 					nga.field('nac_cedu').label('Documento de identidad'),
 					nga.field('nomb').label('nomb'),
 					nga.field('apell').label('apell'),
-					nga.field('fechnac', 'date').label('fechnac')
+					nga.field('fechnac', 'date').label('Fecha nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('correo').label('correo'),
-					nga.field('telf').label('telf'),
+					nga.field('telf').label('Teléfono'),
 				]);
 
 			return categoria;

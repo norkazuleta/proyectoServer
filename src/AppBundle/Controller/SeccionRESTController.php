@@ -67,10 +67,10 @@ class SeccionRESTController extends VoryxController
 
 
             $order_by = array(
-                'pa' => 'ASC',
+                /*'pa' => 'ASC',
                 'pnf' => 'ASC',
                 'tray' => 'ASC',
-                'peri' => 'ASC',
+                'peri' => 'ASC',*/
                 'seccId' => 'DESC',
             );
             if (!empty($q)) {

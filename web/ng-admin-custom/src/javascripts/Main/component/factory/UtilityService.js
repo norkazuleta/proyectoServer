@@ -974,12 +974,26 @@ define(function() {
 					return personaestus;
 
 					function getPersonaEstus(e, $item, $model) {
+						var persona = (entry.values['persona'])? entry.values['persona'] : '';
+						entry.values['persona'] = '';
+
+						if ($item && $item.cedu) {
+							persona = $item.cedu;
+						}
+
 						util.apiPersonaEstu($item, $model).then((response) => {
 							personaestus = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
 
 							scope.$broadcast('choices:update', {
 								choices: personaestus
 							});
+
+							entry.values['persona'] = persona;
+
+							if ($item && $item.cedu) {
+								$rootScope.$broadcast('choice:personapnfs:reset');
+								$rootScope.$broadcast('choice:personapnfs:get', {}, $item.cedu);
+							}
 						});
 					}
 
@@ -1010,12 +1024,20 @@ define(function() {
 					return personadoces;
 
 					function getPersonaDoces(e, $item, $model) {
+						var persona = (entry.values['persona'])? entry.values['persona'] : '';
+						entry.values['persona'] = '';
+
+						if ($item && $item.cedu) {
+							persona = $item.cedu;
+						}
 						util.apiPersonaDoce($item, $model).then((response) => {
 							personadoces = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
 
 							scope.$broadcast('choices:update', {
 								choices: personadoces
 							});
+
+							entry.values['persona'] = persona;
 						});
 					}
 

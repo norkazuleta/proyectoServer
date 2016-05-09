@@ -1,3 +1,5 @@
+import docenteCreateView  from '../../view/docenteCreateView.html';
+
 define(function() {
 	'use strict';
 
@@ -54,7 +56,8 @@ define(function() {
 
 						return [];
 					}),
-				]);
+				])
+				.template(docenteCreateView);
 
 			/*docente.editionView()
 				.title('Actualizar docente #{{ ::entry.identifierValue }}')

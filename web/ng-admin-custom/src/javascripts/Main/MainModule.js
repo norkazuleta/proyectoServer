@@ -25,6 +25,7 @@ MainModule.controller('HandleReportController', require('./component/controller/
 MainModule.controller('AsigEstuController', require('./component/controller/AsigEstuController'));
 MainModule.controller('AsigDoceController', require('./component/controller/AsigDoceController'));
 MainModule.controller('CargaNotaController', require('./component/controller/CargaNotaController'));
+MainModule.controller('PersonaCreateController', require('./component/controller/PersonaCreateController'));
 
 MainModule.config(require('./config/routing'));
 
