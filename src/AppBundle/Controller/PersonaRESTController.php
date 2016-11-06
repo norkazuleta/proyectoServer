@@ -78,8 +78,14 @@ class PersonaRESTController extends VoryxController
                 $nbResults = $adapter->getNbResults();
                 $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
             } else {
-                $nbResults = $entity->getNbResults();
-                $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                if (count($filters)>0) {
+                    $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
+                    $nbResults = $adapter->getNbResults();
+                    $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
+                } else {
+                    $nbResults = $entity->getNbResults();
+                    $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                }
             }
 
             if ($entities) {
@@ -293,6 +299,57 @@ class PersonaRESTController extends VoryxController
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppBundle:Persona');
             $entities = $entity->getPersonaCoord();
+
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    /**
+     * Get all Estudiante entities.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @param ParamFetcherInterface $paramFetcher
+     *
+     * @return Response
+     *
+     */
+    public function estudiantesAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getEstudiantes();
+
+            return $entities;
+
+            return FOSView::create('Not Found', Codes::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Get all Docente entities.
+     *
+     * @View(serializerEnableMaxDepthChecks=true)
+     *
+     * @param ParamFetcherInterface $paramFetcher
+     *
+     * @return Response
+     *
+     */
+    public function docentesAction(Request $request)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppBundle:Persona');
+            $entities = $entity->getDocentes();
 
             return $entities;
 

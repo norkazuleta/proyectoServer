@@ -57,13 +57,13 @@
                     <th colspan="6">Estudiantes</th>
                 </tr>
                 <tr class="info">
-                    <th colspan="1">Cédula</th>
+                    <th colspan="1">Documento de identidad</th>
                     <th colspan="3">Nombres y Apellidos</th>
                     <th colspan="1">Nota</th>
                     <th colspan="1">Asist.</th>
                 </tr>
                 <tr ng-repeat="item in estus track by $index">
-                    <td colspan="1" ng-init="initItem(item, $index)"> {{ item.cedu }}</td>
+                    <td colspan="1" ng-init="initItem(item, $index)"> {{ item.nac_cedu }}</td>
                     <td colspan="3">{{ item.nomb_apell }}</td>
                     <td colspan="1">
                         <ui-select  ng-model="model[$index].nota" ng-required="true" required="required" id="nota" name="nota">

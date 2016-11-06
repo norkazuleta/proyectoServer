@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Docente
  *
- * @ORM\Table(name="docente", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
+ * @ORM\Table(name="docente", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_persona", columns={"persona_id"})}, options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="persona_id", columns={"persona_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocenteRepository")
  */
 class Docente
@@ -26,7 +26,7 @@ class Docente
      *
      * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="persona_cedu", referencedColumnName="cedu")
+     *   @ORM\JoinColumn(name="persona_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $persona;

@@ -36,8 +36,8 @@ class CargaNotaModalController {
 
 	initItem(item, index) {
 		this.$scope.model[index] = {};
-		if (item.cedu) {
-			this.$scope.model[index].cedu = item.cedu;
+		if (item.id) {
+			this.$scope.model[index].id = item.id;
 		}
 
 		if (item.nota) {
@@ -84,13 +84,15 @@ class CargaNotaModalController {
 
 	getEstudiates() {
 		this.util
-			.apiEstudiante()
+			.apiPnfEstudiante({}, this.$scope.values['pnf.pnf_id'])
 			.then((response) => {
 
 				this.$scope.estudiantes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'persona.cedu'
+					id: 'persona.id'
 				}, {
-					value: 'persona.cedu'
+					label: 'persona.nac_cedu'
+				}, {
+					value: 'persona.id'
 				}, {
 					nomb: 'persona.nomb'
 				}, {
@@ -98,7 +100,11 @@ class CargaNotaModalController {
 				}, {
 					'nomb_apell': 'persona.nomb_apell'
 				}, {
+					'nac_cedu_nomb_apell': 'persona.nac_cedu_nomb_apell'
+				}, {
 					cedu: 'persona.cedu'
+				}, {
+					'nac_cedu': 'persona.nac_cedu'
 				}, {
 					correo: 'persona.correo'
 				}, {
@@ -110,25 +116,25 @@ class CargaNotaModalController {
 					_estus = [],
 					_notas = [];
 				angular.forEach(this.$scope.values['estu'], function(item) {
-					_estus.push(item.cedu.cedu);
+					_estus.push(item.persona.id);
 				});
 
 				angular.forEach(this.$scope.values['nota'], function(item) {
-					_notas.push({cedu: item.cedu.cedu, nota: item.nota, asist: item.asist});
+					_notas.push({id: item.persona.id, nota: item.nota, asist: item.asist});
 				});
 
 				if (this.$scope.estudiantes.length) {
 					angular.forEach(this.$scope.estudiantes, (item) => {
-						if (_estus.indexOf(item.cedu) !== -1) {
+						if (_estus.indexOf(item.id) !== -1) {
 							angular.forEach(_notas, function(_item){
-								if (_item.cedu === item.cedu) {
+								if (_item.id === item.id) {
 									item.nota = _item.nota;
 									item.asist = _item.asist;
 								}
 							});
 
 							items.push(item);
-							estus.push(item.cedu);
+							estus.push(item.id);
 						}
 					});
 				}

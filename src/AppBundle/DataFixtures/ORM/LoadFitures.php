@@ -4,19 +4,25 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Ajuste;
 use AppBundle\Entity\Aldea;
+use AppBundle\Entity\AldeaCoord;
 use AppBundle\Entity\AldeaTurno;
 use AppBundle\Entity\Docente;
 use AppBundle\Entity\Estado;
 use AppBundle\Entity\Estudiante;
 use AppBundle\Entity\Municipio;
+use AppBundle\Entity\Nota;
 use AppBundle\Entity\Pais;
 use AppBundle\Entity\Parroquia;
 use AppBundle\Entity\Periodo;
 use AppBundle\Entity\PeriodoAcademico;
+use AppBundle\Entity\Persona;
 use AppBundle\Entity\Pnf;
 use AppBundle\Entity\PnfTipo;
 use AppBundle\Entity\PnfTrayectoPeriodo;
 use AppBundle\Entity\PnfTrayectoPeriodoUc;
+use AppBundle\Entity\Seccion;
+use AppBundle\Entity\SeccionDoce;
+use AppBundle\Entity\SeccionEstu;
 use AppBundle\Entity\Trayecto;
 use AppBundle\Entity\Turno;
 use AppBundle\Entity\UnidadCurricular;
@@ -56,24 +62,36 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
     {
         $this->loadUsers($manager);
         $this->loadAjuste($manager);
+
         $this->loadPais($manager);
         $this->loadEstado($manager);
         $this->loadMunicipio($manager);
         $this->loadParroquia($manager);
         $this->loadZona($manager);
         $this->loadAldea($manager);
-        $this->loadAldeaTurno($manager);
-        $this->loadEstudiante($manager);
-        $this->loadDocente($manager);
+
+        $this->loadTurno($manager);
         $this->loadPnf($manager);
-        $this->loadUc($manager);
+        $this->loadPnfTipo($manager);
         $this->loadTrayecto($manager);
         $this->loadPeriodo($manager);
+        $this->loadPersona($manager);
+
+        $this->loadAldeaTurno($manager);
+        $this->loadAldeaCoord($manager);
+
+        $this->loadUc($manager);
+        $this->loadPeriodoAcademico($manager);
         $this->loadPnfTrayectoPeriodo($manager);
         $this->loadPnfTrayectoPeriodoUc($manager);
-        $this->loadPnfTipo($manager);
-        $this->loadPeriodoAcademico($manager);
-        $this->loadTurno($manager);
+
+        $this->loadEstudiante($manager);
+        $this->loadDocente($manager);
+        $this->loadSeccion($manager);
+        $this->loadSeccionEstu($manager);
+        $this->loadSeccionDoce($manager);
+        $this->loadNota($manager);
+
     }
 
     private function loadUsers(ObjectManager $manager)
@@ -99,6 +117,31 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $adminUser->setEnabled(true);
         $adminUser->setPlainPassword('123456');
         $manager->persist($adminUser);
+
+        $manager->flush();
+    }
+
+    public function loadAjuste(ObjectManager $manager)
+    {
+        $ajustes = array(
+            /*array('id', 'clave', 'valor'),*/
+            array(null, 'webapp_aldea', 'CARMEN FERRER ORTIZ'),
+            array(null, 'webapp_title', 'SISTEMA DE RECORD DE NOTAS'),
+            array(null, 'webapp_description', 'EL SISTEMA DE INFORMACIÓN PARA EL RÉCORD DE NOTAS DE LOS ESTUDIANTES ALDEA UNIVERSITARIA'),
+            array(null, 'RPT_PAGE_TITLE', 'UNIVERSIDAD BOLIVARIANA DE VENEZUELA\\n COORDINACIÓN DE INGRESO, PROSECUCIÓN \\n Y EGRESO ESTUDIANTIL \\n (SEDE ZULIA)'),
+            array(null, 'RPT_PAGE_UBICATION', 'SINAMAICA'),
+            array(null, 'RPT_URI_LOGO_LEFT', 'logo-left.png'),
+            array(null, 'RPT_URI_LOGO_RIGHT', 'logo-right.png'),
+            array(null, 'RPT_PATH_DIR', '/../../proyectoReport')
+        );
+
+        foreach ($ajustes as $data) {
+            $entityAjuste = new Ajuste();
+            /*$entityAjuste->setId($data[0]);*/
+            $entityAjuste->setKey($data[1]);
+            $entityAjuste->setValue($data[2]);
+            $manager->persist($entityAjuste);
+        }
 
         $manager->flush();
     }
@@ -172,6 +215,7 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array('23', '22', 'ZULIA'),
             array('24', '22', 'VARGAS')
         );
+
         $estado = array(
             array('23', '22', 'ZULIA'),
         );
@@ -192,7 +236,7 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
 
     public function loadMunicipio(ObjectManager $manager)
     {
-        $municipios = array(
+        $municipio = array(
             array('0101', '01', 'LIBERTADOR'),
             array('0201', '02', 'ALTO ORINOCO'),
             array('0202', '02', 'ATABAPO'),
@@ -530,12 +574,12 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             /*array('2401', '24', 'VARGAS')*/
         );
 
-        $municipios = array(
+        $municipio = array(
             array('2315', '23', 'GUAJIRA'),
         );
         $em = $this->container->get('doctrine')->getEntityManager('default');
 
-        foreach ($municipios as $data) {
+        foreach ($municipio as $data) {
             $entityMunicipio = new Municipio();
             $entityMunicipio->setMuniCodi($data[0]);
             $entityEstado = $em->getRepository('AppBundle:Estado')->find($data[1]);
@@ -5610,28 +5654,6 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
-    public function loadAjuste(ObjectManager $manager)
-    {
-        $ajustes = array(
-            /*array('id', 'clave', 'valor'),*/
-            array(null, 'webapp_aldea', 'CARMEN FERRER ORTIZ'),
-            array(null, 'webapp_title', 'SISTEMA DE RECORD DE NOTAS'),
-            array(null, 'webapp_description', 'EL SISTEMA DE INFORMACIÓN PARA EL RÉCORD DE NOTAS DE LOS ESTUDIANTES ALDEA UNIVERSITARIA'),
-        );
-
-        $em = $this->container->get('doctrine')->getEntityManager('default');
-
-        foreach ($ajustes as $data) {
-            $entityAjuste = new Ajuste();
-            /*$entityAjuste->setId($data[0]);*/
-            $entityAjuste->setKey($data[1]);
-            $entityAjuste->setValue($data[2]);
-            $manager->persist($entityAjuste);
-        }
-
-        $manager->flush();
-    }
-
     public function loadAldea(ObjectManager $manager)
     {
         $aldeas = array(
@@ -5649,6 +5671,215 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             $entityAldea->setParroq($entityParroquia);
             $entityAldea->setAldeaActual($data[3]);
             $manager->persist($entityAldea);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadTurno(ObjectManager $manager)
+    {
+        $turno = array(
+            //array('turn_id', 'turn_desc'),
+            array(1, 'FINES DE SEMANA'),
+            array(2, 'VIERNES Y SÁBADO'),
+        );
+
+        foreach ($turno as $data) {
+            $entityTurno = new Turno();
+            //$entityTurno->setTurnId($data[0]);
+            $entityTurno->setTurnDesc($data[1]);
+            $manager->persist($entityTurno);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadPnf(ObjectManager $manager)
+    {
+        $pnf = array(
+            //array('pnf_id', 'pnf_desc'),
+            array(1, 'INFORMÁTICA'),
+            array(2, 'ADMINISTRACIÓN'),
+            array(3, 'TURISMO'),
+            array(4, 'CONSTRUCCIÓN CIVIL'),
+        );
+
+        foreach ($pnf as $data) {
+            $entityPnf = new Pnf();
+            $entityPnf->setPnfDesc($data[1]);
+            $manager->persist($entityPnf);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadPnfTipo(ObjectManager $manager)
+    {
+        $pnf = array(
+            //array('tipo_id', 'tipo_desc'),
+            array(1, 'CTA'),
+            array(2, 'UBV'),
+            array(3, 'TI'),
+        );
+
+        foreach ($pnf as $data) {
+            $entityUc = new PnfTipo();
+            //$entityUc->setTipoId($data[0]);
+            $entityUc->setTipoDesc($data[1]);
+            $manager->persist($entityUc);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadTrayecto(ObjectManager $manager)
+    {
+        $trayecto = array(
+            //array('tray_id', 'tray_desc'),
+            array(1, 'I'),
+            array(2, 'II'),
+            array(3, 'III'),
+        );
+
+        foreach ($trayecto as $data) {
+            $entityUc = new Trayecto();
+            //$entityUc->setTrayId($data[0]);
+            $entityUc->setTrayDesc($data[1]);
+            $manager->persist($entityUc);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadPeriodo(ObjectManager $manager)
+    {
+        $periodo = array(
+            //array('peri_id', 'peri_desc'),
+            array(1, '1'),
+            array(2, '2'),
+            array(3, '3'),
+        );
+
+        foreach ($periodo as $data) {
+            $entityPeriodo = new Periodo();
+            //$entityPeriodo->setPeriId($data[0]);
+            $entityPeriodo->setPeriDesc($data[1]);
+            $manager->persist($entityPeriodo);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadPersona(ObjectManager $manager)
+    {
+        $persona = array(
+            //array('id', 'cedu', 'naci', 'nomb', 'apell', 'fechnac', 'telf', 'correo', 'fechcreado', 'fechmodi', 'profesion_fix'),
+            array(1, '10543941', 'V', 'PEDRO', 'LOPEZ', '1962-04-11', '04160179775', 'lopezpedro10@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(2, '11065813', 'V', 'ALEJANDRO', 'SULBARAN', '1973-05-24', '04263655528', 'alejandrosulbaran11@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(3, '11564980', 'V', 'MARIA', 'MONTIEL', '1968-02-10', '04269644644', 'mariamontiel11@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(4, '11608488', 'V', 'MONICA', 'MONTIEL', '1973-08-06', '04260164765', 'monicamontiel@gmail.com', '2016-05-09 03:24:01', '2016-05-09 03:24:01', null),
+            array(5, '12212841', 'V', 'DIOCENIN', 'ZULETA MILIAN', '1972-09-04', '04167894531', 'zumildioce@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(6, '12657985', 'V', 'KARINA', 'FERNANDEZ', '1974-09-13', '04261639388', 'karinafernandez12@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(7, '13932490', 'V', 'LESBIA', 'ZULETA', '1977-01-22', '04160675916', 'coromotolzuleta@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(8, '14050875', 'V', 'SAMUEL', 'PAZ', '1980-02-18', '04240184556', 'pazsamuel_14@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(9, '14370054', 'V', 'LAUDITH', 'ZULETA', '1977-03-08', '04165652742', 'laudithdelcarmen.zuletamilian@gmail.com', '2016-05-05 19:25:56', '2016-05-05 19:25:56', 'SOC.'),
+            array(10, '14630144', 'V', 'YOENNY', 'FERNANDEZ', '1981-05-14', '04269298801', 'yoennyfernandez14@gmailcom', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(11, '14675897', 'V', 'DAMELYS', 'ZULETA BARRETO', '1981-01-15', '04261640990', 'suivant_18@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(12, '14697066', 'V', 'YAMILE', 'AMAYA', '2016-04-20', '04125454354', 'yamilemaya@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(13, '14823351', 'V', 'EMILIA', 'POLANCO', '1982-06-03', '04168635317', 'polancoemi03_@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(14, '15410809', 'V', 'MARBELYS', 'LARREAL', '1981-02-02', '0424 764893', 'marbelys._15@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(15, '15560189', 'V', 'EUCLIDES', 'MONTIEL', '1991-03-12', '04261620459', 'montieleuclides15@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(16, '15614594', 'V', 'RUTH', 'IGUARAN', '1980-11-12', '04241065467', 'ruth_iguaran15@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(17, '15749005', 'V', 'JUAN CARLOS', 'FERRER SANCHEZ', '1983-08-15', '04444', null, '2016-07-26 01:44:28', '2016-07-26 01:44:28', null),
+            array(18, '15839770', 'V', 'JUAN', 'CARROZ', '1982-05-10', '04148508559', 'carrozsjuan@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(19, '16767818', 'V', 'IGNACIO', 'CARDOZO', '2016-04-20', '04142999863', 'ignacio@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(20, '16785364', 'V', 'FILIBERTO', 'CASTRO', '1978-08-23', '02628083991', 'casfiliberto@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(21, '17177047', 'V', 'ANGEL', 'MONTIEL', '1988-06-04', '04264912524', 'angelmontiel17@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(22, '17231413', 'V', 'YENNY', 'GONZALEZ', '1985-09-25', '04147691111', 'gonzalezyenny1@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(23, '17654050', 'V', 'JESUS', 'MORALES', '1985-12-24', '04125479054', 'moralesj.24@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(24, '17916906', 'V', 'YOHANDRY', 'BLANCO', null, '04262695889', 'yoandryblanco@gmail.com', '2016-05-09 16:32:05', '2016-05-09 16:32:05', null),
+            array(25, '18523182', 'V', 'TEREZA', 'GONZALEZ', null, '04165656978', 'terezagonzalez@gmail.com', '2016-05-09 16:29:47', '2016-05-09 16:29:47', null),
+            array(26, '18641952', 'V', 'YUSMAYRA', 'REVEROL', '1985-09-22', '04143890169', 'yus_reverol@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(27, '18662914', 'V', 'NISMAY', 'NAVA', '1987-01-09', '04162631849', 'nismaynava18@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(28, '18875050', 'V', 'ENNY', 'GONZALEZ', '1988-09-26', '04164644965', 'gonzalezenny@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(29, '18875883', 'V', 'NEREYDA', 'ZULETA MILIAN', '1990-04-12', '0426-223472', 'nereydab.-@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(30, '19328162', 'V', 'ALEJANDRO', 'GUERRERO', '1989-08-23', '04164696242', 'guerreroalejandro@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(31, '19988978', 'V', 'IDAILIS', 'QUINTERO', '1991-05-14', '04246050928', 'quinteromidalis@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(32, '20069709', 'V', 'NADIA', 'LOPEZ', '1992-03-05', '04129068125', 'nalopez200@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(33, '20072093', 'V', 'THAIS', 'MORALES', '1990-08-20', '04146091992', 'morelesthai_03@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(34, '20206332', 'V', 'KAREN', 'BAEZ', null, '04246022457', 'karenbaez@hotmail.com', '2016-05-09 16:48:33', '2016-05-09 16:48:33', null),
+            array(35, '20381839', 'V', 'DIOVER', 'ROMERO', '1990-07-17', '04266004691', 'romero17diover@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(36, '20581937', 'V', 'MAYRYS', 'BLANCO', '1990-12-01', '04160871931', 'blancojmarys@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(37, '20658050', 'V', 'VICELIS', 'LARREAL', '2016-04-21', '04122999864', 'vicelis@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(38, '20658064', 'V', 'JOELYS', 'BELTRAN', '1987-09-09', '04261467241', 'joelysbeltran@gmail.com', '2016-05-09 06:48:38', '2016-05-09 06:48:38', null),
+            array(39, '20660016', 'V', 'MARIA', 'GONZALEZ', '1992-02-14', '04261613391', 'gonzalezrmar20@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(40, '20660142', 'V', 'NORACXIS', 'MAPPARI', '2016-04-21', '04142659025', 'noracxi20@gmailcom', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(41, '20660753', 'V', 'DINORA', 'MAPPARI', '2016-04-21', '02626548760', 'mapparidinora20@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(42, '20687586', 'V', 'NAIKARIS', 'PEREZ', '1992-12-16', 'O4263638087', 'pereznai20@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(43, '20777775', 'V', 'JOSE', 'JARABA', '1990-10-26', '04164081276', 'jarabajose20@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(44, '20842247', 'V', 'GENESIS', 'GONZALEZ', '1989-04-28', '04160168754', 'gonzalezgenesis28@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(45, '20843115', 'V', 'REINA', 'MORENO', '1991-06-13', '04146743595', 'morenosreinal@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(46, '21037370', 'V', 'NERVY', 'PAZ', '1990-02-02', '04162631849', 'nervy21-paz@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(47, '21076090', 'V', 'ARGENIS', 'LARREAL', '1991-10-17', '04128746253', 'argenismlarreal@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(48, '21510884', 'V', 'KENDERWIN', 'CAMACHO', '1990-04-23', '0416236590', 'camachokenderwin@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(49, '21510903', 'V', 'ALEJANDRA', 'GUERRERO', '1993-06-12', '04243265080', 'aleguerrero21@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(50, '21510904', 'V', 'ADEYMER', 'GONZALEZ', '1998-03-08', '04146751298', 'goinzalezadeymer21@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(51, '23272913', 'V', 'LEOMAR', 'MORALES', null, '04167624621', 'leomarmorales@gmail.com', '2016-05-09 17:09:04', '2016-05-09 17:09:04', null),
+            array(52, '23286903', 'V', 'AMALIA', 'PAZ', '1998-08-11', '04164695848', 'pazgamalia43@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(53, '23408111', 'V', 'ENMANUEL', 'LUZARDO', '1998-08-17', '04246050428', 'enmanuelluzardo7@gmail.com', '2016-05-09 06:52:41', '2016-05-09 06:52:41', null),
+            array(54, '23471632', 'V', 'VICKELIS', 'LARREAL', '1996-07-22', '04261003315', 'larreal_vickelis23@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(55, '23471661', 'V', 'GENESIS', 'LARREAL', '1998-08-23', '04125672314', 'genesislarreal23@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(56, '23888171', 'V', 'OMAR', 'OSORIO', '1996-06-14', '04261276901', 'omarosorio23@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(57, '24250674', 'V', 'ELIZABETH', 'MACHADO', '1998-02-18', '04262255695', 'elizamachadoj24@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(58, '24509159', 'V', 'ROINY', 'CHOURIO', '1997-06-18', '04261672615', 'chouriomroy24@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(59, '24961293', 'V', 'WINIFER', 'MANAREZ', '1995-06-26', '04240675418', 'manarezbwinifer@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(60, '25197443', 'V', 'DANIELIS', 'SILVA', '1998-07-13', '04264696898', 'silvacdanielis@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(61, '25202192', 'V', 'YUBIMAR', 'REVEROL', '1996-10-02', '04164698252', 'yubimarreverol@gmail.com', '2016-05-09 05:53:31', '2016-05-09 05:53:31', null),
+            array(62, '25202635', 'V', 'MARIA', 'PALMAR', '1993-05-12', '04121107110', 'mariapalmar@gmail.com', '2016-05-09 05:56:59', '2016-05-09 05:56:59', null),
+            array(63, '25202636', 'V', 'LEONELA', 'QUINTERO', '1997-04-18', '04163287491', 'quinteroleonela25@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(64, '25202642', 'V', 'ADALUZ', 'BLANCO', '1992-07-17', '02621658740', 'blanco_adaluz@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(65, '25251152', 'V', 'CARLEIDY', 'PEREZ', '1999-06-22', '04163905673', 'carleidyperez25@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(66, '25251356', 'V', 'FREYNER', 'MAPPARI', '1997-07-09', '04128795360', 'freynermappari@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(67, '25251357', 'V', 'NEGREY', 'MAPPARI', '1998-05-13', '02628790518', 'negrey1998@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(68, '25290533', 'V', 'BETANIA', 'GONZALEZ', '1990-07-16', '04126452375', 'betaniagonzalez@gmail.com', '2016-05-09 03:26:26', '2016-05-09 03:26:26', null),
+            array(69, '25290814', 'V', 'ANDREA', 'CARVAJAL', '1992-03-23', '04246547890', 'andreacarvajal@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(70, '25290968', 'V', 'DIONIBERTO', 'CASTILLO', '1993-02-02', '04167231234', 'dionibertocastillo@gmail.com', '2016-05-09 06:28:46', '2016-05-09 06:28:46', null),
+            array(71, '25290998', 'V', 'ANDIS', 'JURADO', '2016-04-19', '04122999866', 'andisjurado@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(72, '25367568', 'V', 'EDUARDO', 'LARREAL', '1998-05-11', '04128790164', 'eduardolarreal@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(73, '25471741', 'V', 'JOSE', 'GONZALEZ', '1997-09-29', '04148764920', 'jose23_gonzalez@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(74, '25633515', 'V', 'GENESIS', 'VARGAS', '1998-03-19', '04167691111', 'vargas23_genesis@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(75, '25952220', 'V', 'VISLEINY', 'LARREAL', '1990-04-20', '04122990861', 'visleinylarreal@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(76, '25952221', 'V', 'VISLEIDY', 'LARREAL', '1990-04-20', '04122999863', 'visleidylarreal@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(77, '25952866', 'V', 'EDWIMALIZ', 'ESPINA', '1998-06-15', '04146743595', 'edwimalizespina@gmail.com', '2016-05-09 06:26:12', '2016-05-09 06:26:12', null),
+            array(78, '25972558', 'V', 'SERGGIBEL', 'ALVAREZ', '1997-02-05', '04262279056', 'serggibel1997@gmailcom', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(79, '25979015', 'V', 'JOSE', 'MARIMON', '1997-11-12', '04262868065', 'josejmarimon_25@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(80, '26202496', 'V', 'NAYBELIN', 'VILCHEZ', null, '04121047571', 'naybelinvilchez@gmail.com', '2016-05-09 16:52:38', '2016-05-09 16:52:38', null),
+            array(81, '26297221', 'V', 'MARIA', 'PAZ', '1998-09-10', '04246408390', 'pazrmaria26@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(82, '26462053', 'V', 'EDGARDO', 'MORALES', '1997-04-21', '04267895459', 'moraleaedgardo@hotmailcom', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(83, '26471194', 'V', 'GREGORY', 'PEROZO', '1999-06-03', '04163595431', 'jperezo_26@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(84, '26536743', 'V', 'EDUMARY', 'LOZANO', '1997-06-16', '04127612678', 'edumarylozano26@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(85, '27059292', 'V', 'YOAILUZ', 'SEMPRUN', '1998-08-04', '04268527559', 'yoailuz_semprun@hotmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null),
+            array(86, '27887398', 'V', 'ALEXANDER', 'CALDERA', null, '04246238080', 'alexandercalderas@hotmail.com', '2016-05-09 17:12:10', '2016-05-09 17:12:10', null),
+            array(87, '30599191', 'V', 'KAROLAY', 'BRAVO', '1997-06-19', '04260986745', 'karolaybravo30@gmail.com', '2016-05-04 00:00:00', '2016-05-04 00:00:00', null)
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($persona as $data) {
+            $entityPersona = new Persona();
+            //$entityPersona->setId($data[0]);
+            $entityPersona->setCedu($data[1]);
+            $entityPersona->setNaci($data[2]);
+            $entityPersona->setNomb($data[3]);
+            $entityPersona->setApell($data[4]);
+            $entityPersona->setFechnac(new \Datetime($data[5]));
+            $entityPersona->setTelf($data[6]);
+            $entityPersona->setCorreo($data[7]);
+            $entityPersona->setFechcreado(new \Datetime($data[8]));
+            $entityPersona->setFechmodi(new \Datetime($data[9]));
+            $entityPersona->setProfesionFix($data[10]);
+
+            $manager->persist($entityPersona);
         }
 
         $manager->flush();
@@ -5676,78 +5907,23 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
-    public function loadEstudiante(ObjectManager $manager)
+    public function loadAldeaCoord(ObjectManager $manager)
     {
-        $estudiante = array(
-            //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
-            array('14697066','YAMILE','AMAYA','1979-02-13','yamilemaya@gmail.com','04125454354'),
-            array('15410809','MARBELYS','LARREAL','1979-06-11','marbelys._15@gmail.com','0424 764893'),
-            array('20660142','NORACXIS','MAPPARI','1998-08-19','noracxi20@gmailcom','04142659025'),
-            array('20660753','DINORA','MAPPARI','1997-06-20','mapparidinora20@gmail.com','02626548760'),
-            array('25251152','CARLEIDY','PEREZ','1999-06-22','carleidyperez25@gmail.com','04163905673'),
-            array('25251356','FREYNER','MAPPARI','1997-07-09','freynermappari@hotmail.com','04128795360'),
-            array('25251357','NEGREY','MAPPARI','1998-05-13','negrey1998@hotmail.com','02628790518'),
-            array('25972558','SERGGIBEL','ALVAREZ','1997-02-05','serggibel1997@gmailcom','04262279056'),
-            array('26536743','EDUMARY','LOZANO','1997-06-16','edumarylozano26@gmail.com','04127612678'),
-            array('30599191','KAROLAY','BRAVO','1997-06-19','karolaybravo30@gmail.com','04260986745'),
-
+        $aldeaCoord = array(
+            /*array('id', 'persona_id', 'aldea_codi'),*/
+            array('1', 9, '23150102'),
         );
 
-        foreach ($estudiante as $data) {
-            $entityEstudiante = new Estudiante();
-            $entityEstudiante->setCedu($data[0]);
-            $entityEstudiante->setNomb($data[1]);
-            $entityEstudiante->setApell($data[2]);
-            $entityEstudiante->setFn(new \Datetime($data[3]));
-            $entityEstudiante->setCorreo($data[4]);
-            $entityEstudiante->setTlf($data[5]);
-            $manager->persist($entityEstudiante);
-        }
+        $em = $this->container->get('doctrine')->getEntityManager('default');
 
-        $manager->flush();
-    }
-
-    public function loadDocente(ObjectManager $manager)
-    {
-        $estudiante = array(
-            //array('cedu', 'nomb', 'apell', 'fn', 'correo', 'tlf'),
-            array('11564980','MARIA','MONTIEL','1968-02-10','mariamontiel11@gmail.com','04269644644'),
-            array('12212841','DIOCENIN','ZULETA MILIAN','1972-09-04','zumildioce@gmail.com','04167894531'),
-            array('12657985','KARINA','FERNANDEZ','1974-09-13','karinafernandez12@gmail.com','04261639388'),
-            array('14675897','DAMELYS','ZULETA BARRETO','1981-01-15','suivant_18@hotmail.com','04261640990'),
-            array('17177047','ANGEL','MONTIEL','1988-06-04','angelmontiel17@gmail.com','04264912524'),
-            array('18875050','ENNY','GONZALEZ','1988-09-26','gonzalezenny@gmail.com','04164644965'),
-            array('18875883','NEREYDA','ZULETA MILIAN','2016-04-12','nereydab.-@gmail.com','0426-223472'),
-        );
-
-        foreach ($estudiante as $data) {
-            $entityDocente = new Docente();
-            $entityDocente->setCedu($data[0]);
-            $entityDocente->setNomb($data[1]);
-            $entityDocente->setApell($data[2]);
-            $entityDocente->setFn(new \Datetime($data[3]));
-            $entityDocente->setCorreo($data[4]);
-            $entityDocente->setTlf($data[5]);
-            $manager->persist($entityDocente);
-        }
-
-        $manager->flush();
-    }
-
-    public function loadPnf(ObjectManager $manager)
-    {
-        $pnf = array(
-            //array('pnf_id', 'pnf_desc'),
-            array(1, 'INFORMÁTICA'),
-            array(2, 'ADMINISTRACIÓN'),
-            array(3, 'TURISMO'),
-            array(4, 'CONSTRUCCIÓN CIVIL'),
-        );
-
-        foreach ($pnf as $data) {
-            $entityPnf = new Pnf();
-            $entityPnf->setPnfDesc($data[1]);
-            $manager->persist($entityPnf);
+        foreach ($aldeaCoord as $data) {
+            $entityAldeaCoord = new AldeaCoord();
+            /*$entityAldeaCoord->setId($data[0]);*/
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[1]);
+            $entityAldeaCoord->setPersona($entityPersona);
+            $entityAldea = $em->getRepository('AppBundle:Aldea')->find($data[2]);
+            $entityAldeaCoord->setAldea($entityAldea);
+            $manager->persist($entityAldeaCoord);
         }
 
         $manager->flush();
@@ -5885,39 +6061,33 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
-    public function loadTrayecto(ObjectManager $manager)
+    public function loadPeriodoAcademico(ObjectManager $manager)
     {
-        $trayecto = array(
-            //array('tray_id', 'tray_desc'),
-            array(1, 'I'),
-            array(2, 'II'),
-            array(3, 'III'),
+        $periodoAcademico = array(
+            //array('pa_id', 'pnf_tipo_id', 'pa_anio', 'pa_codi', 'pa_ini', 'pa_fin', 'status')
+            array(1, 1, 2016, '1', '2016-02-20', '2016-02-29', 1),
+            array(2, 1, 2014, '1', '2014-04-26', '2014-06-28', 1),
+            array(3, 1, 2015, '1', '2016-04-28', '2016-04-28', 1),
+            array(4, 1, 2014, '2', '2016-04-29', '2016-04-29', 1),
+            array(5, 1, 2014, '3', '2016-04-29', '2016-04-29', 1),
+            array(6, 1, 2015, '2', '2015-03-28', '2015-06-20', 1),
+            array(7, 1, 2015, '3', '2015-07-18', '2015-11-21', 1)
         );
 
-        foreach ($trayecto as $data) {
-            $entityUc = new Trayecto();
-            //$entityUc->setTrayId($data[0]);
-            $entityUc->setTrayDesc($data[1]);
-            $manager->persist($entityUc);
-        }
+        $em = $this->container->get('doctrine')->getEntityManager('default');
 
-        $manager->flush();
-    }
+        foreach ($periodoAcademico as $data) {
+            $entityPeriodoAcademico = new PeriodoAcademico();
+            //$entityPeriodoAcademico->setTipoId($data[0]);
+            $entityPnfTipo = $em->getRepository('AppBundle:PnfTipo')->find($data[1]);
+            $entityPeriodoAcademico->setPnfTipo($entityPnfTipo);
+            $entityPeriodoAcademico->setPaAnio($data[2]);
+            $entityPeriodoAcademico->setPaCodi($data[3]);
+            $entityPeriodoAcademico->setPaIni(new \Datetime($data[4]));
+            $entityPeriodoAcademico->setPaFin(new \Datetime($data[5]));
+            $entityPeriodoAcademico->setPaStatus($data[6]);
 
-    public function loadPeriodo(ObjectManager $manager)
-    {
-        $periodo = array(
-            //array('peri_id', 'peri_desc'),
-            array(1, '1'),
-            array(2, '2'),
-            array(3, '3'),
-        );
-
-        foreach ($periodo as $data) {
-            $entityPeriodo = new Periodo();
-            //$entityPeriodo->setPeriId($data[0]);
-            $entityPeriodo->setPeriDesc($data[1]);
-            $manager->persist($entityPeriodo);
+            $manager->persist($entityPeriodoAcademico);
         }
 
         $manager->flush();
@@ -6248,7 +6418,7 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
             array(264, 30, 88),
             array(265, 30, 105),
             array(266, 30, 109),
-            array(267, 30, 106),
+            array(267, 30, 106)
         );
 
         $em = $this->container->get('doctrine')->getEntityManager('default');
@@ -6268,64 +6438,1090 @@ class LoadFitures implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
     }
 
-    public function loadPnfTipo(ObjectManager $manager)
+    public function loadEstudiante(ObjectManager $manager)
     {
-        $pnf = array(
-            //array('tipo_id', 'tipo_desc'),
-            array(1, 'CTA'),
-            array(2, 'UBV'),
-            array(2, 'TI'),
-        );
+        $estudiante = array(
+            //array('id', 'persona_id', 'pnf_id'),
+            array(1, 12, 1),
+            array(2, 14, 1),
+            array(3, 19, 1),
+            array(4, 37, 1),
+            array(5, 40, 1),
+            array(6, 41, 1),
+            array(7, 48, 1),
+            array(8, 50, 1),
+            array(9, 55, 1),
+            array(10, 56, 1),
+            array(11, 63, 1),
+            array(12, 64, 1),
+            array(13, 65, 1),
+            array(14, 66, 1),
+            array(15, 67, 1),
+            array(16, 69, 1),
+            array(17, 71, 1),
+            array(18, 72, 1),
+            array(19, 73, 1),
+            array(20, 75, 1),
+            array(21, 76, 1),
+            array(22, 78, 1),
+            array(23, 84, 1),
+            array(24, 87, 1),
+            array(25, 44, 4),
+            array(26, 16, 4),
+            array(27, 13, 4),
+            array(28, 46, 4),
+            array(29, 35, 4),
+            array(30, 10, 4),
+            array(31, 2, 4),
+            array(32, 42, 4),
+            array(33, 15, 4),
+            array(34, 43, 4),
+            array(35, 27, 4),
+            array(36, 22, 4),
+            array(37, 30, 2),
+            array(38, 32, 2),
+            array(39, 36, 2),
+            array(40, 39, 2),
+            array(41, 47, 2),
+            array(42, 49, 2),
+            array(43, 57, 2),
+            array(44, 31, 1),
+            array(45, 45, 1),
+            array(46, 52, 1),
+            array(47, 54, 1),
+            array(48, 58, 1),
+            array(49, 60, 1),
+            array(50, 74, 1),
+            array(51, 79, 1),
+            array(52, 83, 1),
+            array(53, 85, 2),
+            array(54, 33, 2),
+            array(55, 7, 2),
+            array(56, 59, 2),
+            array(57, 81, 2),
+            array(58, 82, 2),
+            array(59, 18, 2),
+            array(60, 68, 4),
+            array(61, 62, 2),
+            array(62, 70, 2),
+            array(63, 53, 3),
+            array(64, 24, 4),
+            array(65, 80, 1),
+            array(66, 86, 2),
+            array(67, 17, 1)
 
-        foreach ($pnf as $data) {
-            $entityUc = new PnfTipo();
-            //$entityUc->setTipoId($data[0]);
-            $entityUc->setTipoDesc($data[1]);
-            $manager->persist($entityUc);
-        }
-
-        $manager->flush();
-    }
-
-    public function loadPeriodoAcademico(ObjectManager $manager)
-    {
-        $periodoAcademico = array(
-            //array('pa_id', 'pnf_tipo_id', 'pa_anio', 'pa_codi', 'pa_ini', 'pa_fin', 'status')
-            array(1, 1, 2016, '1', '2016-02-20', '2016-02-29', 1)
         );
 
         $em = $this->container->get('doctrine')->getEntityManager('default');
 
-        foreach ($periodoAcademico as $data) {
-            $entityPeriodoAcademico = new PeriodoAcademico();
-            //$entityPeriodoAcademico->setTipoId($data[0]);
-            $entityPnfTipo = $em->getRepository('AppBundle:PnfTipo')->find($data[1]);
-            $entityPeriodoAcademico->setPnfTipo($entityPnfTipo);
-            $entityPeriodoAcademico->setPaAnio($data[2]);
-            $entityPeriodoAcademico->setPaCodi($data[3]);
-            $entityPeriodoAcademico->setPaIni(new \Datetime($data[4]));
-            $entityPeriodoAcademico->setPaFin(new \Datetime($data[5]));
-            $entityPeriodoAcademico->setPaStatus($data[6]);
+        foreach ($estudiante as $data) {
+            $entityEstudiante = new Estudiante();
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[1]);
+            $entityEstudiante->setPersona($entityPersona);
 
-            $manager->persist($entityPeriodoAcademico);
+            $entityPnf = $em->getRepository('AppBundle:Pnf')->find($data[2]);
+            $entityEstudiante->setPnf($entityPnf);
+
+            $manager->persist($entityEstudiante);
         }
 
         $manager->flush();
     }
 
-    public function loadTurno(ObjectManager $manager)
+    public function loadDocente(ObjectManager $manager)
     {
-        $turno = array(
-            //array('turn_id', 'turn_desc'),
-            array(1, 'FINES DE SEMANA'),
-            array(2, 'VIERNES Y SÁBADO'),
+        $docente = array(
+            //array('id', 'persona_id'),
+            array(1, 1),
+            array(6, 11),
+            array(7, 20),
+            array(8, 21),
+            array(9, 23),
+            array(17, 25),
+            array(10, 26),
+            array(11, 28),
+            array(12, 29),
+            array(2, 3),
+            array(18, 34),
+            array(16, 38),
+            array(13, 4),
+            array(3, 5),
+            array(19, 51),
+            array(4, 6),
+            array(14, 61),
+            array(15, 77),
+            array(5, 8)
         );
 
-        foreach ($turno as $data) {
-            $entityTurno = new Turno();
-            //$entityTurno->setTurnId($data[0]);
-            $entityTurno->setTurnDesc($data[1]);
-            $manager->persist($entityTurno);
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($docente as $data) {
+            $entityDocente = new Docente();
+            /*$entityDocente->setId($data[0]);*/
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[1]);
+            $entityDocente->setPersona($entityPersona);
+
+            $manager->persist($entityDocente);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadSeccion(ObjectManager $manager)
+    {
+        $seccion = array(
+            //array('secc_id', 'aldea_codi', 'turn_id', 'pnf_id', 'tray_id', 'peri_id', 'uc_id', 'pa_id', 'secc_codi'),
+            array(1, '23150102', 1, 1, 1, 1, 11, 1, '0001'),
+            array(2, '23150102', 1, 1, 1, 1, 3, 1, '0002'),
+            array(3, '23150102', 1, 1, 1, 1, 7, 1, '0003'),
+            array(4, '23150102', 1, 1, 1, 1, 2, 1, '0004'),
+            array(5, '23150102', 1, 1, 1, 1, 14, 1, '0005'),
+            array(6, '23150102', 1, 1, 1, 1, 9, 1, '0006'),
+            array(7, '23150102', 1, 1, 1, 1, 1, 1, '0007'),
+            array(8, '23150102', 1, 1, 1, 1, 11, 2, '0008'),
+            array(9, '23150102', 1, 1, 1, 1, 3, 2, '0009'),
+            array(10, '23150102', 1, 1, 1, 1, 7, 2, '0010'),
+            array(11, '23150102', 1, 1, 1, 1, 2, 2, '0011'),
+            array(12, '23150102', 1, 1, 1, 1, 14, 2, '0012'),
+            array(13, '23150102', 1, 1, 1, 1, 9, 2, '0013'),
+            array(14, '23150102', 1, 1, 1, 1, 1, 2, '0014'),
+            array(15, '23150102', 1, 1, 1, 2, 11, 4, '0015'),
+            array(16, '23150102', 1, 1, 1, 2, 3, 4, '0023'),
+            array(17, '23150102', 1, 1, 1, 2, 7, 4, '0024'),
+            array(18, '23150102', 1, 1, 1, 2, 2, 4, '0025'),
+            array(19, '23150102', 1, 1, 1, 2, 14, 4, '0026'),
+            array(20, '23150102', 1, 1, 1, 2, 5, 4, '0027'),
+            array(21, '23150102', 1, 1, 1, 2, 9, 4, '0028'),
+            array(22, '23150102', 1, 1, 1, 2, 1, 4, '0029'),
+            array(23, '23150102', 1, 1, 2, 1, 12, 3, '0031'),
+            array(24, '23150102', 1, 1, 2, 1, 16, 3, '0032'),
+            array(25, '23150102', 1, 1, 2, 1, 8, 3, '0033'),
+            array(26, '23150102', 1, 1, 2, 1, 13, 3, '0034'),
+            array(27, '23150102', 1, 1, 2, 1, 15, 3, '0035'),
+            array(28, '23150102', 1, 1, 2, 1, 10, 3, '0036'),
+            array(29, '23150102', 1, 1, 2, 1, 1, 3, '0037'),
+            array(30, '23150102', 1, 1, 2, 2, 12, 6, '0038'),
+            array(31, '23150102', 1, 1, 2, 2, 16, 6, '0039'),
+            array(32, '23150102', 1, 1, 2, 2, 8, 6, '0040'),
+            array(33, '23150102', 1, 1, 2, 2, 13, 6, '0041'),
+            array(34, '23150102', 1, 1, 2, 2, 15, 6, '0042'),
+            array(35, '23150102', 1, 1, 2, 2, 4, 6, '0043'),
+            array(36, '23150102', 1, 1, 2, 2, 1, 6, '0044'),
+            array(37, '23150102', 1, 1, 2, 3, 8, 7, '0045'),
+            array(38, '23150102', 1, 1, 2, 3, 13, 7, '0046'),
+            array(39, '23150102', 1, 1, 2, 3, 15, 7, '0047'),
+            array(40, '23150102', 1, 1, 2, 3, 6, 7, '0048'),
+            array(41, '23150102', 1, 1, 2, 3, 1, 7, '0049'),
+            array(42, '23150102', 1, 4, 1, 1, 85, 2, '0050'),
+            array(43, '23150102', 1, 2, 1, 1, 29, 7, '0051'),
+            array(44, '23150102', 1, 1, 1, 1, 11, 1, '0052'),
+            array(45, '23150102', 1, 2, 1, 1, 43, 1, '0053'),
+            array(46, '23150102', 1, 4, 1, 1, 85, 1, '0054'),
+            array(47, '23150102', 1, 2, 1, 1, 43, 1, '0055'),
+            array(48, '23150102', 1, 1, 1, 1, 14, 7, '0057'),
+            array(49, '23150102', 1, 2, 1, 2, 22, 1, '0058'),
+            array(50, '23150102', 1, 3, 1, 1, 55, 1, '0059'),
+            array(51, '23150102', 1, 4, 1, 1, 91, 1, '0060'),
+            array(52, '23150102', 1, 1, 1, 2, 5, 7, '0061'),
+            array(53, '23150102', 1, 2, 1, 2, 36, 1, '0062')
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($seccion as $data) {
+            $entitySeccion = new Seccion();
+            //$entitySeccion->setSeccId($data[0]);
+            $entityAldea = $em->getRepository('AppBundle:Aldea')->find($data[1]);
+            $entitySeccion->setAldea($entityAldea);
+            $entityTurno = $em->getRepository('AppBundle:Turno')->find($data[2]);
+            $entitySeccion->setTurn($entityTurno);
+            $entityPnf = $em->getRepository('AppBundle:Pnf')->find($data[3]);
+            $entitySeccion->setPnf($entityPnf);
+            $entityTrayecto = $em->getRepository('AppBundle:Trayecto')->find($data[4]);
+            $entitySeccion->setTray($entityTrayecto);
+            $entityPeriodo = $em->getRepository('AppBundle:Periodo')->find($data[5]);
+            $entitySeccion->setPeri($entityPeriodo);
+            $entityUnidadCurricular = $em->getRepository('AppBundle:UnidadCurricular')->find($data[6]);
+            $entitySeccion->setUc($entityUnidadCurricular);
+            $entityPeriodoAcademico = $em->getRepository('AppBundle:PeriodoAcademico')->find($data[7]);
+            $entitySeccion->setPa($entityPeriodoAcademico);
+            $entitySeccion->setSeccCodi($data[8]);
+
+            $manager->persist($entitySeccion);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadSeccionEstu(ObjectManager $manager)
+    {
+        $seccionEstu = array(
+            //array('id', 'secc_id', 'persona_id'),
+            array(1, 1, 12),
+            array(2, 1, 14),
+            array(3, 1, 40),
+            array(4, 1, 41),
+            array(5, 1, 65),
+            array(6, 1, 66),
+            array(7, 1, 67),
+            array(8, 1, 78),
+            array(9, 1, 84),
+            array(10, 1, 87),
+            array(11, 2, 65),
+            array(12, 8, 69),
+            array(13, 8, 63),
+            array(14, 8, 55),
+            array(15, 8, 72),
+            array(16, 8, 48),
+            array(17, 8, 56),
+            array(18, 8, 50),
+            array(19, 9, 69),
+            array(20, 9, 63),
+            array(21, 9, 55),
+            array(22, 9, 72),
+            array(23, 9, 48),
+            array(24, 9, 56),
+            array(25, 9, 50),
+            array(26, 10, 69),
+            array(27, 10, 63),
+            array(28, 10, 55),
+            array(29, 10, 72),
+            array(30, 10, 48),
+            array(31, 10, 56),
+            array(32, 10, 50),
+            array(33, 11, 69),
+            array(34, 11, 63),
+            array(35, 11, 55),
+            array(36, 11, 72),
+            array(37, 11, 48),
+            array(38, 11, 56),
+            array(39, 11, 50),
+            array(40, 12, 69),
+            array(41, 12, 63),
+            array(42, 12, 55),
+            array(43, 12, 72),
+            array(44, 12, 48),
+            array(45, 12, 56),
+            array(46, 12, 50),
+            array(47, 2, 12),
+            array(48, 2, 40),
+            array(49, 2, 41),
+            array(50, 2, 66),
+            array(51, 2, 67),
+            array(52, 2, 87),
+            array(53, 2, 78),
+            array(54, 3, 12),
+            array(55, 3, 40),
+            array(56, 3, 87),
+            array(57, 3, 41),
+            array(58, 3, 66),
+            array(59, 3, 67),
+            array(60, 3, 14),
+            array(61, 3, 84),
+            array(62, 3, 65),
+            array(63, 3, 78),
+            array(64, 2, 14),
+            array(65, 2, 84),
+            array(66, 4, 12),
+            array(67, 4, 14),
+            array(68, 4, 40),
+            array(69, 4, 41),
+            array(70, 4, 65),
+            array(71, 4, 66),
+            array(72, 4, 67),
+            array(73, 4, 78),
+            array(74, 4, 87),
+            array(75, 4, 84),
+            array(76, 5, 12),
+            array(77, 5, 14),
+            array(78, 5, 40),
+            array(79, 5, 41),
+            array(80, 5, 66),
+            array(81, 5, 67),
+            array(82, 5, 78),
+            array(83, 5, 84),
+            array(84, 5, 65),
+            array(85, 5, 87),
+            array(86, 6, 14),
+            array(87, 6, 12),
+            array(88, 6, 40),
+            array(89, 6, 41),
+            array(90, 6, 65),
+            array(91, 6, 66),
+            array(92, 6, 67),
+            array(93, 6, 78),
+            array(94, 6, 84),
+            array(95, 6, 87),
+            array(96, 7, 12),
+            array(97, 7, 14),
+            array(98, 7, 40),
+            array(99, 7, 41),
+            array(100, 7, 65),
+            array(101, 7, 66),
+            array(102, 7, 67),
+            array(103, 7, 78),
+            array(104, 7, 84),
+            array(105, 7, 87),
+            array(106, 13, 48),
+            array(107, 13, 50),
+            array(108, 13, 63),
+            array(109, 13, 56),
+            array(110, 13, 64),
+            array(111, 13, 69),
+            array(112, 13, 72),
+            array(113, 13, 73),
+            array(114, 13, 55),
+            array(115, 8, 64),
+            array(116, 8, 73),
+            array(117, 11, 64),
+            array(118, 11, 73),
+            array(119, 9, 64),
+            array(120, 9, 73),
+            array(121, 10, 64),
+            array(122, 10, 73),
+            array(123, 12, 64),
+            array(124, 12, 73),
+            array(125, 14, 48),
+            array(126, 14, 55),
+            array(127, 14, 50),
+            array(128, 14, 63),
+            array(129, 14, 56),
+            array(130, 14, 64),
+            array(131, 14, 69),
+            array(132, 14, 72),
+            array(133, 14, 73),
+            array(134, 15, 50),
+            array(135, 15, 48),
+            array(136, 15, 56),
+            array(137, 15, 55),
+            array(138, 15, 63),
+            array(139, 15, 64),
+            array(140, 15, 72),
+            array(141, 15, 73),
+            array(142, 15, 69),
+            array(143, 16, 48),
+            array(144, 16, 50),
+            array(145, 16, 55),
+            array(146, 16, 56),
+            array(147, 16, 63),
+            array(148, 16, 64),
+            array(149, 16, 72),
+            array(150, 16, 73),
+            array(151, 16, 69),
+            array(152, 17, 48),
+            array(153, 17, 50),
+            array(154, 17, 55),
+            array(155, 17, 56),
+            array(156, 17, 63),
+            array(157, 17, 64),
+            array(158, 17, 69),
+            array(159, 17, 72),
+            array(160, 17, 73),
+            array(161, 18, 48),
+            array(162, 18, 50),
+            array(163, 18, 55),
+            array(164, 18, 56),
+            array(165, 18, 63),
+            array(166, 18, 64),
+            array(167, 18, 69),
+            array(168, 18, 72),
+            array(169, 18, 73),
+            array(170, 19, 48),
+            array(171, 19, 50),
+            array(172, 19, 55),
+            array(173, 19, 56),
+            array(174, 19, 63),
+            array(175, 19, 64),
+            array(176, 19, 69),
+            array(177, 19, 72),
+            array(178, 19, 73),
+            array(179, 20, 48),
+            array(180, 20, 50),
+            array(181, 20, 55),
+            array(182, 20, 56),
+            array(183, 20, 63),
+            array(184, 20, 64),
+            array(185, 20, 69),
+            array(186, 20, 72),
+            array(187, 20, 73),
+            array(188, 21, 48),
+            array(189, 21, 50),
+            array(190, 21, 55),
+            array(191, 21, 56),
+            array(192, 21, 63),
+            array(193, 21, 64),
+            array(194, 21, 69),
+            array(195, 21, 72),
+            array(196, 21, 73),
+            array(197, 22, 48),
+            array(198, 22, 50),
+            array(199, 22, 55),
+            array(200, 22, 56),
+            array(201, 22, 63),
+            array(202, 22, 64),
+            array(203, 22, 69),
+            array(204, 22, 72),
+            array(205, 22, 73),
+            array(206, 23, 48),
+            array(207, 23, 55),
+            array(208, 23, 50),
+            array(209, 23, 56),
+            array(210, 23, 63),
+            array(211, 23, 64),
+            array(212, 23, 69),
+            array(213, 23, 72),
+            array(214, 23, 73),
+            array(215, 24, 48),
+            array(216, 24, 50),
+            array(217, 24, 55),
+            array(218, 24, 56),
+            array(219, 24, 63),
+            array(220, 24, 64),
+            array(221, 24, 69),
+            array(222, 24, 72),
+            array(223, 24, 73),
+            array(224, 25, 48),
+            array(225, 25, 50),
+            array(226, 25, 55),
+            array(227, 25, 56),
+            array(228, 25, 63),
+            array(229, 25, 64),
+            array(230, 25, 69),
+            array(231, 25, 72),
+            array(232, 25, 73),
+            array(233, 26, 48),
+            array(234, 26, 50),
+            array(235, 26, 55),
+            array(236, 26, 56),
+            array(237, 26, 63),
+            array(238, 26, 64),
+            array(239, 26, 69),
+            array(240, 26, 72),
+            array(241, 26, 73),
+            array(242, 27, 48),
+            array(243, 27, 50),
+            array(244, 27, 55),
+            array(245, 27, 56),
+            array(246, 27, 63),
+            array(247, 27, 64),
+            array(248, 27, 69),
+            array(249, 27, 72),
+            array(250, 27, 73),
+            array(251, 28, 48),
+            array(252, 28, 50),
+            array(253, 28, 55),
+            array(254, 28, 56),
+            array(255, 28, 63),
+            array(256, 28, 64),
+            array(257, 28, 69),
+            array(258, 28, 72),
+            array(259, 28, 73),
+            array(260, 29, 48),
+            array(261, 29, 50),
+            array(262, 29, 55),
+            array(263, 29, 56),
+            array(264, 29, 63),
+            array(265, 29, 64),
+            array(266, 29, 69),
+            array(267, 29, 72),
+            array(268, 29, 73),
+            array(269, 30, 48),
+            array(270, 30, 50),
+            array(271, 30, 55),
+            array(272, 30, 56),
+            array(273, 30, 63),
+            array(274, 30, 64),
+            array(275, 30, 73),
+            array(276, 30, 69),
+            array(277, 30, 72),
+            array(278, 31, 48),
+            array(279, 31, 50),
+            array(280, 31, 55),
+            array(281, 31, 56),
+            array(282, 31, 63),
+            array(283, 31, 64),
+            array(284, 31, 69),
+            array(285, 31, 72),
+            array(286, 31, 73),
+            array(287, 32, 48),
+            array(288, 32, 50),
+            array(289, 32, 55),
+            array(290, 32, 56),
+            array(291, 32, 63),
+            array(292, 32, 64),
+            array(293, 32, 69),
+            array(294, 32, 72),
+            array(295, 32, 73),
+            array(296, 33, 48),
+            array(297, 33, 50),
+            array(298, 33, 55),
+            array(299, 33, 56),
+            array(300, 33, 63),
+            array(301, 33, 64),
+            array(302, 33, 69),
+            array(303, 33, 72),
+            array(304, 33, 73),
+            array(305, 34, 48),
+            array(306, 34, 50),
+            array(307, 34, 55),
+            array(308, 34, 56),
+            array(309, 34, 63),
+            array(310, 34, 64),
+            array(311, 34, 69),
+            array(312, 34, 72),
+            array(313, 34, 73),
+            array(314, 35, 48),
+            array(315, 35, 50),
+            array(316, 35, 55),
+            array(317, 35, 56),
+            array(318, 35, 63),
+            array(319, 35, 64),
+            array(320, 35, 69),
+            array(321, 35, 72),
+            array(322, 35, 73),
+            array(323, 36, 48),
+            array(324, 36, 50),
+            array(325, 36, 55),
+            array(326, 36, 56),
+            array(327, 36, 63),
+            array(328, 36, 64),
+            array(329, 36, 69),
+            array(330, 36, 72),
+            array(331, 36, 73),
+            array(332, 37, 48),
+            array(333, 37, 50),
+            array(334, 37, 55),
+            array(335, 37, 56),
+            array(336, 37, 63),
+            array(337, 37, 64),
+            array(338, 37, 69),
+            array(339, 37, 72),
+            array(340, 37, 73),
+            array(341, 38, 48),
+            array(342, 38, 50),
+            array(343, 38, 55),
+            array(344, 38, 56),
+            array(345, 38, 63),
+            array(346, 38, 64),
+            array(347, 38, 69),
+            array(348, 38, 72),
+            array(349, 38, 73),
+            array(350, 39, 48),
+            array(351, 39, 50),
+            array(352, 39, 55),
+            array(353, 39, 56),
+            array(354, 39, 63),
+            array(355, 39, 64),
+            array(356, 39, 72),
+            array(357, 39, 73),
+            array(358, 39, 69),
+            array(359, 40, 48),
+            array(360, 40, 50),
+            array(361, 40, 56),
+            array(362, 40, 55),
+            array(363, 40, 63),
+            array(364, 40, 64),
+            array(365, 40, 69),
+            array(366, 40, 72),
+            array(367, 40, 73),
+            array(368, 41, 48),
+            array(369, 41, 50),
+            array(370, 41, 55),
+            array(371, 41, 56),
+            array(372, 41, 63),
+            array(373, 41, 64),
+            array(374, 41, 69),
+            array(375, 41, 72),
+            array(376, 41, 73),
+            array(377, 45, 18),
+            array(378, 45, 39),
+            array(379, 45, 49),
+            array(380, 45, 32),
+            array(381, 45, 85),
+            array(382, 46, 68),
+            array(383, 47, 62),
+            array(384, 49, 70),
+            array(385, 50, 53),
+            array(386, 51, 24),
+            array(387, 52, 80),
+            array(388, 53, 86)
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($seccionEstu as $data) {
+            $entitySeccionEstu = new SeccionEstu();
+            //$entitySeccionEstu->setId($data[0]);
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[1]);
+            $entitySeccionEstu->setPersona($entityPersona);
+            $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($data[2]);
+            $entitySeccionEstu->setSecc($entitySeccion);
+
+            $manager->persist($entitySeccionEstu);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadSeccionDoce(ObjectManager $manager)
+    {
+        $seccionDoce = array(
+            //array('id', 'secc_id', 'persona_id'),
+            array(1, 1, 5),
+            array(2, 8, 11),
+            array(4, 9, 11),
+            array(5, 10, 29),
+            array(6, 11, 21),
+            array(7, 12, 29),
+            array(8, 13, 3),
+            array(9, 2, 11),
+            array(10, 3, 21),
+            array(11, 5, 29),
+            array(12, 4, 11),
+            array(13, 6, 3),
+            array(14, 7, 6),
+            array(15, 14, 23),
+            array(18, 15, 5),
+            array(19, 16, 11),
+            array(20, 17, 23),
+            array(21, 18, 8),
+            array(22, 21, 3),
+            array(23, 20, 23),
+            array(24, 19, 29),
+            array(25, 22, 21),
+            array(26, 23, 5),
+            array(27, 24, 11),
+            array(28, 25, 23),
+            array(29, 26, 8),
+            array(30, 27, 29),
+            array(31, 28, 11),
+            array(32, 29, 26),
+            array(33, 30, 5),
+            array(34, 31, 11),
+            array(35, 32, 23),
+            array(36, 33, 8),
+            array(37, 34, 29),
+            array(38, 35, 11),
+            array(39, 36, 26),
+            array(40, 37, 21),
+            array(41, 38, 11),
+            array(42, 39, 29),
+            array(43, 40, 6),
+            array(44, 41, 26),
+            array(45, 45, 21),
+            array(46, 43, 4),
+            array(47, 46, 4),
+            array(48, 47, 61),
+            array(49, 49, 77),
+            array(50, 50, 38),
+            array(51, 51, 25),
+            array(52, 52, 34),
+            array(53, 53, 51)
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($seccionDoce as $data) {
+            $entitySeccionDoce = new SeccionDoce();
+            //$entitySeccionDoce->setId($data[0]);
+            $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($data[1]);
+            $entitySeccionDoce->setSecc($entitySeccion);
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[2]);
+            $entitySeccionDoce->setPersona($entityPersona);
+
+            $manager->persist($entitySeccionDoce);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadNota(ObjectManager $manager)
+    {
+        $nota = array(
+            //array('nota_id', 'persona_id', 'secc_id', 'nota', 'asist'),
+            array(1, 12, 1, 16, '80'),
+            array(2, 14, 1, 17, '82'),
+            array(3, 40, 1, 19, '95'),
+            array(4, 41, 1, 19, '95'),
+            array(5, 65, 1, 18, '92'),
+            array(6, 66, 1, 19, '95'),
+            array(7, 67, 1, 19, '95'),
+            array(8, 78, 1, 19, '96'),
+            array(9, 84, 1, 19, '96'),
+            array(10, 87, 1, 17, '90'),
+            array(11, 48, 8, 13, '76'),
+            array(12, 50, 8, 16, '80'),
+            array(13, 55, 8, 12, '75'),
+            array(14, 56, 8, 12, '76'),
+            array(15, 63, 8, 18, '92'),
+            array(16, 69, 8, 19, '96'),
+            array(17, 72, 8, 18, '90'),
+            array(18, 48, 9, 13, '76'),
+            array(19, 50, 9, 17, '82'),
+            array(20, 55, 9, 12, '76'),
+            array(21, 56, 9, 15, '77'),
+            array(22, 63, 9, 19, '96'),
+            array(23, 69, 9, 19, '96'),
+            array(24, 72, 9, 18, '82'),
+            array(25, 48, 10, 15, '78'),
+            array(26, 50, 10, 17, '80'),
+            array(27, 55, 10, 13, '77'),
+            array(28, 56, 10, 16, '79'),
+            array(29, 63, 10, 19, '96'),
+            array(30, 69, 10, 19, '97'),
+            array(31, 72, 10, 18, '88'),
+            array(32, 48, 11, 12, '76'),
+            array(33, 50, 11, 17, '90'),
+            array(34, 55, 11, 13, '77'),
+            array(35, 56, 11, 14, '79'),
+            array(36, 63, 11, 18, '97'),
+            array(37, 69, 11, 19, '97'),
+            array(38, 72, 11, 17, '89'),
+            array(39, 48, 12, 16, '78'),
+            array(40, 50, 12, 17, '80'),
+            array(41, 55, 12, 16, '79'),
+            array(42, 56, 12, 16, '80'),
+            array(43, 63, 12, 18, '93'),
+            array(44, 69, 12, 18, '94'),
+            array(45, 72, 12, 17, '90'),
+            array(46, 65, 2, 20, '99'),
+            array(47, 12, 2, 13, '78'),
+            array(48, 14, 2, 16, '80'),
+            array(49, 40, 2, 18, '93'),
+            array(50, 41, 2, 19, '98'),
+            array(51, 66, 2, 18, '95'),
+            array(52, 67, 2, 17, '96'),
+            array(53, 78, 2, 20, '99'),
+            array(54, 84, 2, 19, '96'),
+            array(55, 87, 2, 16, '92'),
+            array(56, 12, 3, 14, '87'),
+            array(57, 14, 3, 16, '87'),
+            array(58, 40, 3, 19, '98'),
+            array(59, 41, 3, 19, '99'),
+            array(60, 65, 3, 20, '99'),
+            array(61, 66, 3, 18, '95'),
+            array(62, 67, 3, 18, '96'),
+            array(63, 78, 3, 20, '99'),
+            array(64, 84, 3, 19, '97'),
+            array(65, 87, 3, 18, '95'),
+            array(66, 12, 4, 14, '80'),
+            array(67, 14, 4, 17, '87'),
+            array(68, 40, 4, 18, '95'),
+            array(69, 41, 4, 17, '94'),
+            array(70, 65, 4, 19, '98'),
+            array(71, 66, 4, 17, '95'),
+            array(72, 67, 4, 17, '95'),
+            array(73, 78, 4, 19, '97'),
+            array(74, 84, 4, 18, '96'),
+            array(75, 87, 4, 17, '91'),
+            array(76, 12, 5, 16, '87'),
+            array(77, 14, 5, 17, '89'),
+            array(78, 40, 5, 18, '97'),
+            array(79, 41, 5, 18, '97'),
+            array(80, 65, 5, 17, '92'),
+            array(81, 66, 5, 17, '94'),
+            array(82, 67, 5, 17, '95'),
+            array(83, 78, 5, 19, '99'),
+            array(84, 84, 5, 18, '95'),
+            array(85, 87, 5, 16, '89'),
+            array(86, 12, 6, 15, '87'),
+            array(87, 14, 6, 17, '88'),
+            array(88, 40, 6, 19, '98'),
+            array(89, 41, 6, 19, '98'),
+            array(90, 65, 6, 18, '95'),
+            array(91, 66, 6, 18, '96'),
+            array(92, 67, 6, 18, '97'),
+            array(93, 78, 6, 18, '97'),
+            array(94, 84, 6, 18, '96'),
+            array(95, 87, 6, 15, '89'),
+            array(96, 12, 7, 15, '87'),
+            array(97, 14, 7, 18, '89'),
+            array(98, 40, 7, 18, '97'),
+            array(99, 41, 7, 18, '98'),
+            array(100, 65, 7, 19, '96'),
+            array(101, 66, 7, 17, '93'),
+            array(102, 67, 7, 17, '91'),
+            array(103, 78, 7, 18, '97'),
+            array(104, 84, 7, 17, '96'),
+            array(105, 87, 7, 16, '91'),
+            array(106, 64, 8, 17, '89'),
+            array(107, 73, 8, 14, '82'),
+            array(108, 64, 9, 17, '89'),
+            array(109, 73, 9, 16, '88'),
+            array(110, 64, 11, 15, '89'),
+            array(111, 73, 11, 14, '87'),
+            array(112, 64, 10, 16, '91'),
+            array(113, 73, 10, 15, '82'),
+            array(114, 64, 12, 18, '92'),
+            array(115, 73, 12, 17, '89'),
+            array(116, 48, 13, 12, '78'),
+            array(117, 50, 13, 17, '87'),
+            array(118, 55, 13, 12, '79'),
+            array(119, 56, 13, 13, '84'),
+            array(120, 63, 13, 19, '93'),
+            array(121, 64, 13, 17, '92'),
+            array(122, 69, 13, 19, '98'),
+            array(123, 72, 13, 17, '91'),
+            array(124, 73, 13, 16, '89'),
+            array(125, 48, 14, 14, '87'),
+            array(126, 50, 14, 17, '90'),
+            array(127, 55, 14, 12, '89'),
+            array(128, 56, 14, 13, '89'),
+            array(129, 63, 14, 19, '94'),
+            array(130, 64, 14, 17, '94'),
+            array(131, 69, 14, 19, '97'),
+            array(132, 72, 14, 17, '89'),
+            array(133, 73, 14, 16, '89'),
+            array(134, 48, 15, 12, '79'),
+            array(135, 50, 15, 15, '89'),
+            array(136, 55, 15, 12, '77'),
+            array(137, 56, 15, 12, '77'),
+            array(138, 63, 15, 17, '91'),
+            array(139, 64, 15, 17, '89'),
+            array(140, 69, 15, 19, '97'),
+            array(141, 72, 15, 17, '85'),
+            array(142, 73, 15, 14, '86'),
+            array(143, 48, 16, 12, '79'),
+            array(144, 50, 16, 16, '87'),
+            array(145, 55, 16, 13, '77'),
+            array(146, 56, 16, 12, '77'),
+            array(147, 63, 16, 19, '97'),
+            array(148, 64, 16, 17, '87'),
+            array(149, 69, 16, 19, '98'),
+            array(150, 72, 16, 17, '87'),
+            array(151, 73, 16, 16, '87'),
+            array(152, 48, 17, 0, '1'),
+            array(153, 50, 17, 17, '87'),
+            array(154, 55, 17, 13, '79'),
+            array(155, 56, 17, 14, '80'),
+            array(156, 63, 17, 19, '98'),
+            array(157, 64, 17, 18, '91'),
+            array(158, 69, 17, 19, '98'),
+            array(159, 72, 17, 17, '91'),
+            array(160, 73, 17, 17, '90'),
+            array(161, 48, 18, 12, '79'),
+            array(162, 50, 18, 15, '89'),
+            array(163, 55, 18, 12, '79'),
+            array(164, 56, 18, 12, '79'),
+            array(165, 63, 18, 18, '98'),
+            array(166, 64, 18, 15, '89'),
+            array(167, 69, 18, 19, '98'),
+            array(168, 72, 18, 16, '90'),
+            array(169, 73, 18, 14, '90'),
+            array(170, 48, 19, 12, '78'),
+            array(171, 50, 19, 17, '91'),
+            array(172, 55, 19, 16, '90'),
+            array(173, 56, 19, 16, '87'),
+            array(174, 63, 19, 19, '98'),
+            array(175, 64, 19, 18, '92'),
+            array(176, 69, 19, 19, '98'),
+            array(177, 72, 19, 17, '91'),
+            array(178, 73, 19, 17, '90'),
+            array(179, 48, 41, 12, '60'),
+            array(180, 50, 41, 17, '89'),
+            array(181, 55, 41, 13, '87'),
+            array(182, 56, 41, 13, '84'),
+            array(183, 63, 41, 19, '98'),
+            array(184, 64, 41, 17, '90'),
+            array(185, 69, 41, 19, '98'),
+            array(186, 72, 41, 17, '90'),
+            array(187, 73, 41, 17, '92'),
+            array(188, 48, 40, 13, '80'),
+            array(189, 50, 40, 16, '91'),
+            array(190, 55, 40, 13, '91'),
+            array(191, 56, 40, 12, '79'),
+            array(192, 63, 40, 19, '98'),
+            array(193, 64, 40, 17, '92'),
+            array(194, 69, 40, 19, '97'),
+            array(195, 72, 40, 16, '89'),
+            array(196, 73, 40, 17, '92'),
+            array(197, 48, 39, 16, '80'),
+            array(198, 50, 39, 18, '92'),
+            array(199, 55, 39, 16, '86'),
+            array(200, 56, 39, 16, '87'),
+            array(201, 63, 39, 19, '98'),
+            array(202, 64, 39, 18, '92'),
+            array(203, 69, 39, 19, '98'),
+            array(204, 72, 39, 17, '89'),
+            array(205, 73, 39, 17, '90'),
+            array(206, 48, 38, 12, '79'),
+            array(207, 50, 38, 15, '90'),
+            array(208, 55, 38, 12, '79'),
+            array(209, 56, 38, 12, '83'),
+            array(210, 63, 38, 18, '97'),
+            array(211, 64, 38, 15, '90'),
+            array(212, 69, 38, 18, '97'),
+            array(213, 72, 38, 15, '87'),
+            array(214, 73, 38, 14, '91'),
+            array(215, 48, 37, 15, '79'),
+            array(216, 50, 37, 17, '89'),
+            array(217, 55, 37, 13, '79'),
+            array(218, 56, 37, 14, '89'),
+            array(219, 63, 37, 19, '98'),
+            array(220, 64, 37, 18, '90'),
+            array(221, 69, 37, 19, '98'),
+            array(222, 72, 37, 17, '90'),
+            array(223, 73, 37, 18, '92'),
+            array(224, 48, 36, 14, '78'),
+            array(225, 50, 36, 17, '89'),
+            array(226, 55, 36, 14, '87'),
+            array(227, 56, 36, 14, '89'),
+            array(228, 63, 36, 19, '98'),
+            array(229, 64, 36, 18, '91'),
+            array(230, 69, 36, 19, '98'),
+            array(231, 72, 36, 16, '89'),
+            array(232, 73, 36, 17, '90'),
+            array(233, 48, 20, 13, '78'),
+            array(234, 50, 20, 16, '89'),
+            array(235, 55, 20, 13, '80'),
+            array(236, 56, 20, 12, '89'),
+            array(237, 63, 20, 19, '98'),
+            array(238, 64, 20, 17, '91'),
+            array(239, 69, 20, 19, '98'),
+            array(240, 72, 20, 15, '83'),
+            array(241, 73, 20, 17, '92'),
+            array(242, 48, 21, 13, '79'),
+            array(243, 50, 21, 17, '89'),
+            array(244, 55, 21, 15, '79'),
+            array(245, 56, 21, 14, '79'),
+            array(246, 63, 21, 19, '97'),
+            array(247, 64, 21, 18, '92'),
+            array(248, 69, 21, 19, '98'),
+            array(249, 72, 21, 15, '89'),
+            array(250, 73, 21, 18, '91'),
+            array(251, 48, 25, 14, '79'),
+            array(252, 50, 25, 18, '90'),
+            array(253, 55, 25, 13, '87'),
+            array(254, 56, 25, 13, '87'),
+            array(255, 63, 25, 20, '98'),
+            array(256, 64, 25, 18, '91'),
+            array(257, 69, 25, 20, '98'),
+            array(258, 72, 25, 17, '89'),
+            array(259, 73, 25, 17, '89'),
+            array(260, 48, 26, 12, '78'),
+            array(261, 50, 26, 15, '91'),
+            array(262, 55, 26, 12, '78'),
+            array(263, 56, 26, 12, '78'),
+            array(264, 63, 26, 19, '97'),
+            array(265, 64, 26, 16, '91'),
+            array(266, 69, 26, 19, '98'),
+            array(267, 72, 26, 16, '91'),
+            array(268, 73, 26, 17, '91'),
+            array(269, 48, 22, 16, '79'),
+            array(270, 50, 22, 17, '89'),
+            array(271, 55, 22, 14, '89'),
+            array(272, 56, 22, 13, '83'),
+            array(273, 63, 22, 19, '98'),
+            array(274, 64, 22, 18, '92'),
+            array(275, 69, 22, 19, '97'),
+            array(276, 72, 22, 15, '90'),
+            array(277, 73, 22, 17, '91'),
+            array(278, 48, 23, 12, '79'),
+            array(279, 50, 23, 14, '82'),
+            array(280, 55, 23, 12, '79'),
+            array(281, 56, 23, 12, '81'),
+            array(282, 63, 23, 19, '98'),
+            array(283, 64, 23, 16, '81'),
+            array(284, 69, 23, 19, '98'),
+            array(285, 72, 23, 16, '79'),
+            array(286, 73, 23, 15, '79'),
+            array(287, 48, 28, 12, '79'),
+            array(288, 50, 28, 16, '90'),
+            array(289, 55, 28, 12, '89'),
+            array(290, 56, 28, 13, '79'),
+            array(291, 63, 28, 18, '97'),
+            array(292, 64, 28, 15, '90'),
+            array(293, 69, 28, 18, '98'),
+            array(294, 72, 28, 14, '89'),
+            array(295, 73, 28, 15, '90'),
+            array(296, 48, 29, 14, '78'),
+            array(300, 50, 29, 18, '90'),
+            array(301, 55, 29, 14, '87'),
+            array(302, 56, 29, 14, '80'),
+            array(303, 63, 29, 19, '98'),
+            array(304, 64, 29, 17, '90'),
+            array(305, 69, 29, 19, '98'),
+            array(306, 72, 29, 14, '89'),
+            array(307, 73, 29, 16, '89'),
+            array(332, 48, 30, 12, '78'),
+            array(333, 50, 30, 14, '91'),
+            array(334, 55, 30, 12, '87'),
+            array(335, 56, 30, 13, '87'),
+            array(336, 63, 30, 18, '98'),
+            array(337, 64, 30, 15, '89'),
+            array(338, 69, 30, 19, '97'),
+            array(339, 72, 30, 14, '84'),
+            array(340, 73, 30, 15, '89'),
+            array(341, 48, 31, 14, '79'),
+            array(342, 50, 31, 17, '89'),
+            array(343, 55, 31, 14, '87'),
+            array(344, 56, 31, 14, '87'),
+            array(345, 63, 31, 19, '98'),
+            array(346, 64, 31, 17, '89'),
+            array(347, 69, 31, 19, '98'),
+            array(348, 72, 31, 14, '89'),
+            array(349, 73, 31, 17, '90'),
+            array(350, 48, 32, 15, '79'),
+            array(351, 50, 32, 17, '89'),
+            array(352, 55, 32, 14, '82'),
+            array(353, 56, 32, 15, '89'),
+            array(354, 63, 32, 20, '98'),
+            array(355, 64, 32, 18, '91'),
+            array(356, 69, 32, 20, '98'),
+            array(357, 72, 32, 16, '87'),
+            array(358, 73, 32, 18, '92'),
+            array(359, 48, 33, 12, '79'),
+            array(360, 50, 33, 15, '88'),
+            array(361, 55, 33, 12, '84'),
+            array(362, 56, 33, 13, '84'),
+            array(363, 63, 33, 18, '98'),
+            array(364, 64, 33, 16, '92'),
+            array(365, 69, 33, 18, '98'),
+            array(366, 72, 33, 14, '89'),
+            array(367, 73, 33, 15, '91'),
+            array(368, 48, 34, 16, '80'),
+            array(369, 50, 34, 18, '90'),
+            array(370, 55, 34, 16, '89'),
+            array(371, 56, 34, 16, '89'),
+            array(372, 63, 34, 19, '98'),
+            array(373, 64, 34, 18, '93'),
+            array(374, 69, 34, 19, '98'),
+            array(375, 72, 34, 17, '91'),
+            array(376, 73, 34, 17, '92'),
+            array(377, 48, 35, 12, '78'),
+            array(378, 50, 35, 16, '90'),
+            array(379, 55, 35, 13, '87'),
+            array(380, 56, 35, 14, '89'),
+            array(381, 63, 35, 18, '97'),
+            array(382, 64, 35, 16, '91'),
+            array(383, 69, 35, 19, '98'),
+            array(384, 72, 35, 14, '89'),
+            array(385, 73, 35, 16, '90'),
+            array(386, 18, 45, 12, '98'),
+            array(387, 32, 45, 12, '89'),
+            array(388, 39, 45, 15, '96'),
+            array(389, 49, 45, 17, '90'),
+            array(390, 85, 45, 17, '90'),
+            array(391, 68, 46, 17, '90'),
+            array(392, 70, 49, 16, '89'),
+            array(393, 53, 50, 16, '89'),
+            array(394, 24, 51, 16, '87'),
+            array(395, 80, 52, 17, '90'),
+            array(396, 86, 53, 14, '80')
+        );
+
+        $em = $this->container->get('doctrine')->getEntityManager('default');
+
+        foreach ($nota as $data) {
+            $entityNota = new Nota();
+            /*$entityNota->setNotaId($data[0]);*/
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($data[1]);
+            $entityNota->setPersona($entityPersona);
+            $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($data[2]);
+            $entityNota->setSecc($entitySeccion);
+            $entityNota->setNota($data[3]);
+            $entityNota->setAsist($data[4]);
+            $manager->persist($entityNota);
         }
 
         $manager->flush();

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AldeaTurno
  *
- * @ORM\Table(name="aldea_turno", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
+ * @ORM\Table(name="aldea_turno", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_aldea_turno", columns={"aldea_codi", "turn_id"})}, options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="turn_id", columns={"turn_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AldeaTurnoRepository")
  */
 class AldeaTurno
@@ -26,7 +26,7 @@ class AldeaTurno
      *
      * @ORM\ManyToOne(targetEntity="Aldea")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="aldea_codi", referencedColumnName="aldea_codi")
+     *   @ORM\JoinColumn(name="aldea_codi", referencedColumnName="aldea_codi", nullable=false)
      * })
      */
     private $aldea;
@@ -36,7 +36,7 @@ class AldeaTurno
      *
      * @ORM\ManyToOne(targetEntity="Turno")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="turn_id", referencedColumnName="turn_id")
+     *   @ORM\JoinColumn(name="turn_id", referencedColumnName="turn_id", nullable=false)
      * })
      */
     private $turno;

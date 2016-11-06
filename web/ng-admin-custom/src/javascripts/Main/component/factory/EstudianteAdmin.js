@@ -14,17 +14,25 @@ define(function() {
 				.identifier(nga.field('id'))
 				.label('Estudiantes');
 
-			var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values['persona.cedu'])" ng-controller="HandleReportController" href="#">
+			var pdf = `<a class="btn btn-default btn-xs" ng-click="open($event, entry.values['persona.id'], entry.values['pnf.pnf_id'])" ng-controller="HandleReportController" href="#">
 				<span class="fa fa-file-pdf-o"></span>
 				<span class="hidden-xs"></span>
 			</a>`;
 
+			var filter = `
+				<ui-select  ng-model="values['q']" ng-required="true" required="required" id="q" name="q" ng-controller="FController as f" ng-init="f.init('apiEstu');">
+				    <ui-select-match allow-clear="true" placeholder="Valores de filtro">{{ $select.selected.label }}</ui-select-match>
+				    <ui-select-choices repeat="item.value as item in personas | filter: {label: $select.search} track by $index">
+				        {{ item.label }}
+				    </ui-select-choices>
+				</ui-select>
+			`;
+
 			estudiante.listView()
 				.infinitePagination(false)
 				.fields([
-					nga.field('persona.cedu').label('cedu'),
-					nga.field('persona.nomb').label('nomb'),
-					nga.field('persona.apell').label('apell'),
+					nga.field('persona.nac_cedu').label('Documento de identidad'),
+					nga.field('persona.nomb_apell').label('Nombre Apellido'),
 					nga.field('persona.fechnac', 'date').label('fn')
 					.format('dd-MM-yyyy'),
 					nga.field('persona.correo').label('correo'),
@@ -35,7 +43,8 @@ define(function() {
 					nga.field('q', 'template')
 					.label('')
 					.pinned(true)
-					.template('<div class="input-group"><input type="text" ng-model="value" ng-model-options="{debounce: 1500}" placeholder="Cédula" class="form-control"></input><span ng-click="$parent.filterCtrl.filter()" class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span></div>'),
+					//.template('<div class="input-group"><input type="text" ng-model="value" ng-model-options="{debounce: 1500}" placeholder="Cédula" class="form-control"></input><span ng-click="$parent.filterCtrl.filter()" class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span></div>'),
+					.template(filter),
 
 					nga.field('filters_operator', 'choice')
 					.label('Operador SQL')
@@ -44,6 +53,13 @@ define(function() {
 					nga.field('limit', 'choice')
 					.label('Mostrar limite')
 					.choices(util.filterLimit()),
+
+					nga.field('filters[pnf]', 'choice')
+					.label('PNF')
+					.choices(function(entry, scope) {
+						util.choicePnf()(entry, scope);
+						$rootScope.$broadcast('choice:pnf:get');
+					}),
 				])
 				.listActions([pdf, 'delete', 'show']);
 
@@ -144,9 +160,8 @@ define(function() {
 			estudiante.showView()
 				.title('Detalle estudiante #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('persona.cedu').label('cedu'),
-					nga.field('persona.nomb').label('nomb'),
-					nga.field('persona.apell').label('apell'),
+					nga.field('persona.nac_cedu').label('Documento de identidad'),
+					nga.field('persona.nomb_apell').label('Nombre Apellido'),
 					nga.field('persona.fechnac', 'date').label('Fecha de nacimiento')
 					.format('dd-MM-yyyy'),
 					nga.field('persona.correo').label('correo'),

@@ -982,7 +982,7 @@ define(function() {
 						}
 
 						util.apiPersonaEstu($item, $model).then((response) => {
-							personaestus = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+							personaestus = util.dataPrepare(response.data.originalElement, [{label: 'nac_cedu_nomb_apell', value: 'id'}]);
 
 							scope.$broadcast('choices:update', {
 								choices: personaestus
@@ -1031,7 +1031,7 @@ define(function() {
 							persona = $item.cedu;
 						}
 						util.apiPersonaDoce($item, $model).then((response) => {
-							personadoces = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+							personadoces = util.dataPrepare(response.data.originalElement, [{label: 'nac_cedu_nomb_apell', value: 'id'}]);
 
 							scope.$broadcast('choices:update', {
 								choices: personadoces
@@ -1069,7 +1069,7 @@ define(function() {
 
 					function getPersonaCoords(e, $item, $model) {
 						util.apiPersonaCoord($item, $model).then((response) => {
-							personacoords = util.dataPrepare(response.data.originalElement, [{label: 'cedu_nomb_apell', value: 'cedu'}]);
+							personacoords = util.dataPrepare(response.data.originalElement, [{label: 'nac_cedu_nomb_apell', value: 'id'}]);
 
 							scope.$broadcast('choices:update', {
 								choices: personacoords
@@ -1244,6 +1244,19 @@ define(function() {
 
 			apiPersona: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'personas', '/api/personas?limit=' + ($limit || '5000'));
+			},
+
+			apiMethod: function(method){
+				if (this[method]) {
+					return this[method];
+				}
+			},
+
+			apiEstu: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personaestus', '/api/personas/estudiantes?limit=' + ($limit || '10000'));
+			},
+			apiDoce: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'personadoces', '/api/personas/docentes?limit=' + ($limit || '10000'));
 			},
 		};
 	}

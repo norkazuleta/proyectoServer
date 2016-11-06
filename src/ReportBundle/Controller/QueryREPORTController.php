@@ -1,16 +1,15 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace ReportBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Request\ParamFetcherInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ConsultasREPORTController extends ReportController
+class QueryREPORTController extends ReportController
 {
-
     /**
      * @Route("/reports/q", name="reports_q")
      *
@@ -32,7 +31,13 @@ class ConsultasREPORTController extends ReportController
         }
     }
 
-    public function recordReport(ParamFetcherInterface $paramFetcher, Request $request)
+    /**
+     * Report Gral Options
+     * @param  ParamFetcherInterface $paramFetcher
+     * @param  Request               $request
+     * @return application/*
+     */
+    public function rptReport(ParamFetcherInterface $paramFetcher, Request $request)
     {
         $report = $paramFetcher->get('report');
         $format = $paramFetcher->get('format');
@@ -40,13 +45,14 @@ class ConsultasREPORTController extends ReportController
 
         $this->initialize();
 
+        $param = array_merge($param, $this->getParamDatabase());
+
         if (count($param)) {
             $this->setParameters(
                 array_merge(
                     array(
-                        'URI_WORKSPACE' => "\"" . dirname(realpath($this->jrxmlDir .'/' . $report . '.jasper')) . "\"" ,
-                        'URI_LOGO_LEFT' => "\"" . realpath($this->jrxmlDir .'/logo-left.png') . "\"" ,
-                        'URI_LOGO_RIGHT' => "\"" . realpath($this->jrxmlDir .'/logo-right.png') . "\""
+                        'RPT_URI_WORKSPACE' =>  dirname(realpath($this->jrxmlDir .'/' . $report . '.jasper')),
+                        'RPT_DIRECTORY_SEPARATOR' => DIRECTORY_SEPARATOR
                     ),
                     $param
                 )
@@ -55,7 +61,7 @@ class ConsultasREPORTController extends ReportController
 
         $this->setFormat(array($format));
 
-        $this->jasperProccess($report . '.jrxml');
+        $this->jasperProccess($report . '.jasper');
 
         $file = $this->reportDir . '/' . $this->outputFilename . '.' . $format;
 

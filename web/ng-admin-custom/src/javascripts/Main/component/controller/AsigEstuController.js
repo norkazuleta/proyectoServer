@@ -40,9 +40,11 @@ class AsigEstuModalController {
 			.then((response) => {
 
 				this.$scope.estudiantes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'persona.cedu'
+					id: 'persona.id'
 				}, {
-					value: 'persona.cedu'
+					label: 'persona.nac_cedu'
+				}, {
+					value: 'persona.id'
 				}, {
 					nomb: 'persona.nomb'
 				}, {
@@ -52,7 +54,11 @@ class AsigEstuModalController {
 				}, {
 					'cedu_nomb_apell': 'persona.cedu_nomb_apell'
 				}, {
+					'nac_cedu_nomb_apell': 'persona.nac_cedu_nomb_apell'
+				}, {
 					cedu: 'persona.cedu'
+				}, {
+					nac_cedu: 'persona.nac_cedu'
 				}, {
 					correo: 'persona.correo'
 				}, {
@@ -61,14 +67,14 @@ class AsigEstuModalController {
 
 				var items = [], estus = [], _estus = [];
 				angular.forEach(this.$scope.values['estu'], function(item){
-					_estus.push(item.cedu.cedu);
+					_estus.push(item.persona.id);
 				});
 
 				if (this.$scope.estudiantes.length) {
 					angular.forEach(this.$scope.estudiantes, (item) => {
-						if (_estus.indexOf(item.cedu) !== -1) {
+						if (_estus.indexOf(item.id) !== -1) {
 							items.push(item);
-							estus.push(item.cedu);
+							estus.push(item.id);
 						}
 					});
 				}
@@ -103,7 +109,7 @@ class AsigEstuModalController {
 			for (var i = 0; i < this.$scope.estus.length; i++) {
 				encontrado = false;
 				for (var o = 0; o < this.items.length; o++) {
-					if (this.items[o].cedu === this.$scope.estus[i].cedu) {
+					if (this.items[o].id === this.$scope.estus[i].id) {
 						encontrado = true;
 						continue;
 					}
@@ -133,6 +139,7 @@ class AsigEstuModalController {
 	}
 
 	selected(items) {
+		console.log(items, "set");
 		this.$scope.estus = items;
 		this.changed();
 	}
@@ -156,7 +163,7 @@ class AsigEstuModalController {
 
 		let data = {
 			secc: this.$scope.secc,
-			cedu: this.$scope.model.estus
+			persona: this.$scope.model.estus
 		};
 
         this.progression.start();

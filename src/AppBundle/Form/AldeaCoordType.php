@@ -17,7 +17,7 @@ class AldeaCoordType extends AbstractType
         $builder
             ->add('persona', 'entity', array(
                 'class' => 'AppBundle:Persona',
-                'property' => 'cedu',
+                'property' => 'id',
             ))
             ->add('aldea', 'entity', array(
                 'class' => 'AppBundle:Aldea',

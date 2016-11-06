@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Estudiante
  *
- * @ORM\Table(name="estudiante", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
+ * @ORM\Table(name="estudiante", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_persona_pnf", columns={"persona_id", "pnf_id"})}, options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="pnf_id", columns={"pnf_id"}), @ORM\Index(name="persona_id", columns={"persona_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EstudianteRepository")
  */
 class Estudiante
@@ -26,7 +26,7 @@ class Estudiante
      *
      * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="persona_cedu", referencedColumnName="cedu")
+     *   @ORM\JoinColumn(name="persona_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $persona;
@@ -36,7 +36,7 @@ class Estudiante
      *
      * @ORM\ManyToOne(targetEntity="Pnf")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pnf_id", referencedColumnName="pnf_id")
+     *   @ORM\JoinColumn(name="pnf_id", referencedColumnName="pnf_id", nullable=false)
      * })
      */
     private $pnf;

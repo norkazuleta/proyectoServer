@@ -8,7 +8,7 @@ define(function() {
 			var util = UtilityService;
 
 			var categoria = nga.entity('personas')
-				.identifier(nga.field('cedu'))
+				.identifier(nga.field('id'))
 				.label('Personas');
 
 			categoria.listView()

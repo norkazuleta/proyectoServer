@@ -33,9 +33,11 @@ class AsigDoceModalController {
 			.apiDocente()
 			.then((response) => {
 				this.$scope.docentes = this.util.dataPrepare(response.data.originalElement, [{
-					label: 'persona.cedu_nomb_apell'
+					id: 'persona.id'
 				}, {
-					value: 'persona.cedu'
+					label: 'persona.nac_cedu_nomb_apell'
+				}, {
+					value: 'persona.id'
 				}, {
 					nomb: 'persona.nomb'
 				}, {
@@ -43,7 +45,11 @@ class AsigDoceModalController {
 				}, {
 					'nomb_apell': 'persona.nomb_apell'
 				}, {
+					'nac_cedu_nomb_apell': 'persona.nac_cedu_nomb_apell'
+				}, {
 					cedu: 'persona.cedu'
+				}, {
+					'nac_cedu': 'persona.nac_cedu'
 				}, {
 					correo: 'persona.correo'
 				}, {
@@ -52,7 +58,7 @@ class AsigDoceModalController {
 
 				if (this.$scope.docentes.length) {
 					angular.forEach(this.$scope.docentes, (item) => {
-						if (item.cedu === this.$scope.values['doce.cedu.cedu']) {
+						if (item.id === this.$scope.values['doce.persona.id']) {
 							this.selected(item);
 						}
 					});
@@ -78,10 +84,11 @@ class AsigDoceModalController {
 	}
 
 	selected(item) {
-		this.$scope.doce.cedu = item.cedu;
+		this.$scope.doce.id = item.id;
+		this.$scope.doce.nac_cedu = item.nac_cedu;
 		this.$scope.doce.nomb_apell = item.nomb_apell;
 		this.$scope.doce.telf = item.telf;
-		this.$scope.docente = item.cedu;
+		this.$scope.docente = item.id;
 	}
 
 	submitEdition($event) {
@@ -92,7 +99,7 @@ class AsigDoceModalController {
 
 		let data = {
 			secc: this.$scope.secc,
-			cedu: this.$scope.docente
+			persona: this.$scope.docente
 		};
 
         this.progression.start();

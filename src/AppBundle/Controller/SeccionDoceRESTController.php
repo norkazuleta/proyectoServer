@@ -128,15 +128,15 @@ class SeccionDoceRESTController extends VoryxController
     public function postAsigAction(Request $request)
     {
         $secc = $request->request->get('secc');
-        $doceCeduReq = $request->request->get('cedu');
+        $doce = $request->request->get('persona');
 
         $em = $this->getDoctrine()->getManager();
         $entitySeccionDoce = $em->getRepository('AppBundle:SeccionDoce')->findBy(array('secc' => $secc));
 
         if (count($entitySeccionDoce) > 0) {
             $seccionDoce = $entitySeccionDoce[0];
-            $doceCedu = $seccionDoce->getCedu();
-            if ($doceCeduReq != $doceCedu) {
+            $doceId = $seccionDoce->getPersona()->getId();
+            if ($doce != $doceId) {
                 return $this->putAction($request, $seccionDoce);
             } else {
                 return $seccionDoce;

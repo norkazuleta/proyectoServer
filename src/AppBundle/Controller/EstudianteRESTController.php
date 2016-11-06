@@ -74,8 +74,14 @@ class EstudianteRESTController extends VoryxController
                 $nbResults = $adapter->getNbResults();
                 $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
             } else {
-                $nbResults = $entity->getNbResults();
-                $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                if (count($filters)>0) {
+                    $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
+                    $nbResults = $adapter->getNbResults();
+                    $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
+                } else {
+                    $nbResults = $entity->getNbResults();
+                    $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                }
             }
 
             if ($entities) {
@@ -223,37 +229,5 @@ class EstudianteRESTController extends VoryxController
         } catch (\Exception $e) {
             return FOSView::create($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-        /**
-     * Get report s.
-     *
-     * @View(serializerEnableMaxDepthChecks=true)
-     *
-     * @Route("/reports/s", name="reports_s")
-     *
-     * @QueryParam(name="uriReport", nullable=true, description="")
-     * @QueryParam(name="id", nullable=true, description="")
-     *
-     * @return Response
-     */
-    public function rptAction(ParamFetcherInterface $paramFetcher)
-    {
-        $cedu = $paramFetcher->get('id');
-        $username = $this->getUser()->getUserName();
-
-        $param = array(
-            'action'  => 'record',
-            'report'  => 'recordEstu',
-            'format' => 'pdf',
-            'param' => array(
-                'cedu' => $cedu
-            )
-        );
-
-        return array(
-            'url' => $this->generateUrl('reports_q', $param),
-            'parameters' => $param
-        );
     }
 }

@@ -1,0 +1,3 @@
+app_report:
+    type:     annotation
+    resource: "@ReportBundle/Controller/QueryREPORTController.php"

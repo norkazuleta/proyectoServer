@@ -17,7 +17,7 @@ class EstudianteType extends AbstractType
         $builder
             ->add('persona', 'entity', array(
                 'class' => 'AppBundle:Persona',
-                'property' => 'cedu',
+                'property' => 'id',
             ))
             ->add('pnf', 'entity', array(
                 'class' => 'AppBundle:Pnf',

@@ -34,7 +34,7 @@ define(function() {
 					nga.field('tray.tray_desc').label('Trayecto'),
 					nga.field('peri.peri_desc').label('Periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
-					nga.field('doce.cedu.cedu').label('Docente Colaborador'),
+					nga.field('doce.persona.nac_cedu_nomb_apell').label('Docente Colaborador'),
 					nga.field('estu_total').label('Estudiantes'),
 					nga.field('nt', 'template')
 						.label('Notas Cargados')
@@ -384,7 +384,7 @@ define(function() {
 					nga.field('peri.peri_desc').label('periodo'),
 					nga.field('uc.uc_desc').label('Unidad Curricular'),
 					nga.field('pa.pa').label('Periodo Académico'),
-					nga.field('doce.cedu.cedu').label('Docente colaborador'),
+					nga.field('doce.persona.nac_cedu_nomb_apell').label('Docente Colaborador'),
 
 				]);
 

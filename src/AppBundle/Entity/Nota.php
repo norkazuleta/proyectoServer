@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Nota
  *
- * @ORM\Table(name="nota", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="cedu", columns={"cedu"}), @ORM\Index(name="secc_id", columns={"secc_id"})})
+ * @ORM\Table(name="nota", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="persona_id", columns={"persona_id"}), @ORM\Index(name="secc_id", columns={"secc_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NotaRepository")
  */
 class Nota
@@ -40,10 +40,10 @@ class Nota
      *
      * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="cedu", referencedColumnName="cedu")
+     *   @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
      * })
      */
-    private $cedu;
+    private $persona;
 
     /**
      * @var \Seccion
@@ -112,26 +112,26 @@ class Nota
     }
 
     /**
-     * Set cedu
+     * Set persona
      *
-     * @param  \AppBundle\Entity\Persona $cedu
+     * @param  \AppBundle\Entity\Persona $persona
      * @return Nota
      */
-    public function setCedu(\AppBundle\Entity\Persona $cedu = null)
+    public function setPersona(\AppBundle\Entity\Persona $persona = null)
     {
-        $this->cedu = $cedu;
+        $this->persona = $persona;
 
         return $this;
     }
 
     /**
-     * Get cedu
+     * Get persona
      *
      * @return \AppBundle\Entity\Persona
      */
-    public function getCedu()
+    public function getPersona()
     {
-        return $this->cedu;
+        return $this->persona;
     }
 
     /**

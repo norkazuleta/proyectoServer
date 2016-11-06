@@ -128,16 +128,16 @@ class SeccionEstuRESTController extends VoryxController
     public function postAsigAction(Request $request)
     {
         $secc = $request->request->get('secc');
-        $estus = $request->request->get('cedu');
+        $estus = $request->request->get('persona');
 
         $em = $this->getDoctrine()->getManager();
         $entitySeccionEstu = $em->getRepository('AppBundle:SeccionEstu')->findBy(array('secc' => $secc));
 
         $seccionEstuIds = array();
         foreach ($entitySeccionEstu as $key => $enti) {
-            $ceduEstu = $enti->getCedu()->getCedu();
-            if (in_array($ceduEstu, $estus)) {
-                if (($key = array_search($ceduEstu, $estus)) !== false) {
+            $idPersona = $enti->getPersona()->getId();
+            if (in_array($idPersona, $estus)) {
+                if (($key = array_search($idPersona, $estus)) !== false) {
                     unset($estus[$key]);
                 }
             } else {
@@ -162,7 +162,7 @@ class SeccionEstuRESTController extends VoryxController
                 $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
                 $entitySeccionEstu = new SeccionEstu();
                 $entitySeccionEstu->setSecc($entitySeccion);
-                $entitySeccionEstu->setCedu($entityPersona);
+                $entitySeccionEstu->setPersona($entityPersona);
                 $em->persist($entitySeccionEstu);
                 array_push($seccEstus, $entitySeccionEstu);
             }

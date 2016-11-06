@@ -56,12 +56,12 @@
                     <th colspan="6">Estudiantes</th>
                 </tr>
                 <tr class="info">
-                    <th colspan="1">Cédula</th>
+                    <th colspan="1">Documento de identidad</th>
                     <th colspan="4">Nombres y Apellidos</th>
                     <th colspan="1">Teléfono</th>
                 </tr>
                 <tr ng-repeat="item in estus track by $index">
-                    <td colspan="1">{{ item.cedu }}</td>
+                    <td colspan="1">{{ item.nac_cedu }}</td>
                     <td colspan="4">{{ item.nomb_apell }}</td>
                     <td colspan="1">{{ item.telf }}</td>
                 </tr>
@@ -71,9 +71,9 @@
                 <tr>
                     <td colspan="6">
 		                <ui-select ui-select-required multiple on-select="selEstu($item, $model, $select)" on-remove="removeEstu($item, $mode, $select)" ng-model="model.estus" ng-required="true" id="estus" name="estus">
-				            <ui-select-match placeholder="Introduzca los numeros de cédula de los estudiantes.">{{ $item.label }}</ui-select-match>
+				            <ui-select-match placeholder="Introduzca documento de identidad de los estudiantes.">{{ $item.label }}</ui-select-match>
 				            <ui-select-choices repeat="item.value as item in estudiantes | filter: {label: $select.search}">
-				                {{ item.cedu_nomb_apell }}
+				                {{ item.nac_cedu_nomb_apell }}
 				            </ui-select-choices>
 				        </ui-select>
                     </td>

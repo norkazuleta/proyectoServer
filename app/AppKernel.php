@@ -37,6 +37,7 @@ class AppKernel extends Kernel
 
             //PROJECT CODE
             new AppBundle\AppBundle(),
+            new ReportBundle\ReportBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

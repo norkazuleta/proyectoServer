@@ -33,10 +33,6 @@ app_ajuste_api:
     type:   rest
     prefix:   /api
 
-app_report:
-    type:     annotation
-    resource: "@AppBundle/Controller/ConsultasREPORTController.php"
-
 app_pnf_trayecto_periodo_uc_api:
     resource: "@AppBundle/Controller/PnfTrayectoPeriodoUcRESTController.php"
     type:   rest
@@ -162,6 +158,10 @@ app_api:
     resource: routing_api.yml
     prefix: /api
 
+app_utility_api:
+    resource: "@AppBundle/Controller/UtilityRESTController.php"
+    type:   rest
+    prefix:   /api
 
 #FOS User routing
 fos_user:
@@ -175,3 +175,12 @@ NelmioApiDocBundle:
 # translation
 _bazinga_jstranslation:
     resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+
+# Report
+report_bundle:
+    resource: "@ReportBundle/Resources/config/routing.yml"
+
+app_report_api:
+    resource: "@AppBundle/Controller/ReportRESTController.php"
+    type:   rest
+    prefix:   /api

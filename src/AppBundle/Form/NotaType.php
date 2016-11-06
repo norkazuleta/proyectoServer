@@ -17,9 +17,9 @@ class NotaType extends AbstractType
         $builder
             ->add('nota')
             ->add('asist')
-            ->add('cedu', 'entity', array(
-                'class' => 'AppBundle:Estudiante',
-                'property' => 'cedu',
+            ->add('persona', 'entity', array(
+                'class' => 'AppBundle:Persona',
+                'property' => 'id',
             ))
             ->add('secc', 'entity', array(
                 'class' => 'AppBundle:Seccion',

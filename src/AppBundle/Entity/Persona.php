@@ -11,18 +11,25 @@ use JMS\Serializer\Annotation\Type;
 /**
  * Persona
  *
- * @ORM\Table(name="persona", options={"collate"="utf8_general_ci", "charset"="utf8"})
+ * @ORM\Table(name="persona", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_naci_cedu", columns={"naci", "cedu"})}, options={"collate"="utf8_general_ci", "charset"="utf8"})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonaRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Persona
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="cedu", type="string", length=15, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $cedu;
 
@@ -118,6 +125,15 @@ class Persona
     private $ceduNombApell;
 
     /**
+     * @var string
+     *
+     * @SerializedName("nac_cedu_nomb_apell")
+     * @Type("string")
+     * @Accessor(getter="getNacCeduNombApell")
+     */
+    private $nacCeduNombApell;
+
+    /**
      * Hook on pre-persist operations.
      *
      * @ORM\PrePersist
@@ -148,6 +164,16 @@ class Persona
         $this->apell = Utility::upperCase($this->apell);
         $this->profesionFix = Utility::upperCase($this->profesionFix);
         $this->correo = Utility::lowerCase($this->correo);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -416,5 +442,15 @@ class Persona
     public function getCeduNombApell()
     {
         return sprintf('%s (%s %s)', $this->getCedu(), $this->getNomb(), $this->getApell());
+    }
+
+    /**
+     * Get CeduNombApell.
+     *
+     * @return string
+     */
+    public function getNacCeduNombApell()
+    {
+        return sprintf('%s-%s (%s %s)', $this->getNaci(), $this->getCedu(), $this->getNomb(), $this->getApell());
     }
 }

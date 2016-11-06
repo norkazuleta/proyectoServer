@@ -56,16 +56,16 @@
                     <th colspan="6">Docente</th>
                 </tr>
                 <tr class="info">
-                    <th colspan="1">Cédula</th>
+                    <th colspan="1">Documento de identidad</th>
                     <th colspan="4">Nombres y Apellidos</th>
                     <th colspan="1">Teléfono</th>
                 </tr>
-                <tr ng-if="doce.cedu">
-                    <td colspan="1">{{ doce.cedu }}</td>
+                <tr ng-if="doce.id">
+                    <td colspan="1">{{ doce.nac_cedu }}</td>
                     <td colspan="4">{{ doce.nomb_apell }}</td>
                     <td colspan="1">{{ doce.telf }}</td>
                 </tr>
-                <tr ng-if="!doce.cedu">
+                <tr ng-if="!doce.id">
                     <td colspan="6">NO ASIGNADO</td>
                 </tr>
                 <tr>

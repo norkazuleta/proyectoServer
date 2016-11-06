@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AldeaCoord
  *
- * @ORM\Table(name="aldea_coord", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="persona_cedu", columns={"persona_cedu"})})
+ * @ORM\Table(name="aldea_coord", options={"collate"="utf8_general_ci", "charset"="utf8"}, indexes={@ORM\Index(name="aldea_codi", columns={"aldea_codi"}), @ORM\Index(name="persona_id", columns={"persona_id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AldeaCoordRepository")
  */
 class AldeaCoord
@@ -26,7 +26,7 @@ class AldeaCoord
      *
      * @ORM\ManyToOne(targetEntity="Persona")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="persona_cedu", referencedColumnName="cedu")
+     *   @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
      * })
      */
     private $persona;

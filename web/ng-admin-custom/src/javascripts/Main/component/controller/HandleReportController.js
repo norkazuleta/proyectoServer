@@ -1,16 +1,16 @@
-/*global define*/
 import template from '../../view/layoutModalReport.html';
 
 class HandleReportModalController {
 
-	constructor($scope, $modalInstance, progression, RestWrapper, $sce, UtilityService, identifier) {
+	constructor($scope, $modalInstance, progression, RestWrapper, $sce, UtilityService, personId, pnfId) {
 		this.$scope = $scope;
 		this.$modalInstance = $modalInstance;
 		this.progression = progression;
 		this.rest = RestWrapper;
 		this.$sce = $sce;
 		this.util = UtilityService;
-		this.identifier = identifier;
+		this.personId = personId;
+		this.pnfId = pnfId;
 
 		this.$scope.item = { loading: true, loadingIFrame: false };
 
@@ -22,11 +22,18 @@ class HandleReportModalController {
 	}
 
 	request() {
-		var queryString = this.util.toQueryString({ id: this.identifier });
+		var queryString = this.util.toQueryString({
+		 'param': {
+			 'persona_id': this.personId,
+			 'pnf_id': this.pnfId
+		 },
+		 'action': 'rpt',
+		 'report': 'recordEstu'
+		});
 		this.progression.start();
 
 		this.rest
-			.getOne('reports', '/api/reports/s?' + queryString)
+			.getOne('reports', '/api/reports?' + queryString)
 			.then((data) => {
 				var url = data.originalElement.url + '&v=' + (new Date()).getTime() + Math.floor(Math.random() * 1000000);
 				this.$scope.reportURL = this.$sce.trustAsResourceUrl(url);
@@ -84,7 +91,7 @@ export default class HandleReportController {
 		this.$scope.$on('$destroy', this.destroy.bind(this));
 	}
 
-	openModal($event, identifier) {
+	openModal($event, personaId, pnfId) {
 		$event.preventDefault();
 		$event.stopPropagation();
 
@@ -95,8 +102,11 @@ export default class HandleReportController {
 			controllerAs: 'handlereport',
 			size: 'lg',
 			resolve: {
-				identifier: function() {
-					return identifier;
+				personaId: function() {
+					return personaId;
+				},
+				pnfId: function() {
+					return pnfId;
 				}
 			}
 		});
@@ -108,6 +118,6 @@ export default class HandleReportController {
 	}
 }
 
-HandleReportModalController.$inject = ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$sce', 'UtilityService', 'identifier'];
+HandleReportModalController.$inject = ['$scope', '$modalInstance', 'progression', 'RestWrapper', '$sce', 'UtilityService', 'personaId', 'pnfId'];
 
 HandleReportController.$inject = ['$scope', '$modal'];

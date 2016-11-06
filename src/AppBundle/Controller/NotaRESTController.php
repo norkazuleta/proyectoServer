@@ -136,10 +136,10 @@ class NotaRESTController extends VoryxController
         $notaIds = array();
         $notaIdsUpdate = array();
         foreach ($entityNota as $key => $enti) {
-            $ceduEstu = $enti->getCedu()->getCedu();
+            $idEstu = $enti->getPersona()->getId();
             $notaEstu = $enti->getNota();
             $asistEstu = $enti->getAsist();
-            if (($keyx = array_search($ceduEstu, array_column($notas, 'cedu'))) !== false) {
+            if (($keyx = array_search($idEstu, array_column($notas, 'id'))) !== false) {
                 if ($notas[$keyx]['nota'] == $notaEstu && $notas[$keyx]['asist'] == $asistEstu) {
                     unset($notas[$keyx]);
                     sort($notas);
@@ -175,12 +175,12 @@ class NotaRESTController extends VoryxController
         //add entity
         $eNota = array();
         foreach ($notas as $key => $value) {
-            $entityPersona = $em->getRepository('AppBundle:Persona')->find($value['cedu']);
+            $entityPersona = $em->getRepository('AppBundle:Persona')->find($value['id']);
             if ($entityPersona) {
                 $entitySeccion = $em->getRepository('AppBundle:Seccion')->find($secc);
                 $entityNota = new Nota();
                 $entityNota->setSecc($entitySeccion);
-                $entityNota->setCedu($entityPersona);
+                $entityNota->setPersona($entityPersona);
                 $entityNota->setNota($value['nota']);
                 $entityNota->setAsist($value['asist']);
 

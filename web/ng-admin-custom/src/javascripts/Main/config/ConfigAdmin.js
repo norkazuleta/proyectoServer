@@ -45,7 +45,6 @@ define(function() {
 
 		var nga = NgAdminConfigurationProvider;
 		var config = appConfig;
-
 		var admin = NgAdminConfigurationProvider
 			.application(config.webapp_title)
 			.baseApiUrl(baseApiUrl);

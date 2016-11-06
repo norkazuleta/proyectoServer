@@ -72,8 +72,14 @@ class DocenteRESTController extends VoryxController
                 $nbResults = $adapter->getNbResults();
                 $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
             } else {
-                $nbResults = $entity->getNbResults();
-                $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                if (count($filters)>0) {
+                    $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
+                    $nbResults = $adapter->getNbResults();
+                    $entities = $adapter->getSlice($offset, $limit)->getArrayCopy();
+                } else {
+                    $nbResults = $entity->getNbResults();
+                    $entities = ($nbResults > 0) ? $entity->findBy($filters, $order_by, $limit, $offset) : array();
+                }
             }
 
             if ($entities) {

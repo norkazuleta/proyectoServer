@@ -28,7 +28,9 @@ define(function() {
                 		.template('<span ng-repeat="group in entry.values.aldea_turno track by $index" class="label label-default">{{ group.turno.turn_desc }}</span>')
                 	.cssClasses('hidden-xs'),
 
-					nga.field('aldea_actual', 'boolean').label('aldea_actual'),
+					nga.field('aldea_actual', 'boolean').label('aldea actual'),
+					nga.field('coord.persona.nomb_apell').label('Coordinador(a)'),
+
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -255,8 +257,8 @@ define(function() {
 					.choices(function(entry, scope) {
 						delete entry.values['coord.id'];
 						delete entry.values['coord.aldea'];
-						if (entry.values['coord.persona.cedu']) {
-							entry.values['coord.persona'] = entry.values['coord.persona.cedu'];
+						if (entry.values['coord.persona.id']) {
+							entry.values['coord.persona'] = entry.values['coord.persona.id'];
 						} else {
 							entry.values['coord'] = {};
 						}
@@ -298,6 +300,8 @@ define(function() {
 					 nga.field('aldea_turno', 'template')
                 		.template('<span ng-repeat="group in entry.values._aldea_turno track by $index" class="label label-default">{{ group.turno.turn_desc }}</span>')
                 	.cssClasses('hidden-xs'),
+
+					nga.field('coord.persona.nac_cedu_nomb_apell').label('Coordinador(a)'),
 				]);
 
 			return aldea;

@@ -19,9 +19,9 @@ class SeccionEstuType extends AbstractType
                 'class' => 'AppBundle:Seccion',
                 'property' => 'seccId',
             ))
-            ->add('cedu', 'entity', array(
+            ->add('persona', 'entity', array(
                 'class' => 'AppBundle:Persona',
-                'property' => 'cedu',
+                'property' => 'id',
             ))
         ;
     }
