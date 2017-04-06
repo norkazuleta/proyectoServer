@@ -14,7 +14,7 @@ define(function(require) {
 
 			pnftrayperi.listView()
 				.infinitePagination(false)
-				.title('Adminstrar UCs')
+				.title('Administrar UCs')
 				.fields([
 					nga.field('id').label('ID'),
 					nga.field('pnf_tray_peri.pnf.pnf_desc').label('pnf_desc'),

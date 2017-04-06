@@ -15,9 +15,9 @@ define(function() {
 				.infinitePagination(false)
 				.title('Lista de Ajustes')
 				.fields([
-					nga.field('id').label('id'),
-					nga.field('key').label('key'),
-					nga.field('value').label('value'),
+					nga.field('id').label('ID'),
+					nga.field('key').label('Clave'),
+					nga.field('value').label('Valor'),
 				])
 				.filters([
 					nga.field('q', 'template')
@@ -38,23 +38,23 @@ define(function() {
 			ajuste.creationView()
 				.title('Crear nuevo Ajuste')
 				.fields([
-					nga.field('key').label('key'),
-					nga.field('value').label('value'),
+					nga.field('key').label('Clave'),
+					nga.field('value').label('Valor'),
 				]);
 
 			ajuste.editionView()
 				.title('Actualizar Ajuste #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('key').label('key'),
-					nga.field('value').label('value'),
+					nga.field('key').label('Clave'),
+					nga.field('value').label('Valor'),
 				]);
 
 			ajuste.showView()
 				.title('Detalle Ajuste #{{ ::entry.identifierValue }}')
 				.fields([
-					nga.field('id').label('id'),
-					nga.field('key').label('key'),
-					nga.field('value').label('value'),
+					nga.field('id').label('ID'),
+					nga.field('key').label('Clave'),
+					nga.field('value').label('Valor'),
 				]);
 
 			return ajuste;

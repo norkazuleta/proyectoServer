@@ -16,7 +16,7 @@ define(function(require) {
 
 			pnftrayperi.listView()
 				.infinitePagination(false)
-				.title('Adminstrar PNF & Trayecto & Periodo & UC')
+				.title('Administrar PNF & Trayecto & Periodo & UC')
 				.fields([
 					nga.field('id').label('ID'),
 					nga.field('pnf.pnf_desc').label('pnf_desc'),
