@@ -96,7 +96,8 @@
             </trans-unit>
             <trans-unit id="status.401">
                 <source>status.401</source>
-                <target>Unauthorized</target>
+                <!-- <target>Unauthorized</target> -->
+                <target>Credenciales incorrectas.</target>
             </trans-unit>
             <trans-unit id="status.402">
                 <source>status.402</source>
