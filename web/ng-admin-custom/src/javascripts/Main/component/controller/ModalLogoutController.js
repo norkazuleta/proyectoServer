@@ -7,6 +7,7 @@ define(function () {
 			$modalInstance.close();
 			AuthenticationService.logout({});
 			$state.go($state.get('login'));
+			window.location.reload();
 		};
 		$scope.cancel = function () {
 			$modalInstance.close();

@@ -3,13 +3,17 @@
 define(function() {
 	'use strict';
 
-	var RegisterController = function($scope, $state, RestWrapper, progression, notification, TranslationService) {
+	var RegisterController = function($scope, $state, RestWrapper, progression, notification, TranslationService, appConfig) {
+
+	    angular.extend($scope, appConfig);
+
 		this.$scope = $scope;
 		this.progression = progression;
 		this.notification = notification;
 		this.translation = TranslationService;
 		this.rest = RestWrapper;
 		this.$state = $state;
+
 
 		$scope.user = {};
 		$scope.msg = {
@@ -23,6 +27,8 @@ define(function() {
             label: 'Femenino',
             value: 'F'
         }];
+
+        $scope.REGISTER_OPEN = ($scope.REGISTER_OPEN != undefined)?  (($scope.REGISTER_OPEN !="true")? false : true) : false;
 
 		$scope.$on('$destroy', this.destroy.bind(this));
 	};
@@ -123,7 +129,7 @@ define(function() {
 		this.$state = undefined;
 	};
 
-	RegisterController.$inject = ['$scope', '$state', 'RestWrapper', 'progression', 'notification', 'TranslationService'];
+	RegisterController.$inject = ['$scope', '$state', 'RestWrapper', 'progression', 'notification', 'TranslationService', 'appConfig'];
 
 	return RegisterController;
 });

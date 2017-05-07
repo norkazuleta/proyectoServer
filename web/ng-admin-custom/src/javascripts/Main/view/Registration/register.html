@@ -7,7 +7,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Registrarse</h3>
                     </div>
-                    <div class="panel-body">
+                    <div ng-if="REGISTER_OPEN" class="panel-body">
                         <div class="alert alert-danger" ng-if="errorMessage">
                              {{ errorMessage }}
                         </div>
@@ -72,6 +72,20 @@
                                     <button class="btn btn-lg btn-primary btn-block" ng-click="registerController.submitCreation($event, user)">{{ 'registration.submit'|trans }} </button>
                                     <br>
                                 </form>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="text-center">
+                            <a href="#/login" title="">Ya tienes una cuenta?</a>
+                        </p>
+                    </div>
+                    <div ng-if="!REGISTER_OPEN" class="panel-body">
+                        <div class="alert alert-danger" ng-if="errorMessage">
+                             {{ errorMessage }}
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                Formulario de Registro esta temporalmente deshabilitado, si requiere registrarse solicite al administrador del sistema.
                             </div>
                         </div>
                         <hr>
