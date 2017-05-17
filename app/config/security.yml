@@ -55,6 +55,7 @@ security:
             anonymous: true
 
         api:
+            # pattern:   ^/api/ajustess
             pattern:   ^/api
             stateless: true
             lexik_jwt:

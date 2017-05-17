@@ -66,7 +66,7 @@ class SeccionDoceRESTController extends VoryxController
             $entity = $em->getRepository('AppBundle:SeccionDoce');
 
             if (!empty($q)) {
-                $filters_ = array('seccCodi' => '');
+                $filters = array('seccCodi' => '');
 
                 $adapter = $entity->findByAdapter($filters, $order_by, $q, $filters_operator);
                 $nbResults = $adapter->getNbResults();
