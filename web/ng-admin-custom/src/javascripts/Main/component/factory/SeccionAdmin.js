@@ -297,7 +297,7 @@ define(function() {
 
 						scope.selPnfTrayecto = selPnfTrayecto;
 
-						$rootScope.$broadcast('choice:pnftrayecto:get', {value: trayId, id: pnfId}, trayId);
+						$rootScope.$broadcast('choice:pnftrayecto:get', {value: trayId, id: pnfId}, pnfId);
 
 						return [];
 
@@ -345,11 +345,17 @@ define(function() {
 					.choices(function(entry, scope) {
 						let id;
 						id = entry.values['peri.peri_id'];
+
+						var pnfId, trayId, periId;
+						pnfId = entry.values['pnf.pnf_id'];
+						trayId = entry.values['tray.tray_id'];
+						periId = entry.values['peri.peri_id'];
+
 						entry.values['uc'] = entry.values['uc.uc_id'];
 
 						util.choicePnfTrayectoPeriodoUc()(entry, scope);
 
-						$rootScope.$broadcast('choice:pnftrayectoperiodouc:get', {value: id}, id);
+						$rootScope.$broadcast('choice:pnftrayectoperiodo2:get', {value: id, pnf: pnfId, tray:trayId, peri: periId}, id);
 
 						return [];
 					}),

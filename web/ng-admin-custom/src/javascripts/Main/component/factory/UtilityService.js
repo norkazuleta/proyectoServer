@@ -748,6 +748,8 @@ define(function() {
 
 					var dPnfTrayectoPeriodoUc = $rootScope.$on('choice:pnftrayectoperiodouc:get', getPnfTrayPeriodoUc);
 
+					var dPnfTrayectoPeriodo2 = $rootScope.$on('choice:pnftrayectoperiodo2:get', getPnfTrayectoPeriodo2);
+
 					var dresetPnfTrayectoPeriodoUc = $rootScope.$on('choice:pnftrayectoperiodouc:reset', resetPnfTrayectoPeriodoUc);
 
 					scope.$on('$destroy', destroyEvent);
@@ -767,6 +769,20 @@ define(function() {
 						});
 					}
 
+					function getPnfTrayectoPeriodo2(e, $item, $model) {
+						util.apiPnfTrayectoPeriodo2($item, $model).then(function(response) {
+
+							var pnftrayperiodo = util.dataPrepare(response.data.originalElement[0].uc, [{
+								label: 'uc.uc_desc'
+							}, {
+								value: 'uc.uc_id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftrayperiodo
+							});
+						});
+					}
+
 					function resetPnfTrayectoPeriodoUc() {
 						scope.$broadcast('choices:update', {
 							choices: []
@@ -775,6 +791,7 @@ define(function() {
 
 					function destroyEvent() {
 						dPnfTrayectoPeriodoUc();
+						dPnfTrayectoPeriodo2();
 						dresetPnfTrayectoPeriodoUc();
 					}
 				};
@@ -1184,12 +1201,14 @@ define(function() {
 			},
 
 			apiPnfTrayecto: function($item, $model, $limit) {
-				console.log($item, $model, 'pnftrayectos');
 				return RestWrapper.getList({}, 'pnftrayectos', '/api/pnftrayectoperiodos?filters[pnf]='+$model+'&limit=' + ($limit || '1000'));
 			},
 
 			apiPnfTrayectoPeriodo: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?filters[pnf]='+$item.id+'&filters[tray]='+$model+'&limit=' + ($limit || '1000'));
+			},
+			apiPnfTrayectoPeriodo2: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'pnftrayectoperiodoss', '/api/pnftrayectoperiodos?filters[pnf]='+$item.pnf+'&filters[tray]='+$item.tray+'&filters[peri]='+$item.peri+'&limit=' + ($limit || '1000'));
 			},
 
 			apiPnfTrayectoPeriodoUc: function($item, $model, $limit) {
