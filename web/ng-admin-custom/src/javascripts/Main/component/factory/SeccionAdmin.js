@@ -318,8 +318,9 @@ define(function() {
 						'on-select': 'selPnfTrayPeriodo($item, $model)',
 					})
 					.choices(function(entry, scope) {
-						var pnfId, periId;
+						var pnfId, trayId, periId;
 						pnfId = entry.values['pnf.pnf_id'];
+						trayId = entry.values['tray.tray_id'];
 						periId = entry.values['peri.peri_id'];
 						entry.values['peri'] = periId;
 
@@ -327,7 +328,7 @@ define(function() {
 
 						scope.selPnfTrayPeriodo = selPnfTrayPeriodo;
 
-						$rootScope.$broadcast('choice:pnftrayectoperiodo:get', {value: periId, id: pnfId}, periId);
+						$rootScope.$broadcast('choice:pnftrayectoperiodo1:get', {pnf: pnfId, tray: trayId,  value: periId, id: pnfId}, trayId);
 
 						return [];
 

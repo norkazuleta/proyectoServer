@@ -706,6 +706,8 @@ define(function() {
 					var pnftrayperiodo = [];
 
 					var dPnfTrayectoPeriodo = $rootScope.$on('choice:pnftrayectoperiodo:get', getPnfTrayectoPeriodo);
+					
+					var dPnfTrayectoPeriodo1 = $rootScope.$on('choice:pnftrayectoperiodo1:get', getPnfTrayectoPeriodo1);
 
 					var dresetPnfTrayectoPeriodo = $rootScope.$on('choice:pnftrayectoperiodo:reset', resetPnfTrayectoPeriodo);
 
@@ -728,6 +730,21 @@ define(function() {
 						});
 					}
 
+					function getPnfTrayectoPeriodo1(e, $item, $model) {
+						util.apiPnfTrayectoPeriodo1($item, $model).then(function(response) {
+							pnftrayperiodo = util.dataPrepare(response.data.originalElement, [{
+								label: 'peri.peri_desc'
+							}, {
+								value: 'peri.peri_id'
+							}, {
+								id: 'id'
+							}]);
+							scope.$broadcast('choices:update', {
+								choices: pnftrayperiodo
+							});
+						});
+					}
+
 					function resetPnfTrayectoPeriodo() {
 						scope.$broadcast('choices:update', {
 							choices: []
@@ -736,6 +753,7 @@ define(function() {
 
 					function destroyEvent() {
 						dPnfTrayectoPeriodo();
+						dPnfTrayectoPeriodo1();
 						dresetPnfTrayectoPeriodo();
 					}
 				};
@@ -1207,8 +1225,13 @@ define(function() {
 			apiPnfTrayectoPeriodo: function($item, $model, $limit) {
 				return RestWrapper.getList({}, 'pnftrayectoperiodos', '/api/pnftrayectoperiodos?filters[pnf]='+$item.id+'&filters[tray]='+$model+'&limit=' + ($limit || '1000'));
 			},
+
+			apiPnfTrayectoPeriodo1: function($item, $model, $limit) {
+				return RestWrapper.getList({}, 'pnftrayectoperiodos1', '/api/pnftrayectoperiodos?filters[pnf]='+$item.pnf+'&filters[tray]='+$item.tray+'&limit=' + ($limit || '1000'));
+			},
+
 			apiPnfTrayectoPeriodo2: function($item, $model, $limit) {
-				return RestWrapper.getList({}, 'pnftrayectoperiodoss', '/api/pnftrayectoperiodos?filters[pnf]='+$item.pnf+'&filters[tray]='+$item.tray+'&filters[peri]='+$item.peri+'&limit=' + ($limit || '1000'));
+				return RestWrapper.getList({}, 'pnftrayectoperiodos2', '/api/pnftrayectoperiodos?filters[pnf]='+$item.pnf+'&filters[tray]='+$item.tray+'&filters[peri]='+$item.peri+'&limit=' + ($limit || '1000'));
 			},
 
 			apiPnfTrayectoPeriodoUc: function($item, $model, $limit) {
